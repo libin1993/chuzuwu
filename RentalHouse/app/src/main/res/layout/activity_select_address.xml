@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/mv_address"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.amap.api.maps.MapView>
+
+    <include
+        layout="@layout/layout_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/ll_title"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/bound_ff_4dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="9dp"
+            android:scaleType="center"
+            android:src="@mipmap/ic_search"/>
+
+        <EditText
+            android:id="@+id/et_input_address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:cursorVisible="false"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="请输入地址"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:textColor="@color/gray_22"
+            android:textColorHint="@color/gray_88"
+            android:textSize="14sp"/>
+
+        <View
+            android:id="@+id/view_clear_line"
+            android:layout_width="1dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/gray_ee"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_clear_txt"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/blue_4d7"
+            android:textSize="14sp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="315dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_address"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/rgs_address"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:text="附近地址"
+                android:textColor="@color/rgs_address_text"
+                android:textSize="14sp"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@color/gray_ee"/>
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:text="历史地址"
+                android:textColor="@color/rgs_address_text"
+                android:textSize="15sp"/>
+
+        </RadioGroup>
+
+        <View
+            android:id="@+id/view_address_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/rgs_address"
+            android:background="@color/gray_ee"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_select_address"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view_address_line">
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_history_address"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view_address_line"
+            android:visibility="gone">
+        </android.support.v7.widget.RecyclerView>
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="327dp"
+        android:src="@mipmap/ic_location"/>
+</RelativeLayout>
