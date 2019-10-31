@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray_f8">
+
+    <include
+        layout="@layout/layout_title"/>
+
+    <TextView
+        android:id="@+id/tv_name_room"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:layout_below="@id/ll_title"
+        android:background="@color/blue_f3f"
+        android:paddingLeft="12dp"
+        android:textColor="@color/blue_3e7"
+        android:textSize="16sp"
+        android:gravity="center_vertical"/>
+
+    <LinearLayout
+        android:id="@+id/ll_bluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name_room"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_connect_bluetooth"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_connect_bluetooth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"/>
+
+            <TextView
+                android:id="@+id/tv_connect_bluetooth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:textColor="@color/gray_33"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="81dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:text="蓝牙名称"
+                android:textColor="@color/gray_55"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/et_bluetooth_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="请输入蓝牙名称"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:textColor="@color/gray_22"
+                android:textColorHint="@color/gray_88"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_connect_bluetooth"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/btn_submit"
+            android:enabled="true"
+            android:text="连接蓝牙"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_network"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name_room"
+        android:background="@color/gray_f8"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="12dp"
+            android:src="@mipmap/ic_bluetooth_success"/>
+
+
+        <ImageView
+            android:id="@+id/iv_network_checking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="86dp"
+            android:scaleType="center"/>
+
+        <TextView
+            android:id="@+id/tv_network_checking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="27dp"
+            android:textColor="@color/gray_33"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

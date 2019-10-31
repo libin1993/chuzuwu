@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/fl_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp">
+
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/rgs_main"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:elevation="3dp">
+
+        <RadioButton
+            style="@style/RadioButton"
+            android:drawableTop="@drawable/selector_homepage_tab"
+            android:text="首页"/>
+
+        <RadioButton
+            style="@style/RadioButton"
+            android:drawableTop="@drawable/selector_warn_tab"
+            android:text="预警信息"/>
+
+        <RadioButton
+            style="@style/RadioButton"
+            android:drawableTop="@drawable/selector_mine_tab"
+            android:text="我的"/>
+    </RadioGroup>
+
+</RelativeLayout>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray_f8">
+
+    <include
+        layout="@layout/layout_title"/>
+
+    <TextView
+        android:id="@+id/tv_address_room"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:layout_below="@id/ll_title"
+        android:background="@color/blue_f3f"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:textColor="@color/blue_3e7"
+        android:textSize="16sp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_test"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_address_room"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_network_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:src="@mipmap/ic_network_success"/>
+
+            <ImageView
+                android:id="@+id/iv_bluetooth_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="17dp"
+                android:src="@mipmap/ic_bluetooth_success"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="设备编号"
+                    android:textColor="@color/gray_55"
+                    android:textSize="14sp"/>
+
+
+                <EditText
+                    android:id="@+id/et_equipment_code"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginRight="12dp"
+                    android:textColor="@color/gray_22"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:hint="请输入设备编号"
+                    android:textColorHint="@color/gray_88"
+                    android:layout_marginLeft="20dp"
+                    android:singleLine="true"
+                    android:maxLength="12"
+                    android:digits="@string/equip_number"/>
+
+                <ImageView
+                    android:id="@+id/iv_scan_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_scan_code"
+                    android:paddingRight="12dp"
+                    android:paddingLeft="20dp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@color/gray_ee"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:text="设备类型"
+                    android:textColor="@color/gray_55"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_equipment_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:textColor="@color/gray_22"
+                    android:textSize="14sp"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            android:text="*请安装设备，并按照要求进行测试"
+            android:textColor="@color/gray_88"
+            android:textSize="13sp"/>
+
+
+        <Button
+            android:id="@+id/btn_check_equipment"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/btn_submit"
+            android:enabled="false"
+            android:text="安装检测"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"/>
+
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/btn_submit"
+            android:enabled="false"
+            android:text="跳过"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_install"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_address_room"
+        android:background="@android:color/white"
+        android:visibility="gone">
+    </android.support.v7.widget.RecyclerView>
+
+
+</RelativeLayout>

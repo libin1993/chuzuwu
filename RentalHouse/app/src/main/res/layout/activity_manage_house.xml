@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/gray_f8"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_title"/>
+
+    <TextView
+        android:id="@+id/tv_unit_name"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:background="@color/blue_f3f"
+        android:paddingLeft="12dp"
+        android:textColor="@color/blue_3e7"
+        android:textSize="16sp"
+        android:gravity="center_vertical"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_unit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.SearchAddressActivity">
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.amap.api.maps.MapView>
+
+    <include
+        layout="@layout/layout_title"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/ll_title"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/bound_ff_4dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="9dp"
+            android:scaleType="center"
+            android:src="@mipmap/ic_search"/>
+
+        <EditText
+            android:id="@+id/et_search_address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:cursorVisible="false"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="请输入地址"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textColor="@color/gray_22"
+            android:textColorHint="@color/gray_88"
+            android:textSize="14sp"/>
+
+        <View
+            android:id="@+id/view_clear_search"
+            android:layout_width="1dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/gray_ee"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_clear_search"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/blue_4d7"
+            android:textSize="14sp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_address"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:visibility="gone">
+    </android.support.v7.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/iv_gps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="212dp"
+        android:src="@mipmap/ic_location"/>
+</RelativeLayout>
