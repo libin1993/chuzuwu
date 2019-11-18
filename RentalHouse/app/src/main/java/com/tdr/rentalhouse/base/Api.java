@@ -36,22 +36,22 @@ import retrofit2.http.QueryMap;
  */
 public interface Api {
     //测试
-    String HOST = "http://10.130.0.207:1012/";
-    String IMG_HOST = "http://10.130.0.207:1012";
+//    String HOST = "http://10.130.0.207:1012/";
+//    String IMG_HOST = "http://10.130.0.207:1012";
 
 
     //出租屋正式
 //    String HOST = "http://183.129.130.119:17090/";
 //    String IMG_HOST = "http://183.129.130.119:17090";
 
-    //正式
+    //报装系统正式
 //    String HOST = "http://183.129.130.119:17100/";
 //    String IMG_HOST = "http://183.129.130.119:17100";
 
 
     //测试（不上架）
-//    String HOST = "http://10.130.0.208:13127/";
-//    String IMG_HOST = "http://10.130.0.208:13127";
+    String HOST = "http://10.130.0.208:13127/";
+    String IMG_HOST = "http://10.130.0.208:13127";
 
 
     //登录
