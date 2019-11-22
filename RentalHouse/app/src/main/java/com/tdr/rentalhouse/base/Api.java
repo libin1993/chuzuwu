@@ -50,8 +50,18 @@ public interface Api {
 
 
     //测试（不上架）
-    String HOST = "http://10.130.0.208:13127/";
-    String IMG_HOST = "http://10.130.0.208:13127";
+//    String HOST = "http://10.130.0.208:13127/";
+//    String IMG_HOST = "http://10.130.0.208:13127";
+
+
+    //演示
+//    String HOST = "http://10.120.0.18:8000/";
+//    String IMG_HOST = "http://10.120.0.18:8000";
+
+
+    //域名
+    String HOST = "http://ys-czwappapi.iotone.cn:22800/";
+    String IMG_HOST = "http://ys-czwappapi.iotone.cn:22800";
 
 
     //登录

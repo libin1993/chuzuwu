@@ -83,8 +83,8 @@
                     android:textColorHint="@color/gray_88"
                     android:layout_marginLeft="20dp"
                     android:singleLine="true"
-                    android:maxLength="12"
-                    android:digits="@string/equip_number"/>
+                    android:maxLength="14"
+                    android:digits="@string/phone_number"/>
 
                 <ImageView
                     android:id="@+id/iv_scan_code"

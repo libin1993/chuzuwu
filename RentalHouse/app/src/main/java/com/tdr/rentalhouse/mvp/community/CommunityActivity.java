@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -64,7 +65,6 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
     RecyclerView rvAddress;
     private List<CommunityBean.DataBean.ListBean> dataList = new ArrayList<>();
     private BaseQuickAdapter<CommunityBean.DataBean.ListBean, BaseViewHolder> adapter;
-
     private int id;
     private int type;
     private CommunityBean.DataBean dataBean;

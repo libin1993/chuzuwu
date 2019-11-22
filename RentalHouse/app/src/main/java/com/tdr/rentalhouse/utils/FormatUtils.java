@@ -57,6 +57,19 @@ public class FormatUtils {
 
     /**
      * @param str
+     * @return 是否10进制
+     */
+    public boolean  isNumeric(String str){
+
+        Pattern pattern = Pattern.compile("[0-9]*");
+
+        return pattern.matcher(str).matches();
+
+    }
+
+
+    /**
+     * @param str
      * @return 是否为整数
      */
     public boolean isInteger(String str) {
