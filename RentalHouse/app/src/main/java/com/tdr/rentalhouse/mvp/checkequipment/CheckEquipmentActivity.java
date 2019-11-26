@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -568,7 +569,8 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
 
                 String equipNo = etEquipmentCode.getText().toString().trim();
                 type = equipNo.substring(0, 4);
-                code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14 ? equipNo.substring(4, 14):equipNo.substring(4)),10);
+                code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14 ? equipNo.substring(4, 14):equipNo.substring(4)),8);
+                LogUtils.log(type+","+code);
                 break;
             case RequestCode.NetCode.DEVICE_TYPE:
 
