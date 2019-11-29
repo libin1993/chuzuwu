@@ -1,1 +1,1 @@
-include ':app', ':zbar', ':address', ':bluetooth'
+include ':app', ':address', ':bluetooth'

@@ -29,9 +29,6 @@ import com.tdr.rentalhouse.bean.ScanCodeBean;
 import com.tdr.rentalhouse.bean.ScanResult;
 import com.tdr.rentalhouse.inter.PopupOnClickListener;
 import com.tdr.rentalhouse.mvp.addaddress.AddAddressActivity;
-import com.tdr.rentalhouse.mvp.bindhouse.BindHouseActivity;
-import com.tdr.rentalhouse.mvp.community.CommunityActivity;
-import com.tdr.rentalhouse.mvp.houseinfo.HouseInfoActivity;
 
 import com.tdr.rentalhouse.mvp.roomlist.RoomInfoActivity;
 import com.tdr.rentalhouse.mvp.selectaddress.SelectAddressActivity;
@@ -94,6 +91,7 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
         super.onCreate(savedInstanceState);
         Symbol.is_only_scan_center = true;
         Symbol.scanType = QrConfig.TYPE_QRCODE;
+        Symbol.doubleEngine = true;
         setContentView(R.layout.activity_scan_qrcode);
         ButterKnife.bind(this);
         getData();
@@ -117,7 +115,6 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
         tvTitleMore.setText("相册");
         tvTitleMore.setVisibility(View.VISIBLE);
 
-        scanView.startScan();
         cbFlashLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -134,13 +131,12 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
             cpScan.setScanCallback(this);
             cpScan.start();
         }
-        scanView.onResume();
     }
 
 
     @Override
-    public void onScanResult(String content) {
-        scanResult(content);
+    public void onScanResult(cn.bertsir.zbar.Qr.ScanResult result) {
+        scanResult(result.getContent());
     }
 
 
@@ -342,6 +338,8 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
     public void hideLoading() {
         LoadingUtils.getInstance().dismiss();
     }
+
+
 
 
     private static class MyHandler extends Handler {
