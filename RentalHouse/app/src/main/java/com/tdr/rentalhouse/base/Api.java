@@ -40,21 +40,24 @@ public interface Api {
 //    String IMG_HOST = "http://10.130.0.207:1012";
 
     //正式
-    String HOST = "http://183.129.130.119:17100/";
-    String IMG_HOST = "http://183.129.130.119:17100";
+//    String HOST = "http://183.129.130.119:17100/";
+//    String IMG_HOST = "http://183.129.130.119:17100";
 
     //出租屋正式
 //    String HOST = "http://183.129.130.119:17090/";
 //    String IMG_HOST = "http://183.129.130.119:17090";
 
+    //演示
+//    String HOST = "http://ys-czwappapi.iotone.cn:22800/";
+//    String IMG_HOST = "http://ys-czwappapi.iotone.cn:22800";
 
     //内网测试（208）
 //    String HOST = "http://10.130.0.208:13127/";
 //    String IMG_HOST = "http://10.130.0.208:13127";
 
     //外网测试（208）
-//    String HOST = "http://183.129.130.119:13127/";
-//    String IMG_HOST = "http://183.129.130.119:13127";
+    String HOST = "http://183.129.130.119:13127/";
+    String IMG_HOST = "http://183.129.130.119:13127";
 
 
     //登录

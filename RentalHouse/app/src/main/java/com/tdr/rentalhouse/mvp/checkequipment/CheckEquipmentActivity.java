@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -175,11 +176,11 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 btnCheckEquipment.setEnabled(false);
                 btnNext.setEnabled(false);
                 tvEquipmentType.setText(null);
-                if (!TextUtils.isEmpty(s.toString().trim()) && s.toString().trim().length() == 12) {
+                if (FormatUtils.getInstance().isEquipNo(s.toString().trim())) {
 
                     String deviceNo = s.toString().trim();
                     mPresenter.isEquipmentBind(RequestCode.NetCode.IS_EQUIPMENT_BIND,
-                            Long.parseLong(deviceNo.substring(4, 12)),
+                            Long.parseLong(deviceNo.substring(4)),
                             Long.parseLong(deviceNo.substring(0, 4), 16), houseInfoBean.getBusinessType());
 
                 }
@@ -342,7 +343,9 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void scanResult(ScanResult scanResult) {
+
         String result = scanResult.getResult();
+        LogUtils.log(result);
         if (result.contains("?AI")) {
             String[] split = result.split("\\?");
             String type1 = split[1].substring(2);
@@ -356,11 +359,14 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
             } else {
                 ToastUtils.getInstance().showToast("当前设备不是AI烟感");
             }
-
         } else {
-            ToastUtils.getInstance().showToast("当前设备不是AI烟感");
+            if (FormatUtils.getInstance().isEquipNo(result)){
+                etEquipmentCode.setText(result.length()<14 ? result : result.substring(0,14));
+                etEquipmentCode.setSelection(etEquipmentCode.getText().toString().length());
+            }else {
+                ToastUtils.getInstance().showToast("当前设备不是AI烟感");
+            }
         }
-
     }
 
 
@@ -562,7 +568,8 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
 
                 String equipNo = etEquipmentCode.getText().toString().trim();
                 type = equipNo.substring(0, 4);
-                code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.substring(4, 12)), 8);
+                code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14 ? equipNo.substring(4, 14):equipNo.substring(4)),8);
+                LogUtils.log(type+","+code);
                 break;
             case RequestCode.NetCode.DEVICE_TYPE:
 

@@ -69,6 +69,19 @@ public class FormatUtils {
 
 
     /**
+     * @param str
+     * @return 判断设备号是否正确
+     */
+    public boolean isEquipNo(String str){
+        if (TextUtils.isEmpty(str)) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile("^042[0123456789ABCDEF]\\d{1,10}$");
+        return pattern.matcher(str).matches();
+    }
+
+
+    /**
      * @param bytes
      * @return
      */
