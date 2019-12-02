@@ -55,7 +55,7 @@ public interface Api {
 //    String HOST = "http://10.130.0.208:13127/";
 //    String IMG_HOST = "http://10.130.0.208:13127";
 
-    //外网测试（208）
+//    外网测试（208）
     String HOST = "http://183.129.130.119:13127/";
     String IMG_HOST = "http://183.129.130.119:13127";
 

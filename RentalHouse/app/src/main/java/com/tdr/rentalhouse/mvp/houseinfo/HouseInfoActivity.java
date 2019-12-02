@@ -203,7 +203,10 @@ public class HouseInfoActivity extends BaseMvpActivity<HouseInfoContact.Presente
         }else {
             tvBusinessType.setText("旅业");
         }
-        tvPosition.setText(dataBean.getLongitude() + "," + dataBean.getLatitude());
+
+        if (!TextUtils.isEmpty(dataBean.getLatitude()) && !TextUtils.isEmpty(dataBean.getLongitude())){
+            tvPosition.setText(dataBean.getLongitude() + "," + dataBean.getLatitude());
+        }
 
         adapter.addHeaderView(view);
         adapter.notifyDataSetChanged();

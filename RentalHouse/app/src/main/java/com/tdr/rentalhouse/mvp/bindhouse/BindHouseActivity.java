@@ -358,11 +358,12 @@ public class BindHouseActivity extends BaseMvpActivity<BindHouseContact.Presente
 
             locationBean = new LocationBean();
             locationBean.setName(houseInfoBean.getLng() + "," + houseInfoBean.getLat());
-            locationBean.setLat(Double.parseDouble(houseInfoBean.getLat()));
-            locationBean.setLng(Double.parseDouble(houseInfoBean.getLng()));
+            locationBean.setLat(houseInfoBean.getLat());
+            locationBean.setLng(houseInfoBean.getLng());
 
-
-            tvHouseLat.setText(houseInfoBean.getLng() + "," + houseInfoBean.getLat());
+            if (!TextUtils.isEmpty(houseInfoBean.getLat()) && !TextUtils.isEmpty(houseInfoBean.getLng())){
+                tvHouseLat.setText(houseInfoBean.getLng() + "," + houseInfoBean.getLat());
+            }
 
 
             if (ObjectUtils.getInstance().isNotNull(houseInfoBean.getRoomList())) {
@@ -576,7 +577,7 @@ public class BindHouseActivity extends BaseMvpActivity<BindHouseContact.Presente
             return;
         }
 
-        if (TextUtils.isEmpty(tvHouseLat.getText().toString().trim())) {
+        if (houseInfoBean.getType() != 4 && TextUtils.isEmpty(tvHouseLat.getText().toString().trim())) {
             ToastUtils.getInstance().showToast("请输入房屋经纬度");
             return;
         }
@@ -590,8 +591,8 @@ public class BindHouseActivity extends BaseMvpActivity<BindHouseContact.Presente
         }
 
         mPresenter.bindHouse(RequestCode.NetCode.BIND_HOUSE, houseInfoBean.getHouseId(),
-                landlordName, idNo, phone, businessType, code, areaCode, qrCode, String.valueOf(locationBean.getLng()),
-                String.valueOf(locationBean.getLat()), list);
+                landlordName, idNo, phone, businessType, code, areaCode, qrCode, locationBean.getLng(),
+                locationBean.getLat(), list);
 
     }
 
@@ -709,8 +710,8 @@ public class BindHouseActivity extends BaseMvpActivity<BindHouseContact.Presente
         if (aMapLocation != null && locationBean == null) {
             locationBean = new LocationBean();
             locationBean.setName(aMapLocation.getAddress());
-            locationBean.setLat(aMapLocation.getLatitude());
-            locationBean.setLng(aMapLocation.getLongitude());
+            locationBean.setLat(String.valueOf(aMapLocation.getLatitude()));
+            locationBean.setLng(String.valueOf(aMapLocation.getLongitude()));
 
             tvHouseLat.setText(locationBean.getName());
 

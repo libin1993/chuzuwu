@@ -183,8 +183,8 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
             buildingType = communityBean.getArchitecturalTypes();
 
             locationBean = new LocationBean();
-            locationBean.setLat(Double.parseDouble(communityBean.getLatitude()));
-            locationBean.setLng(Double.parseDouble(communityBean.getLongitude()));
+            locationBean.setLat(communityBean.getLatitude());
+            locationBean.setLng(communityBean.getLongitude());
             locationBean.setName(communityBean.getPositionName());
 
             if (!TextUtils.isEmpty(communityBean.getPoliceStationsCode())) {

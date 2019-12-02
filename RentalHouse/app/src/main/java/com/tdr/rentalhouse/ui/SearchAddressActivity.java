@@ -128,8 +128,8 @@ public class SearchAddressActivity extends BaseActivity implements AMapLocationL
 
                 LatLonPoint point = addressList.get(position).getPoint();
                 locationBean = new LocationBean();
-                locationBean.setLat(point.getLatitude());
-                locationBean.setLng(point.getLongitude());
+                locationBean.setLat(String.valueOf(point.getLatitude()));
+                locationBean.setLng(String.valueOf(point.getLongitude()));
                 locationBean.setName(addressList.get(position).getName());
 
 
@@ -307,8 +307,8 @@ public class SearchAddressActivity extends BaseActivity implements AMapLocationL
 
             LatLonPoint point = addressList.get(0).getPoint();
             locationBean = new LocationBean();
-            locationBean.setLat(point.getLatitude());
-            locationBean.setLng(point.getLongitude());
+            locationBean.setLat(String.valueOf(point.getLatitude()));
+            locationBean.setLng(String.valueOf(point.getLongitude()));
             locationBean.setName(addressList.get(0).getName());
             adapter.notifyDataSetChanged();
 
@@ -406,8 +406,8 @@ public class SearchAddressActivity extends BaseActivity implements AMapLocationL
         rvAddress.setVisibility(View.VISIBLE);
 
         locationBean = new LocationBean();
-        locationBean.setLat(latLng.latitude);
-        locationBean.setLng(latLng.longitude);
+        locationBean.setLat(String.valueOf(latLng.latitude));
+        locationBean.setLng(String.valueOf(latLng.longitude));
         locationBean.setName(latLng.longitude + "," + latLng.latitude);
 
 
