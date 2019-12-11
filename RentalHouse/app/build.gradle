@@ -108,6 +108,7 @@ dependencies {
 //    implementation project(path: ':address')
     implementation project(path: ':bluetooth')
     //zbar扫描
-    implementation 'cn.bertsir.zbarLibary:zbarlibary:1.4.1'
+//    implementation 'cn.bertsir.zbarLibary:zbarlibary:1.4.1'
+    implementation project(path: ':zbar')
 
 }
