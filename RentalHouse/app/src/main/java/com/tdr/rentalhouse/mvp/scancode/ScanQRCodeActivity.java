@@ -90,7 +90,7 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Symbol.is_only_scan_center = true;
-        Symbol.scanType = QrConfig.TYPE_QRCODE;
+        Symbol.scanType = QrConfig.TYPE_CUSTOM;
         Symbol.doubleEngine = true;
         setContentView(R.layout.activity_scan_qrcode);
         ButterKnife.bind(this);
