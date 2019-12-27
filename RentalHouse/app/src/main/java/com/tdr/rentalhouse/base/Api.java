@@ -36,8 +36,8 @@ import retrofit2.http.QueryMap;
  */
 public interface Api {
     //开发
-    String HOST = "http://10.130.0.207:1012/";
-    String IMG_HOST = "http://10.130.0.207:1012";
+//    String HOST = "http://10.130.0.207:1012/";
+//    String IMG_HOST = "http://10.130.0.207:1012";
 
     //正式
 //    String HOST = "http://183.129.130.119:17100/";
@@ -48,8 +48,8 @@ public interface Api {
 //    String IMG_HOST = "http://bzappapi.iotone.cn";
 
     //出租屋正式
-//    String HOST = "http://183.129.130.119:17090/";
-//    String IMG_HOST = "http://183.129.130.119:17090";
+    String HOST = "http://183.129.130.119:17090/";
+    String IMG_HOST = "http://183.129.130.119:17090";
 
     //演示
 //    String HOST = "http://ys-czwappapi.iotone.cn:22800/";
