@@ -48,16 +48,7 @@ public class LoadingUtils {
      * 显示等待框
      */
     public void showLoading(Context context, String message) {
-        if (((Activity) context).isFinishing()) {
-            return;
-        }
-        if (mLoadBuilder != null) {
-            mLoadBuilder = null;
-        }
-
-        if (mDialog != null) {
-            mDialog = null;
-        }
+        dismiss();
 
         mLoadBuilder = new LoadingDialog.Builder(context)
                 .setMessage(message)
