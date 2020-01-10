@@ -2,6 +2,8 @@ package com.tdr.rentalhouse.mvp.scancode;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +11,7 @@ import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -39,6 +42,7 @@ import com.tdr.rentalhouse.utils.LoadingUtils;
 import com.tdr.rentalhouse.utils.LogUtils;
 import com.tdr.rentalhouse.utils.ObjectUtils;
 import com.tdr.rentalhouse.utils.PopupWindowUtils;
+import com.tdr.rentalhouse.utils.StatusBarUtils;
 import com.tdr.rentalhouse.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,6 +53,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bertsir.zbar.CameraConfiguration;
+import cn.bertsir.zbar.CameraManager;
 import cn.bertsir.zbar.CameraPreview;
 import cn.bertsir.zbar.Qr.Symbol;
 import cn.bertsir.zbar.QrConfig;
@@ -129,6 +135,20 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
         if (cpScan != null) {
             cpScan.setScanCallback(this);
             cpScan.start();
+
+            //CameraPreview设置宽高
+            CameraManager cameraManager = cpScan.getmCameraManager();
+            Camera camera = cameraManager.getmCamera();
+            Camera.Parameters parameters = camera.getParameters();
+            Point screenResolutionForCamera = new Point();
+            screenResolutionForCamera.x =  StatusBarUtils.getInstance().getScreenHeight(this);
+            screenResolutionForCamera.y =  StatusBarUtils.getInstance().getScreenWidth(this);
+            Point bestPreviewSizeValue = CameraConfiguration.findBestPreviewSizeValue(parameters, screenResolutionForCamera);
+            ViewGroup.LayoutParams layoutParams = cpScan.getLayoutParams();
+            layoutParams.width = StatusBarUtils.getInstance().getScreenWidth(this);
+            layoutParams.height =StatusBarUtils.getInstance().getScreenWidth(this) * bestPreviewSizeValue.x / bestPreviewSizeValue.y;
+            LogUtils.log("sss"+layoutParams.width+","+layoutParams.height);
+            cpScan.setLayoutParams(layoutParams);
         }
     }
 
