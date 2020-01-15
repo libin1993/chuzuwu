@@ -81,7 +81,7 @@
                     android:textColor="@color/gray_22"
                     android:textSize="14sp"
                     android:background="@null"
-                    android:hint="请输入设备编号(数字或大写字母)"
+                    android:hint="请输入设备编号"
                     android:textColorHint="@color/gray_88"
                     android:layout_marginLeft="20dp"
                     android:singleLine="true"

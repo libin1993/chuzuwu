@@ -652,7 +652,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                     btnNext.setEnabled(true);
 
                     String equipNo = etEquipmentCode.getText().toString().trim();
-                    type = equipNo.substring(0, 4);
+                    type = equipNo.substring(0, 4).toUpperCase();
                     code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14 ? equipNo.substring(4, 14) : equipNo.substring(4)), 8);
                     LogUtils.log(type + "," + code);
                 }

@@ -4,7 +4,7 @@
     <string name="app_name_release">基础报装系统</string>
     <string name="phone_number">0123456789</string>
     <string name="id_card">0123456789Xx</string>
-    <string name="equip_number">0123456789ABCDEF</string>
+    <string name="equip_number">0123456789ABCDEFabcdef</string>
     <string name="password">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="number">0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 </resources>
