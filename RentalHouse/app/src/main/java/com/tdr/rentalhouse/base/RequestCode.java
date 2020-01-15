@@ -33,7 +33,7 @@ public class RequestCode {
         public static final int HOUSE_INFO = 0x1014;   //房屋信息
         public static final int INSTALL_EQUIPMENT = 0x1015;   //安装设备
         public static final int DELETE_HOUSE = 0x1016;   //删除楼层房间
-        public static final int IS_EQUIPMENT_BIND = 0x1018;   //设备是否已绑定
+        public static final int IS_EQUIPMENT_BIND = 0x1018;   //设备号校验
         public static final int FIND_NEARBY_ADDRESS = 0x1009;   //查找附近地址
         public static final int CITY_LIST = 0x100A;   //市列表
         public static final int AREA_LIST = 0x100B;   //区列表

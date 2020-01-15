@@ -7,6 +7,7 @@ import com.tdr.rentalhouse.bean.BusinessTypeBean;
 import com.tdr.rentalhouse.bean.CityBean;
 import com.tdr.rentalhouse.bean.CommunityBean;
 import com.tdr.rentalhouse.bean.CommunityDetailBean;
+import com.tdr.rentalhouse.bean.EquipmentBean;
 import com.tdr.rentalhouse.bean.FindAddressBean;
 import com.tdr.rentalhouse.bean.FloorBean;
 import com.tdr.rentalhouse.bean.HouseBean;
@@ -36,12 +37,12 @@ import retrofit2.http.QueryMap;
  */
 public interface Api {
     //开发
-//    String HOST = "http://10.130.0.207:1012/";
-//    String IMG_HOST = "http://10.130.0.207:1012";
+    String HOST = "http://10.130.0.207:1012/";
+    String IMG_HOST = "http://10.130.0.207:1012";
 
     //正式
-    String HOST = "http://bzappapi.iotone.cn/";
-    String IMG_HOST = "http://bzappapi.iotone.cn";
+//    String HOST = "http://bzappapi.iotone.cn/";
+//    String IMG_HOST = "http://bzappapi.iotone.cn";
 
     //出租屋
 //    String HOST = "http://183.129.130.119:17090/";
@@ -157,7 +158,7 @@ public interface Api {
                                    @Field("QRContent") String qrCode, @Field("Longitude") String lng,
                                    @Field("Latitude") String lat, @Field("list") String list);
 
-    //扫描二维码
+    //扫描房屋二维码
     @GET("api/QRCode")
     Observable<ScanCodeBean> scanCode(@Query("code") String code, @Query("AreaCode") String areaCode);
 
@@ -176,10 +177,11 @@ public interface Api {
     Observable<BaseBean> installEquipment(@FieldMap Map<String, Object> map);
 
 
-    //设备是否已绑定
+    //校验设备二维码
     @GET("api/ScanDeviceQR")
-    Observable<BaseBean> isEquipmentBind(@Query("EquipNo") Long equipmentNumber, @Query("EquipType") Long equipmentType,
-                                         @Query("BussinessType") int businessTye);
+    Observable<EquipmentBean> isEquipmentBind(@Query("EquipNo") Long equipmentNumber, @Query("EquipType") Long equipmentType,
+                                              @Query("BussinessType") int businessTye, @Query("FloorId") int floorId,
+                                              @Query("RoomId") int roomId);
 
 
     //市列表

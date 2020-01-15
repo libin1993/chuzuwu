@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">基础报装系统</string>
+    <string name="app_name_debug">基础报装系统(开发版)</string>
+    <string name="app_name_test">基础报装系统(测试版)</string>
+    <string name="app_name_release">基础报装系统</string>
     <string name="phone_number">0123456789</string>
     <string name="id_card">0123456789Xx</string>
     <string name="equip_number">0123456789ABCDEF</string>

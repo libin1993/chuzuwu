@@ -57,8 +57,6 @@ public class CommunityDetailActivity extends BaseMvpActivity<CommunityDetailCont
     TextView tvBuildingType;
     @BindView(R.id.tv_plate_no)
     TextView tvPlateNo;
-    @BindView(R.id.tv_police_station_name)
-    TextView tvPoliceStationName;
     @BindView(R.id.rl_community)
     RelativeLayout rlCommunity;
     @BindView(R.id.view_community)
@@ -198,7 +196,6 @@ public class CommunityDetailActivity extends BaseMvpActivity<CommunityDetailCont
         }
 
         tvPlateNo.setText(communityBean.getRDNumber());
-        tvPoliceStationName.setText(communityBean.getPoliceStationsName());
     }
 
     @Override

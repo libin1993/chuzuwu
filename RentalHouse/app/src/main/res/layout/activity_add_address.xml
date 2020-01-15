@@ -231,42 +231,6 @@
 
             </LinearLayout>
 
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:background="@color/gray_ee"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="107dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:text="辖区派出所"
-                    android:textColor="@color/gray_55"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/tv_police_station"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:maxLength="20"
-                    android:singleLine="true"
-                    android:textColor="@color/gray_22"
-                    android:textSize="14sp"/>
-
-            </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="9dp"

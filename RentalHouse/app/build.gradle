@@ -3,26 +3,6 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 28
-    defaultConfig {
-        applicationId "com.tdr.rentalhouse"
-        minSdkVersion 18
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        multiDexEnabled true
-
-        ndk {
-            // 设置支持的SO库架构
-            abiFilters "armeabi-v7a", "x86"
-        }
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
 
     signingConfigs {
         release {
@@ -38,6 +18,67 @@ android {
             keyAlias "key0"
             keyPassword "tdr123456"
         }
+
+    }
+
+
+    defaultConfig {
+        applicationId "com.tdr.rentalhouse"
+        minSdkVersion 18
+        targetSdkVersion 28
+        versionCode 2
+        versionName "2.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        flavorDimensions "default"
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters "armeabi-v7a", "x86"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors{
+
+        app_release{
+            manifestPlaceholders = [app_name: "@string/app_name_release"]
+        }
+
+        app_debug{
+            manifestPlaceholders = [app_name: "@string/app_name_debug"]
+        }
+
+        app_test{
+            manifestPlaceholders = [app_name: "@string/app_name_test"]
+        }
+    }
+
+
+
+    //设置apk打包名称，注意引用
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                output ->
+                    def outputFile = output.outputFile
+
+                    if (outputFile.name.contains("app_release")){
+                        outputFileName = new File("../", "基础报装系统-${defaultConfig.versionName}.apk")
+                    }
+                    if (outputFile.name.contains("app_debug")){
+                        outputFileName = new File("../", "基础报装系统(开发版)-${defaultConfig.versionName}.apk")
+                    }
+
+                    if (outputFile.name.contains("app_test")){
+                        outputFileName = new File("../", "基础报装系统(测试版)-${defaultConfig.versionName}.apk")
+                    }
+            }
     }
 
     packagingOptions {

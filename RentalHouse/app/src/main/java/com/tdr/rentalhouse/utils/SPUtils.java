@@ -18,8 +18,6 @@ public class SPUtils {
     public static final String TOKEN = "token"; //token
     public static final String ACCOUNT_ID = "account_id"; //id
     public static final String USERNAME = "username"; //登录名称
-    public static final String POLICE_STATION_CODE = "police_station_code"; //派出所
-    public static final String POLICE_STATION_NAME = "police_station_name"; //派出所
     public static final String COMMUNITY_NAME = "community_name"; //辖区
 
 
@@ -143,13 +141,6 @@ public class SPUtils {
         return (String) get(FILE_USER, USERNAME, "");
     }
 
-    public String getPoliceStationName() {
-        return (String) get(FILE_USER, POLICE_STATION_NAME, "");
-    }
-
-    public String getPoliceStationCode() {
-        return (String) get(FILE_USER, POLICE_STATION_CODE, "");
-    }
 
     public String getCommunityName() {
         return (String) get(FILE_USER, COMMUNITY_NAME, "");

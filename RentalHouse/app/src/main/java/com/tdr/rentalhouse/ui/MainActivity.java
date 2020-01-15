@@ -10,13 +10,17 @@ import android.support.v4.app.Fragment;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
+import com.inuker.bluetooth.library.Constants;
 import com.tdr.rentalhouse.base.RequestCode;
 import com.tdr.rentalhouse.fragment.HomepageFragment;
+import com.tdr.rentalhouse.mvp.checkequipment.CheckEquipmentActivity;
 import com.tdr.rentalhouse.mvp.mine.MineFragment;
 import com.tdr.rentalhouse.R;
 import com.tdr.rentalhouse.fragment.WorkWarnFragment;
 import com.tdr.rentalhouse.base.BaseActivity;
+import com.tdr.rentalhouse.mvp.roomlist.RoomInfoActivity;
 import com.tdr.rentalhouse.mvp.scancode.ScanQRCodeActivity;
+import com.tdr.rentalhouse.utils.BluetoothUtils;
 import com.tdr.rentalhouse.utils.FragmentTabUtils;
 import com.tdr.rentalhouse.utils.PermissionUtils;
 import com.tdr.rentalhouse.utils.ToastUtils;
@@ -99,5 +103,16 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (BluetoothUtils.getInstance().getBluetoothBean() !=null &&
+                BluetoothUtils.getInstance().getClient().getConnectStatus(BluetoothUtils
+                        .getInstance().getBluetoothBean().getAddress()) == Constants.STATUS_DEVICE_CONNECTED){
+            BluetoothUtils.getInstance().getClient().disconnect(BluetoothUtils.getInstance().getBluetoothBean().getAddress());
+        }
+
+        super.onDestroy();
     }
 }

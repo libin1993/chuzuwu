@@ -54,20 +54,10 @@
                 android:textSize="17sp"/>
 
             <TextView
-                android:id="@+id/tv_police_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:includeFontPadding="false"
-                android:text="派出所："
-                android:textColor="@color/blue_dce"
-                android:textSize="14sp"/>
-
-            <TextView
                 android:id="@+id/tv_manage_area"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="8dp"
                 android:includeFontPadding="false"
                 android:text="管辖社区："
                 android:textColor="@color/blue_dce"

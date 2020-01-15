@@ -47,7 +47,15 @@ public class RoomListBean extends BaseBean<RoomListBean.DataBean> {
             private String EquipmentNumber;
             private Integer EquipmentState;
             private Integer DeviceStatus;
+            private Integer RoomId;
 
+            public Integer getRoomId() {
+                return RoomId;
+            }
+
+            public void setRoomId(Integer roomId) {
+                RoomId = roomId;
+            }
 
             public Integer getDeviceStatus() {
                 return DeviceStatus;
@@ -100,7 +108,7 @@ public class RoomListBean extends BaseBean<RoomListBean.DataBean> {
              * ManageId : 3
              */
 
-            private int RoomId;
+            private Integer RoomId;
             private String RoomNumber;
             private Integer EquipRoomBindId;
             private String EquipmentNumber;
@@ -117,11 +125,11 @@ public class RoomListBean extends BaseBean<RoomListBean.DataBean> {
                 DeviceStatus = deviceStatus;
             }
 
-            public int getRoomId() {
+            public Integer getRoomId() {
                 return RoomId;
             }
 
-            public void setRoomId(int RoomId) {
+            public void setRoomId(Integer RoomId) {
                 this.RoomId = RoomId;
             }
 

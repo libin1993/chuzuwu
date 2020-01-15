@@ -48,18 +48,8 @@ public class CommunityDetailBean extends BaseBean<CommunityDetailBean.DataBean> 
         private String OutlookThree;
         private String CreateTime;
         private Object CreateId;
-        private String PoliceStationsCode;
-        private String PoliceStationsName;
-
         private int Id;
 
-        public String getPoliceStationsName() {
-            return PoliceStationsName;
-        }
-
-        public void setPoliceStationsName(String policeStationsName) {
-            PoliceStationsName = policeStationsName;
-        }
 
         private String PositionName;
 
@@ -226,14 +216,6 @@ public class CommunityDetailBean extends BaseBean<CommunityDetailBean.DataBean> 
 
         public void setCreateId(Object CreateId) {
             this.CreateId = CreateId;
-        }
-
-        public String getPoliceStationsCode() {
-            return PoliceStationsCode;
-        }
-
-        public void setPoliceStationsCode(String PoliceStationsCode) {
-            this.PoliceStationsCode = PoliceStationsCode;
         }
 
 

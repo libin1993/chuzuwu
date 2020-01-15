@@ -94,8 +94,6 @@ public class SplashActivity extends BaseMvpActivity<SplashContact.Presenter> imp
     public void onSuccess(int what, Object object) {
         UserBean.DataBean userInfo = (UserBean.DataBean) object;
         SPUtils.getInstance().put(SPUtils.FILE_USER, SPUtils.USERNAME, userInfo.getUserName());
-        SPUtils.getInstance().put(SPUtils.FILE_USER, SPUtils.POLICE_STATION_CODE, userInfo.getOfficeCode());
-        SPUtils.getInstance().put(SPUtils.FILE_USER, SPUtils.POLICE_STATION_NAME, userInfo.getOfficeName());
         SPUtils.getInstance().put(SPUtils.FILE_USER, SPUtils.COMMUNITY_NAME, userInfo.getAreaName());
         startActivity(new Intent(this, MainActivity.class));
         finish();

@@ -136,8 +136,6 @@ public class LoginActivity extends BaseMvpActivity<LoginContact.Presenter> imple
         SPUtils.getInstance().put(SPUtils.FILE_USER, SPUtils.TOKEN, dataBean.getToken());
         SPUtils.getInstance().put(SPUtils.FILE_USER, SPUtils.ACCOUNT_ID, dataBean.getAccountId());
         SPUtils.getInstance().put(SPUtils.FILE_USER, SPUtils.USERNAME, dataBean.getUserName());
-        SPUtils.getInstance().put(SPUtils.FILE_USER, SPUtils.POLICE_STATION_CODE, dataBean.getPoliceStationCode());
-        SPUtils.getInstance().put(SPUtils.FILE_USER, SPUtils.POLICE_STATION_NAME, dataBean.getPoliceStationName());
         SPUtils.getInstance().put(SPUtils.FILE_USER, SPUtils.COMMUNITY_NAME, dataBean.getGoverCommunityName());
         startActivity(new Intent(this, MainActivity.class));
         finish();

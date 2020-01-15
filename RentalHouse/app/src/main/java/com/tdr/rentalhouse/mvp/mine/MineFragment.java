@@ -36,8 +36,6 @@ public class MineFragment extends BaseMvpFragment<MineContact.Presenter> impleme
     SimpleDraweeView ivAvatar;
     @BindView(R.id.tv_username)
     TextView tvUsername;
-    @BindView(R.id.tv_police_name)
-    TextView tvPoliceName;
     @BindView(R.id.tv_manage_area)
     TextView tvManageArea;
     @BindView(R.id.rl_update_pwd)
@@ -59,7 +57,6 @@ public class MineFragment extends BaseMvpFragment<MineContact.Presenter> impleme
 
     private void initView() {
         tvUsername.setText(SPUtils.getInstance().getUsername());
-        tvPoliceName.setText("派出所：" + SPUtils.getInstance().getPoliceStationName());
         tvManageArea.setText("管辖社区：" + SPUtils.getInstance().getCommunityName());
     }
 

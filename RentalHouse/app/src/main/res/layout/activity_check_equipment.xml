@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/gray_f8">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:background="@color/gray_f8">
 
     <include
         layout="@layout/layout_title"/>
@@ -23,7 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tv_address_room"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,7 +81,7 @@
                     android:textColor="@color/gray_22"
                     android:textSize="14sp"
                     android:background="@null"
-                    android:hint="请输入设备编号"
+                    android:hint="请输入设备编号(数字或大写字母)"
                     android:textColorHint="@color/gray_88"
                     android:layout_marginLeft="20dp"
                     android:singleLine="true"
@@ -169,14 +171,92 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_install"
+    <LinearLayout
+        android:id="@+id/ll_install"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tv_address_room"
         android:background="@android:color/white"
+        android:orientation="vertical"
         android:visibility="gone">
-    </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:id="@+id/ll_skip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:text="设备安装高度(米)"
+                    android:textColor="@color/gray_55"
+                    android:textSize="14sp"/>
+
+
+                <TextView
+                    android:id="@+id/tv_equipment_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:textColor="@color/gray_22"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/gray_f8"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="14dp"
+            android:text="安装图片"
+            android:textColor="@color/gray_22"
+            android:textSize="16dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="30dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                fresco:placeholderImage="@mipmap/img_add_picture"
+                fresco:placeholderImageScaleType="centerCrop"
+                fresco:roundedCornerRadius="5dp"/>
+
+            <ImageView
+                android:id="@+id/iv_equipment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:layout_centerInParent="true"/>
+
+            <ImageView
+                android:id="@+id/iv_delete_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/ic_delete_picture"/>
+
+        </RelativeLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>

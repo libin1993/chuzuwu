@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.inuker.bluetooth.library.Constants;
+import com.tdr.rentalhouse.mvp.checkequipment.CheckEquipmentActivity;
 import com.tdr.rentalhouse.ui.ConnectBluetoothActivity;
 import com.tdr.rentalhouse.R;
 import com.tdr.rentalhouse.base.BaseMvpActivity;
@@ -19,6 +21,7 @@ import com.tdr.rentalhouse.base.BaseView;
 import com.tdr.rentalhouse.base.RequestCode;
 import com.tdr.rentalhouse.bean.HouseInfoBean;
 import com.tdr.rentalhouse.bean.RoomListBean;
+import com.tdr.rentalhouse.utils.BluetoothUtils;
 import com.tdr.rentalhouse.utils.FastClickUtils;
 import com.tdr.rentalhouse.utils.FormatUtils;
 import com.tdr.rentalhouse.utils.LoadingUtils;
@@ -146,11 +149,23 @@ public class RoomInfoActivity extends BaseMvpActivity<RoomInfoContact.Presenter>
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (FastClickUtils.isSingleClick()) {
-                    Intent intent = new Intent(RoomInfoActivity.this, ConnectBluetoothActivity.class);
+
+                    Intent intent = new Intent();
+                    if (BluetoothUtils.getInstance().getBluetoothBean() !=null &&
+                            BluetoothUtils.getInstance().getClient().getConnectStatus(BluetoothUtils
+                                    .getInstance().getBluetoothBean().getAddress()) == Constants.STATUS_DEVICE_CONNECTED){
+                        intent.setClass(RoomInfoActivity.this, CheckEquipmentActivity.class);
+                    }else {
+                        intent.setClass(RoomInfoActivity.this, ConnectBluetoothActivity.class);
+                    }
+
                     RoomListBean.DataBean.RoomEntityBean roomBean = roomList.get(position);
                     houseInfoBean.setRoomName(roomBean.getRoomNumber());
                     houseInfoBean.setManageId(roomBean.getManageId());
                     houseInfoBean.setBusinessType(dataBean.getBussinessType());
+                    if (roomBean.getRoomId() !=null){
+                        houseInfoBean.setRoomId(roomBean.getRoomId());
+                    }
                     if (roomBean.getEquipRoomBindId() != null) {
                         houseInfoBean.setEquipRoomBindId(roomBean.getEquipRoomBindId());
                     }
@@ -179,6 +194,7 @@ public class RoomInfoActivity extends BaseMvpActivity<RoomInfoContact.Presenter>
             roomEntityBean.setEquipmentNumber(dataBean.getFloorInfos().getEquipmentNumber());
             roomEntityBean.setEquipRoomBindId(dataBean.getFloorInfos().getEquipRoomBindId());
             roomEntityBean.setDeviceStatus(dataBean.getFloorInfos().getDeviceStatus());
+            roomEntityBean.setRoomId(dataBean.getFloorInfos().getRoomId());
 
             roomList.add(roomEntityBean);
 

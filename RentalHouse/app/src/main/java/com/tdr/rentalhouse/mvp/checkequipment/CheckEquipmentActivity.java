@@ -5,24 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.inuker.bluetooth.library.Constants;
 import com.inuker.bluetooth.library.connect.listener.BleConnectStatusListener;
 import com.inuker.bluetooth.library.connect.response.BleNotifyResponse;
@@ -38,13 +31,13 @@ import com.tdr.rentalhouse.base.BaseMvpActivity;
 import com.tdr.rentalhouse.base.BaseView;
 import com.tdr.rentalhouse.base.RequestCode;
 import com.tdr.rentalhouse.bean.ActionBean;
-import com.tdr.rentalhouse.bean.BluetoothBean;
+import com.tdr.rentalhouse.bean.EquipmentBean;
 import com.tdr.rentalhouse.bean.HouseInfoBean;
 import com.tdr.rentalhouse.bean.ScanResult;
 import com.tdr.rentalhouse.mvp.scancode.ScanQRCodeActivity;
 import com.tdr.rentalhouse.utils.Base64Utils;
 import com.tdr.rentalhouse.utils.BigDecimalUtils;
-import com.tdr.rentalhouse.utils.ClientManager;
+import com.tdr.rentalhouse.utils.BluetoothUtils;
 import com.tdr.rentalhouse.utils.DateUtils;
 import com.tdr.rentalhouse.utils.FormatUtils;
 import com.tdr.rentalhouse.utils.LoadingUtils;
@@ -96,8 +89,6 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
     Button btnCheckEquipment;
     @BindView(R.id.ll_test)
     LinearLayout llTest;
-    @BindView(R.id.rv_install)
-    RecyclerView rvInstall;
     @BindView(R.id.tv_title_more)
     TextView tvTitleMore;
     @BindView(R.id.btn_next)
@@ -106,13 +97,18 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
     EditText etEquipmentCode;
     @BindView(R.id.iv_scan_code)
     ImageView ivScanCode;
-    private ImageView ivAddPicture;
+    @BindView(R.id.tv_equipment_height)
+    TextView tvEquipmentHeight;
+    @BindView(R.id.iv_equipment)
+    ImageView ivAddPicture;
+    @BindView(R.id.iv_delete_picture)
+    ImageView ivDeletePicture;
+    @BindView(R.id.ll_install)
+    LinearLayout llInstall;
+    @BindView(R.id.ll_skip)
+    LinearLayout llSkip;
 
-    private BluetoothBean bluetoothBean;
-    private List<ActionBean> dataList = new ArrayList<>();
-    private BaseQuickAdapter<ActionBean, BaseViewHolder> adapter;
     private int equipmentHeight;
-    private TextView tvHeight;
     private HouseInfoBean houseInfoBean;
     private List<LocalMedia> pictureList = new ArrayList<>();
 
@@ -121,7 +117,19 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
     //设备类型
     private String type = null;
     private List<String> imgList = new ArrayList<>();
-    private View header;
+
+    //报装设备电量过低
+    private boolean equipmentQuantity = false;
+    //房间唯一标志
+    private String roomUniqueCode;
+    //楼栋唯一标志
+    private String buildingUniqueCode;
+    //RF通讯成功率
+    private int RFSignal;
+    //NB信号
+    private int NBSignal;
+    //AI烟感电量
+    private double AIQuantity;
 
     @Override
     protected CheckEquipmentContact.Presenter initPresenter() {
@@ -139,7 +147,6 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
     }
 
     private void getData() {
-        bluetoothBean = (BluetoothBean) getIntent().getSerializableExtra("bluetooth");
         houseInfoBean = (HouseInfoBean) getIntent().getSerializableExtra("house");
     }
 
@@ -181,58 +188,15 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                     String deviceNo = s.toString().trim();
                     mPresenter.isEquipmentBind(RequestCode.NetCode.IS_EQUIPMENT_BIND,
                             Long.parseLong(deviceNo.substring(4)),
-                            Long.parseLong(deviceNo.substring(0, 4), 16), houseInfoBean.getBusinessType());
+                            Long.parseLong(deviceNo.substring(0, 4), 16), houseInfoBean.getBusinessType(),
+                            houseInfoBean.getHouseId(), houseInfoBean.getRoomId());
 
                 }
             }
         });
-
-        rvInstall.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new BaseQuickAdapter<ActionBean, BaseViewHolder>(R.layout.layout_equipment_item, dataList) {
-            @Override
-            protected void convert(BaseViewHolder helper, ActionBean item) {
-                int adapterPosition = helper.getAdapterPosition();
-                if (adapterPosition % 2 != 0) {
-                    helper.setBackgroundRes(R.id.ll_equipment_item, R.color.white);
-                } else {
-                    helper.setBackgroundRes(R.id.ll_equipment_item, R.drawable.gradient_bg);
-                }
-                helper.setText(R.id.tv_enter_time, item.getTime());
-                helper.setText(R.id.tv_enter_status, item.getOrientation() == 1 ? "进门" : "出门");
-                helper.setText(R.id.tv_human_height, BigDecimalUtils.getInstance().mul(item.getHeight(), 0.01, 2) + "米");
-            }
-
-        };
-        rvInstall.setAdapter(adapter);
-
-        header = LayoutInflater.from(this).inflate(R.layout.layout_equipment_header, null);
-        tvHeight = header.findViewById(R.id.tv_equipment_height);
-
-        View footer = LayoutInflater.from(this).inflate(R.layout.layout_equipemnt_footer, null);
-        ivAddPicture = footer.findViewById(R.id.iv_equipment);
-        ImageView ivDeletePicture = footer.findViewById(R.id.iv_delete_picture);
-        ivAddPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectPicture();
-            }
-        });
-
-        ivDeletePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pictureList.clear();
-                ivAddPicture.setImageResource(0);
-                adapter.notifyDataSetChanged();
-            }
-        });
-        adapter.addHeaderView(header);
-        adapter.addFooterView(footer);
-        rvInstall.setAdapter(adapter);
-
 
         notifyBluetooth();
-        ClientManager.getClient(CheckEquipmentActivity.this).registerConnectStatusListener(bluetoothBean.getAddress(), new BleConnectStatusListener() {
+        BluetoothUtils.getInstance().getClient().registerConnectStatusListener(BluetoothUtils.getInstance().getBluetoothBean().getAddress(), new BleConnectStatusListener() {
             @Override
             public void onConnectStatusChanged(String mac, int status) {
                 if (status == Constants.STATUS_DISCONNECTED) {
@@ -241,11 +205,11 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
             }
         });
 
-
     }
 
 
-    @OnClick({R.id.iv_title_back, R.id.iv_scan_code, R.id.btn_check_equipment, R.id.tv_title_more, R.id.btn_next})
+    @OnClick({R.id.iv_title_back, R.id.iv_scan_code, R.id.btn_check_equipment, R.id.tv_title_more,
+            R.id.btn_next, R.id.iv_equipment, R.id.iv_delete_picture})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
@@ -255,21 +219,28 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 startActivity(new Intent(CheckEquipmentActivity.this, ScanQRCodeActivity.class));
                 break;
             case R.id.btn_check_equipment:
-                writeToBluetooth("03", "0");
-                rvInstall.setVisibility(View.VISIBLE);
+                writeToBluetooth("02", type + code);
+                llInstall.setVisibility(View.VISIBLE);
                 llTest.setVisibility(View.GONE);
                 break;
             case R.id.tv_title_more:
                 uploadFile();
                 break;
             case R.id.btn_next:
-                rvInstall.setVisibility(View.VISIBLE);
+                llInstall.setVisibility(View.VISIBLE);
                 llTest.setVisibility(View.GONE);
                 tvTitleMore.setVisibility(View.VISIBLE);
                 equipmentHeight = 1000;
-                header.setVisibility(View.GONE);
-                adapter.notifyDataSetChanged();
+                llSkip.setVisibility(View.GONE);
                 break;
+            case R.id.iv_equipment:
+                selectPicture();
+                break;
+            case R.id.iv_delete_picture:
+                pictureList.clear();
+                ivAddPicture.setImageResource(0);
+                break;
+
         }
     }
 
@@ -334,7 +305,10 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
         map.put("InstallationHeight", equipmentHeight);
         map.put("PicUrl", imgList.get(0));
         map.put("ManageId", houseInfoBean.getManageId());
-        map.put("BussinessType",houseInfoBean.getBusinessType());
+        map.put("BussinessType", houseInfoBean.getBusinessType());
+        map.put("RF", RFSignal);
+        map.put("NB", NBSignal);
+        map.put("Voltage", AIQuantity);
 
 
         mPresenter.installEquipment(RequestCode.NetCode.INSTALL_EQUIPMENT, map);
@@ -360,10 +334,10 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 ToastUtils.getInstance().showToast("当前设备不是AI烟感");
             }
         } else {
-            if (FormatUtils.getInstance().isEquipNo(result)){
-                etEquipmentCode.setText(result.length()<14 ? result : result.substring(0,14));
+            if (FormatUtils.getInstance().isEquipNo(result)) {
+                etEquipmentCode.setText(result.length() < 14 ? result : result.substring(0, 14));
                 etEquipmentCode.setSelection(etEquipmentCode.getText().toString().length());
-            }else {
+            } else {
                 ToastUtils.getInstance().showToast("当前设备不是AI烟感");
             }
         }
@@ -373,12 +347,26 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
     /**
      * 写入
      */
-    private void writeToBluetooth(final String command, String content) {
-        final String data = FormatUtils.getInstance().getWriteData("AA", command, content);
+    private void writeToBluetooth(String data) {
 
         LogUtils.log("write：" + data);
-        ClientManager.getClient(this).write(bluetoothBean.getAddress(), bluetoothBean.getServiceUUID(),
-                bluetoothBean.getWriteCUUID(), FormatUtils.getInstance().hexStringToBytes(data), bleWriteResponse);
+        BluetoothUtils.getInstance().getClient().write(BluetoothUtils.getInstance().getBluetoothBean().getAddress(),
+                BluetoothUtils.getInstance().getBluetoothBean().getServiceUUID(),
+                BluetoothUtils.getInstance().getBluetoothBean().getWriteCUUID(),
+                FormatUtils.getInstance().hexStringToBytes(data), bleWriteResponse);
+    }
+
+    /**
+     * 写入
+     */
+    private void writeToBluetooth(String command, String content) {
+        String data = FormatUtils.getInstance().getWriteData("AA", command, content);
+
+        LogUtils.log("write：" + data);
+        BluetoothUtils.getInstance().getClient().write(BluetoothUtils.getInstance().getBluetoothBean().getAddress(),
+                BluetoothUtils.getInstance().getBluetoothBean().getServiceUUID(),
+                BluetoothUtils.getInstance().getBluetoothBean().getWriteCUUID(),
+                FormatUtils.getInstance().hexStringToBytes(data), bleWriteResponse);
     }
 
     private BleWriteResponse bleWriteResponse = new BleWriteResponse() {
@@ -398,8 +386,9 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
      * 通知
      */
     private void notifyBluetooth() {
-        ClientManager.getClient(this).notify(bluetoothBean.getAddress(), bluetoothBean.getServiceUUID(),
-                bluetoothBean.getNotifyCUUID(), bleNotifyResponse);
+        BluetoothUtils.getInstance().getClient().notify(BluetoothUtils.getInstance().getBluetoothBean().getAddress(),
+                BluetoothUtils.getInstance().getBluetoothBean().getServiceUUID(),
+                BluetoothUtils.getInstance().getBluetoothBean().getNotifyCUUID(), bleNotifyResponse);
     }
 
 
@@ -409,88 +398,179 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
             String data = FormatUtils.getInstance().byteToString(value);
             LogUtils.log("notify:" + data);
 
+//            ToastUtils.getInstance().showToast(data);
+            if (data.contains(type+code+"94")){
+                writeToBluetooth(type+code+"9500000000000000000000000000");
+            }
             if (!TextUtils.isEmpty(data) && data.length() == 40) {
                 switch (data.substring(0, 4)) {
-                    case "AA04":
-                        writeToBluetooth("01", type + code);
+                    //报装工具电量
+                    case "AA01":
+                        double quantity = Integer.parseInt(new BigInteger(data.substring(4, 6), 16).toString(10)) * 0.1;
+                        if (!equipmentQuantity && quantity < 3.7) {
+                            equipmentQuantity = true;
+                            ToastUtils.getInstance().showToast("报装工具电量不足，请及时充电");
+                        }
                         break;
-                    case "AA02":
+                    case "AA03":
+                        writeToBluetooth("04", buildingUniqueCode + roomUniqueCode + "00");
+                        break;
+                    case "AA05":
+                        ToastUtils.getInstance().showToast("请将报装工具安装在设备安装底座上，按下报装工具按键，等待报装工具返回");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                writeToBluetooth(type+code+"9306060000008801020300000000");
+                            }
+                        },12000);
+
+
+                        break;
+                    case "AA06":
+                        String gatewayType = new BigInteger(data.substring(4, 8), 16).toString(10);  //网关设备类型
+                        String gatewayId = new BigInteger(data.substring(8, 16), 16).toString(10); //网关设备ID
+                        equipmentHeight = Integer.parseInt(new BigInteger(data.substring(16, 18), 16).toString(10)) * 20;
+                        RFSignal = Integer.parseInt(new BigInteger(data.substring(18, 20), 16).toString(10)) * 10;
+                        NBSignal = Integer.parseInt(new BigInteger(data.substring(20, 22), 16).toString(10));
+                        AIQuantity = Integer.parseInt(new BigInteger(data.substring(22, 24), 16).toString(10)) * 0.1;
+                        tvEquipmentHeight.setText(BigDecimalUtils.getInstance().mul(equipmentHeight, 0.001, 3) + "米");
+                        LogUtils.log(gatewayType + "," + gatewayId + "," + equipmentHeight + "," + RFSignal + "," + NBSignal + "," + AIQuantity);
+                        if (RFSignal < 50) {
+                            ToastUtils.getInstance().showToast("RF通讯成功率低，请更换设备或更换安装位置");
+                        }
+                        if (NBSignal < 5) {
+                            ToastUtils.getInstance().showToast("NB信号差，请更换设备或更换安装位置");
+                        }
+                        if (AIQuantity < 3.7) {
+                            ToastUtils.getInstance().showToast("AI烟感电量不足，请及时充电");
+                        }
+
                         writeToBluetooth("07", "0");
+
                         break;
                     case "AA08":
-                        switch (data.substring(4, 6)) {
-                            case "02":
-                            case "03":
-                                ToastUtils.getInstance().showToast("AI烟感异常,结束报装");
-                                finish();
-                                break;
-                            case "04":
-                            case "05":
-                                ToastUtils.getInstance().showToast("网络异常,结束报装");
-                                finish();
-                                break;
-                            case "06":
-                            case "07":
-                                ToastUtils.getInstance().showToast("AI烟感、网络异常,结束报装");
-                                finish();
-                                break;
+                        String equipmentTrouble = data.substring(4, 6); //设备故障码
+                        String AITrouble = data.substring(6, 8); //AI烟感故障码
+                        String NBTrouble = data.substring(8, 10); //NB故障码
+
+
+                        if (!"01".equals(equipmentTrouble) &&
+                                !"02".equals(equipmentTrouble) &&
+                                !"03".equals(equipmentTrouble) &&
+                                "00".equals(AITrouble) &&
+                                !"01".equals(NBTrouble)) {
+                            tvTitleMore.setVisibility(View.VISIBLE);
+                        } else {
+                            tvTitleMore.setVisibility(View.GONE);
+                            if ("01".equals(equipmentTrouble) || "02".equals(equipmentTrouble) ||"03".equals(equipmentTrouble)){
+                                String equipmentStr = "报装工具故障，故障原因：";
+                                switch (equipmentTrouble){
+                                    case "01":
+                                        equipmentStr +="姿态异常";
+                                        break;
+                                    case "02":
+                                        equipmentStr +="高度异常";
+                                        break;
+                                    case "03":
+                                        equipmentStr +="姿态异常、高度异常";
+                                        break;
+                                }
+                                LogUtils.log(equipmentStr);
+                                ToastUtils.getInstance().showToast(equipmentStr);
+                            }
+
+
+                            if (!"00".equals(AITrouble)){
+                                StringBuilder sb = new StringBuilder("AI烟感故障，故障原因：");
+                                String s = FormatUtils.getInstance().byteToBit((byte)Integer.parseInt(AITrouble,16));
+                                LogUtils.log(s);
+                                if (s.substring(0,1).equals("1")){
+                                    sb.append("超声波故障、");
+                                }
+                                if (s.substring(1,2).equals("1")){
+                                    sb.append("热释电故障、");
+                                }
+                                if (s.substring(2,3).equals("1")){
+                                    sb.append("烟感故障、");
+                                }
+                                if (s.substring(3,4).equals("1")){
+                                    sb.append("加速度故障、");
+                                }
+                                if (s.substring(4,5).equals("1")){
+                                    sb.append("NTC故障、");
+                                }
+                                if (s.substring(5,6).equals("1")){
+                                    sb.append("无线故障、");
+                                }
+                                if (s.substring(6,7).equals("1")){
+                                    sb.append("FLASH故障、");
+                                }
+                                if (s.substring(7,8).equals("1")){
+                                    sb.append("时间故障、");
+                                }
+                                LogUtils.log(sb.toString());
+                                ToastUtils.getInstance().showToast(sb.substring(0,sb.length()-1));
+                            }
+
+
+                            if ("01".equals(NBTrouble)){
+                                LogUtils.log("NB故障");
+                                ToastUtils.getInstance().showToast("NB故障");
+                            }
+
                         }
-                        break;
-                    case "AA09":
-                        writeToBluetooth("0A", "0");
+
+                        writeToBluetooth("09", "0");
                         break;
                     case "AA0B":
-                        writeToBluetooth("0C", "0");
-                        int status = Integer.parseInt(new BigInteger(data.substring(16, 18), 16).toString(10));
-                        LogUtils.log("status:" + status);
-                        if (status < 50) {
-                            ToastUtils.getInstance().showToast("AI烟感通信成功率低");
-                        }
+                        hideLoading();
+                        ToastUtils.getInstance().showToast("绑定成功");
+                        finish();
                         break;
-                    case "AA0D":
-                        writeToBluetooth("0E", "0");
-
-                        String str1 = data.substring(4, 6);
-                        String str2 = data.substring(6, 8);
-                        String str3 = new BigInteger(str1, 16).toString(10);
-                        String str4 = new BigInteger(str2, 16).toString(10);
-
-                        int a = Integer.parseInt(str3) * 100;
-                        equipmentHeight = a + Integer.parseInt(str4);
-
-                        tvHeight.setText(BigDecimalUtils.getInstance().mul(equipmentHeight, 0.001, 3) + "米");
-                        LogUtils.log(BigDecimalUtils.getInstance().mul(equipmentHeight, 0.001, 3) + "米");
-                        adapter.notifyDataSetChanged();
-                        break;
-                    case "AA0F":
-                        writeToBluetooth("10", "0");
-                        break;
-                    case "AA11":
-                        writeToBluetooth("12", "0");
-
-                        tvTitleMore.setVisibility(View.VISIBLE);
-
-                        ActionBean actionBean = new ActionBean();
-                        actionBean.setTime(DateUtils.getInstance().getDate(DateUtils.hour_minute_second, System.currentTimeMillis()));
-                        String str5 = data.substring(4, 6);
-                        if (str5.equals("01")) {
-                            actionBean.setOrientation(1);
-                        } else {
-                            actionBean.setOrientation(0);
-                        }
-                        String str6 = data.substring(6, 8);
-                        int height1 = Integer.parseInt(new BigInteger(str6, 16).toString(10));
-                        actionBean.setHeight(height1);
-
-                        if (dataList.size() >= 5) {
-                            dataList.remove(dataList.size() - 1);
-                        }
-
-                        dataList.add(0, actionBean);
-
-                        adapter.notifyDataSetChanged();
-
-                        break;
+//                    case "AA0B":
+//                        writeToBluetooth("0C", "0");
+//                        int status = Integer.parseInt(new BigInteger(data.substring(16, 18), 16).toString(10));
+//                        LogUtils.log("status:" + status);
+//                        if (status < 50) {
+//                            ToastUtils.getInstance().showToast("AI烟感通信成功率低");
+//                        }
+//                        break;
+//                    case "AA0D":
+//                        writeToBluetooth("0E", "0");
+//
+//                        String str1 = data.substring(4, 6);
+//                        String str2 = data.substring(6, 8);
+//                        String str3 = new BigInteger(str1, 16).toString(10);
+//                        String str4 = new BigInteger(str2, 16).toString(10);
+//
+//                        int a = Integer.parseInt(str3) * 100;
+//                        equipmentHeight = a + Integer.parseInt(str4);
+//
+//                        tvEquipmentHeight.setText(BigDecimalUtils.getInstance().mul(equipmentHeight, 0.001, 3) + "米");
+//                        LogUtils.log(BigDecimalUtils.getInstance().mul(equipmentHeight, 0.001, 3) + "米");
+//                        break;
+//                    case "AA0F":
+//                        writeToBluetooth("10", "0");
+//                        break;
+//                    case "AA11":
+//                        writeToBluetooth("12", "0");
+//
+//                        tvTitleMore.setVisibility(View.VISIBLE);
+//
+//                        ActionBean actionBean = new ActionBean();
+//                        actionBean.setTime(DateUtils.getInstance().getDate(DateUtils.hour_minute_second, System.currentTimeMillis()));
+//                        String str5 = data.substring(4, 6);
+//                        if (str5.equals("01")) {
+//                            actionBean.setOrientation(1);
+//                        } else {
+//                            actionBean.setOrientation(0);
+//                        }
+//                        String str6 = data.substring(6, 8);
+//                        int height1 = Integer.parseInt(new BigInteger(str6, 16).toString(10));
+//                        actionBean.setHeight(height1);
+//
+//
+//                        break;
                 }
             }
 
@@ -507,8 +587,9 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
      */
     private void unNotifyBluetooth() {
 
-        ClientManager.getClient(this).unnotify(bluetoothBean.getAddress(), bluetoothBean.getServiceUUID(),
-                bluetoothBean.getNotifyCUUID(), new BleUnnotifyResponse() {
+        BluetoothUtils.getInstance().getClient().unnotify(BluetoothUtils.getInstance().getBluetoothBean().getAddress(),
+                BluetoothUtils.getInstance().getBluetoothBean().getServiceUUID(),
+                BluetoothUtils.getInstance().getBluetoothBean().getNotifyCUUID(), new BleUnnotifyResponse() {
                     @Override
                     public void onResponse(int code) {
 
@@ -533,7 +614,6 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 ivAddPicture.setImageResource(0);
             }
 
-            adapter.notifyDataSetChanged();
         }
     }
 
@@ -541,7 +621,8 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
-        ClientManager.getClient(this).disconnect(bluetoothBean.getAddress());
+        unNotifyBluetooth();
+//        BluetoothUtils.getInstance().getClient().disconnect(BluetoothUtils.getInstance().getBluetoothBean().getAddress());
         super.onDestroy();
     }
 
@@ -556,20 +637,25 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 submitData();
                 break;
             case RequestCode.NetCode.INSTALL_EQUIPMENT:
-                ToastUtils.getInstance().showToast("绑定成功");
+                writeToBluetooth("0A", "0");
                 EventBus.getDefault().post("bind_success");
-                finish();
                 break;
             case RequestCode.NetCode.IS_EQUIPMENT_BIND:
 
-                tvEquipmentType.setText("AI烟感");
-                btnCheckEquipment.setEnabled(true);
-                btnNext.setEnabled(true);
+                EquipmentBean.DataBean dataBean = ((EquipmentBean.DataBean) object);
+                if (dataBean != null) {
+                    buildingUniqueCode = dataBean.getBuildingUnique();
+                    roomUniqueCode = dataBean.getRoomUnique();
 
-                String equipNo = etEquipmentCode.getText().toString().trim();
-                type = equipNo.substring(0, 4);
-                code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14 ? equipNo.substring(4, 14):equipNo.substring(4)),8);
-                LogUtils.log(type+","+code);
+                    tvEquipmentType.setText("AI烟感");
+                    btnCheckEquipment.setEnabled(true);
+                    btnNext.setEnabled(true);
+
+                    String equipNo = etEquipmentCode.getText().toString().trim();
+                    type = equipNo.substring(0, 4);
+                    code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14 ? equipNo.substring(4, 14) : equipNo.substring(4)), 8);
+                    LogUtils.log(type + "," + code);
+                }
                 break;
             case RequestCode.NetCode.DEVICE_TYPE:
 

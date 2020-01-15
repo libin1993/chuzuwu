@@ -76,7 +76,7 @@ public class FormatUtils {
         if (TextUtils.isEmpty(str)) {
             return false;
         }
-        Pattern pattern = Pattern.compile("^042[0123456789ABCDEF]\\d{1,10}$");
+        Pattern pattern = Pattern.compile("^042[0123456789AaBbCcDdEeFf]\\d{1,10}$");
         return pattern.matcher(str).matches();
     }
 
@@ -208,6 +208,19 @@ public class FormatUtils {
             d[i] = (byte) (charToByte(hexChars[pos]) << 4 | charToByte(hexChars[pos + 1]));
         }
         return d;
+
+    }
+
+
+    /**
+     * 把byte转为字符串的bit
+     */
+    public  String byteToBit(byte b) {
+        return ""
+                + (byte) ((b >> 7) & 0x1) + (byte) ((b >> 6) & 0x1)
+                + (byte) ((b >> 5) & 0x1) + (byte) ((b >> 4) & 0x1)
+                + (byte) ((b >> 3) & 0x1) + (byte) ((b >> 2) & 0x1)
+                + (byte) ((b >> 1) & 0x1) + (byte) ((b >> 0) & 0x1);
     }
 
 
@@ -250,25 +263,6 @@ public class FormatUtils {
         }
 
         return hex.toString().toUpperCase();
-    }
-
-
-    /**
-     * 16进制字符串 转换为对应的 byte数组
-     */
-    public byte[] hex2Bytes(String hex) {
-        if (hex == null || hex.length() == 0) {
-            return null;
-        }
-
-        char[] hexChars = hex.toCharArray();
-        byte[] bytes = new byte[hexChars.length / 2];   // 如果 hex 中的字符不是偶数个, 则忽略最后一个
-
-        for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = (byte) Integer.parseInt("" + hexChars[i * 2] + hexChars[i * 2 + 1], 16);
-        }
-
-        return bytes;
     }
 
 

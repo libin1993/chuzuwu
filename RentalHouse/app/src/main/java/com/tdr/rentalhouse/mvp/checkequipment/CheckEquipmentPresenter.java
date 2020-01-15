@@ -5,6 +5,7 @@ import com.tdr.rentalhouse.base.BasePresenterImpl;
 import com.tdr.rentalhouse.base.BaseView;
 import com.tdr.rentalhouse.base.RxObserver;
 import com.tdr.rentalhouse.base.Transformer;
+import com.tdr.rentalhouse.bean.EquipmentBean;
 import com.tdr.rentalhouse.bean.ScanCodeBean;
 import com.tdr.rentalhouse.inter.Callback;
 import com.tdr.rentalhouse.utils.RetrofitUtils;
@@ -66,19 +67,19 @@ public class CheckEquipmentPresenter extends BasePresenterImpl<BaseView> impleme
     }
 
     @Override
-    public void isEquipmentBind(final int what,Long equipmentNumber, Long equipmentType,int businessTye) {
+    public void isEquipmentBind(final int what,Long equipmentNumber, Long equipmentType,int businessTye,int floorId,int roomId) {
         if (!isViewAttached())
             return;
 
         RetrofitUtils.getInstance()
                 .getService()
-                .isEquipmentBind(equipmentNumber,equipmentType, businessTye)
+                .isEquipmentBind(equipmentNumber,equipmentType, businessTye,floorId,roomId)
                 .compose(Transformer.switchSchedulers())
-                .subscribe(new RxObserver(new Callback<BaseBean>() {
+                .subscribe(new RxObserver(new Callback<EquipmentBean>() {
+
                     @Override
-                    public void onSuccess(BaseBean baseBean) {
-                        getView().hideLoading();
-                        getView().onSuccess(what, null);
+                    public void onSuccess(EquipmentBean equipmentBean) {
+                        getView().onSuccess(what, equipmentBean.getData());
                     }
 
                     @Override

@@ -33,7 +33,7 @@ import com.tdr.rentalhouse.base.BaseActivity;
 import com.tdr.rentalhouse.bean.BluetoothBean;
 import com.tdr.rentalhouse.bean.HouseInfoBean;
 import com.tdr.rentalhouse.mvp.checkequipment.CheckEquipmentActivity;
-import com.tdr.rentalhouse.utils.ClientManager;
+import com.tdr.rentalhouse.utils.BluetoothUtils;
 import com.tdr.rentalhouse.utils.FormatUtils;
 import com.tdr.rentalhouse.utils.LogUtils;
 import com.tdr.rentalhouse.utils.StatusBarUtils;
@@ -167,6 +167,7 @@ public class ConnectBluetoothActivity extends BaseActivity {
     private void connectStatus() {
         switch (bluetoothStatus) {
             case 0:
+
                 llBluetooth.setVisibility(View.VISIBLE);
                 llNetwork.setVisibility(View.GONE);
                 llConnectBluetooth.setVisibility(View.GONE);
@@ -218,13 +219,13 @@ public class ConnectBluetoothActivity extends BaseActivity {
             return;
         }
 
-        if (ClientManager.getClient(this).isBluetoothOpened()) {
+        if (BluetoothUtils.getInstance().getClient().isBluetoothOpened()) {
             scanBluetooth();
         } else {
-            ClientManager.getClient(this).openBluetooth();
+            BluetoothUtils.getInstance().getClient().openBluetooth();
         }
 
-        ClientManager.getClient(this).registerBluetoothStateListener(new BluetoothStateListener() {
+        BluetoothUtils.getInstance().getClient().registerBluetoothStateListener(new BluetoothStateListener() {
             @Override
             public void onBluetoothStateChanged(boolean openOrClosed) {
                 if (openOrClosed) {
@@ -245,7 +246,7 @@ public class ConnectBluetoothActivity extends BaseActivity {
      */
     private void scanBluetooth() {
 
-        ClientManager.getClient(this).search(ClientManager.getRequest(), new SearchResponse() {
+        BluetoothUtils.getInstance().getClient().search(BluetoothUtils.getInstance().getRequest(), new SearchResponse() {
             @Override
             public void onSearchStarted() {
 
@@ -258,7 +259,7 @@ public class ConnectBluetoothActivity extends BaseActivity {
                     bluetoothBean.setName(device.getName());
                     bluetoothBean.setAddress(device.getAddress());
                     connectBluetooth();
-                    ClientManager.getClient(ConnectBluetoothActivity.this).stopSearch();
+                    BluetoothUtils.getInstance().getClient().stopSearch();
                 }
             }
 
@@ -283,8 +284,7 @@ public class ConnectBluetoothActivity extends BaseActivity {
      */
     private void connectBluetooth() {
 
-
-        ClientManager.getClient(this).connect(bluetoothBean.getAddress(), ClientManager.getOption(), new BleConnectResponse() {
+        BluetoothUtils.getInstance().getClient().connect(bluetoothBean.getAddress(), BluetoothUtils.getInstance().getOption(), new BleConnectResponse() {
             @Override
             public void onResponse(int code, BleGattProfile data) {
                 LogUtils.log(code + "aaa");
@@ -307,24 +307,31 @@ public class ConnectBluetoothActivity extends BaseActivity {
 
                     LogUtils.log(bluetoothBean.toString());
 
-                    bluetoothStatus = 3;
-                    connectStatus();
-                    writeToBluetooth("05", "0");
+                    BluetoothUtils.getInstance().setBluetoothBean(bluetoothBean);
+
+//                    bluetoothStatus = 3;
+//                    connectStatus();
+//                    notifyBluetooth();
+
+//                    BluetoothUtils.getInstance().getClient().registerConnectStatusListener(bluetoothBean.getAddress(), new BleConnectStatusListener() {
+//                        @Override
+//                        public void onConnectStatusChanged(String mac, int status) {
+//
+//                            LogUtils.log(status + "," + Constants.STATUS_DEVICE_CONNECTED + "," + Constants.STATUS_DEVICE_DISCONNECTED);
+//                            if (status == Constants.STATUS_DISCONNECTED) {
+//                                LogUtils.log("蓝牙已断开连接");
+//                                bluetoothStatus = 2;
+//                                connectStatus();
+//                            }
+//                        }
+//                    });
+
+                    Intent intent = new Intent(ConnectBluetoothActivity.this, CheckEquipmentActivity.class);
+                    intent.putExtra("house", houseInfoBean);
+                    startActivity(intent);
+                    finish();
+
                 } else {
-                    bluetoothStatus = 2;
-                    connectStatus();
-                }
-            }
-        });
-
-
-        ClientManager.getClient(ConnectBluetoothActivity.this).registerConnectStatusListener(bluetoothBean.getAddress(), new BleConnectStatusListener() {
-            @Override
-            public void onConnectStatusChanged(String mac, int status) {
-
-                LogUtils.log(status + "," + Constants.STATUS_DEVICE_CONNECTED + "," + Constants.STATUS_DEVICE_DISCONNECTED);
-                if (status == Constants.STATUS_DISCONNECTED) {
-                    LogUtils.log("蓝牙已断开连接");
                     bluetoothStatus = 2;
                     connectStatus();
                 }
@@ -340,13 +347,12 @@ public class ConnectBluetoothActivity extends BaseActivity {
         final String data = FormatUtils.getInstance().getWriteData("AA", command, content);
 
         LogUtils.log("write：" + data);
-        ClientManager.getClient(this).write(bluetoothBean.getAddress(), bluetoothBean.getServiceUUID(),
+        BluetoothUtils.getInstance().getClient().write(bluetoothBean.getAddress(), bluetoothBean.getServiceUUID(),
                 bluetoothBean.getWriteCUUID(), FormatUtils.getInstance().hexStringToBytes(data), new BleWriteResponse() {
                     @Override
                     public void onResponse(int code) {
                         if (code == REQUEST_SUCCESS) {
                             LogUtils.log("写入成功");
-                            notifyBluetooth();
                             if ("05".equals(command)) {
                                 countDownTimer = new CountDownTimer(10000, 1000) {
                                     @Override
@@ -356,17 +362,12 @@ public class ConnectBluetoothActivity extends BaseActivity {
 
                                     @Override
                                     public void onFinish() {
-//                                        bluetoothStatus = 4;
-//                                        connectStatus();
-
 
                                         unNotifyBluetooth();
                                         Intent intent = new Intent(ConnectBluetoothActivity.this, CheckEquipmentActivity.class);
-                                        intent.putExtra("bluetooth", bluetoothBean);
                                         intent.putExtra("house", houseInfoBean);
                                         startActivity(intent);
                                         finish();
-
 
                                     }
                                 };
@@ -387,7 +388,7 @@ public class ConnectBluetoothActivity extends BaseActivity {
      */
     private void notifyBluetooth() {
 
-        ClientManager.getClient(this).notify(bluetoothBean.getAddress(), bluetoothBean.getServiceUUID(),
+        BluetoothUtils.getInstance().getClient().notify(bluetoothBean.getAddress(), bluetoothBean.getServiceUUID(),
                 bluetoothBean.getNotifyCUUID(), new BleNotifyResponse() {
                     @Override
                     public void onResponse(int code) {
@@ -409,7 +410,6 @@ public class ConnectBluetoothActivity extends BaseActivity {
                                 if (status >= 50) {
                                     unNotifyBluetooth();
                                     Intent intent = new Intent(ConnectBluetoothActivity.this, CheckEquipmentActivity.class);
-                                    intent.putExtra("bluetooth", bluetoothBean);
                                     intent.putExtra("house", houseInfoBean);
                                     startActivity(intent);
                                     finish();
@@ -429,7 +429,7 @@ public class ConnectBluetoothActivity extends BaseActivity {
      */
     private void unNotifyBluetooth() {
 
-        ClientManager.getClient(this).unnotify(bluetoothBean.getAddress(), bluetoothBean.getServiceUUID(),
+        BluetoothUtils.getInstance().getClient().unnotify(bluetoothBean.getAddress(), bluetoothBean.getServiceUUID(),
                 bluetoothBean.getNotifyCUUID(), new BleUnnotifyResponse() {
                     @Override
                     public void onResponse(int code) {
@@ -449,4 +449,9 @@ public class ConnectBluetoothActivity extends BaseActivity {
         }
     }
 
+//    @Override
+//    protected void onDestroy() {
+//        unNotifyBluetooth();
+//        super.onDestroy();
+//    }
 }

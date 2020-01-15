@@ -117,8 +117,6 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
     TextView tvLocation;
     @BindView(R.id.ll_location)
     LinearLayout llLocation;
-    @BindView(R.id.tv_police_station)
-    TextView tvPoliceStation;
     @BindView(R.id.rv_add_picture)
     RecyclerView rvAddPicture;
     @BindView(R.id.btn_add_address)
@@ -151,8 +149,6 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
     private List<String> imgList = new ArrayList<>();
     private int type;
     private CommunityDetailBean.DataBean communityBean;
-    private String policeStationCode;
-    private String policeStationName;
 
     @Override
     protected AddAddressContact.Presenter initPresenter() {
@@ -187,13 +183,6 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
             locationBean.setLng(communityBean.getLongitude());
             locationBean.setName(communityBean.getPositionName());
 
-            if (!TextUtils.isEmpty(communityBean.getPoliceStationsCode())) {
-                policeStationCode = communityBean.getPoliceStationsCode();
-                policeStationName = communityBean.getPoliceStationsName();
-            } else {
-                policeStationName = SPUtils.getInstance().getPoliceStationName();
-                policeStationCode = SPUtils.getInstance().getPoliceStationCode();
-            }
 
 
             if (communityBean.getOutlookOne() != null) {
@@ -258,9 +247,6 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
             etAreaNo.setText(communityBean.getRDNumber());
             tvLocation.setText(communityBean.getPositionName());
 
-        } else {
-            policeStationName = SPUtils.getInstance().getPoliceStationName();
-            policeStationCode = SPUtils.getInstance().getPoliceStationCode();
         }
     }
 
@@ -269,7 +255,6 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
         StatusBarUtils.getInstance().setStatusBarHeight(viewStatusBar);
         tvTitleName.setText("地址采集");
 
-        tvPoliceStation.setText(policeStationName);
         etAreaName.addTextChangedListener(new LimitInputTextWatcher(etAreaName, LimitInputTextWatcher.CHINESE_REGEX));
         etAreaNo.addTextChangedListener(new LimitInputTextWatcher(etAreaNo, LimitInputTextWatcher.CHINESE_NUMBER_REGEX));
 
@@ -492,9 +477,6 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
         map.put("RDNumber", etAreaNo.getText().toString().trim());
         map.put("Longitude", locationBean.getLng());
         map.put("Latitude", locationBean.getLat());
-        map.put("PositionName", TextUtils.isEmpty(locationBean.getName()) ? "" : locationBean.getName());
-        LogUtils.log(policeStationCode);
-        map.put("PoliceStationsCode", policeStationCode);
 
         if (ObjectUtils.getInstance().isNotNull(imgList)) {
             for (int i = 0; i < imgList.size(); i++) {

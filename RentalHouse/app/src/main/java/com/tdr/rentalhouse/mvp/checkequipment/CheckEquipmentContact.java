@@ -18,7 +18,7 @@ public class CheckEquipmentContact {
 
         void installEquipment(int what, Map<String, Object> map);
 
-        void isEquipmentBind(int what, Long equipmentNumber, Long equipmentType,int businessTye);
+        void isEquipmentBind(int what, Long equipmentNumber, Long equipmentType,int businessTye,int floorId, int roomId);
 
         void deviceType(int what, String code);
 
