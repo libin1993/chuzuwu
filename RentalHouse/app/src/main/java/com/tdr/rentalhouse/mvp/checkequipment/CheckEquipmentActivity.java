@@ -406,7 +406,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 switch (data.substring(0, 4)) {
                     //报装工具电量
                     case "AA01":
-                        double quantity = Integer.parseInt(new BigInteger(data.substring(4, 6), 16).toString(10)) * 0.1;
+                        double quantity = BigDecimalUtils.getInstance().mul(Integer.parseInt(new BigInteger(data.substring(4, 6), 16).toString(10)),0.1,1);
                         if (!equipmentQuantity && quantity < 3.7) {
                             equipmentQuantity = true;
                             ToastUtils.getInstance().showToast("报装工具电量不足，请及时充电");
@@ -432,7 +432,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                         equipmentHeight = Integer.parseInt(new BigInteger(data.substring(16, 18), 16).toString(10)) * 20;
                         RFSignal = Integer.parseInt(new BigInteger(data.substring(18, 20), 16).toString(10)) * 10;
                         NBSignal = Integer.parseInt(new BigInteger(data.substring(20, 22), 16).toString(10));
-                        AIQuantity = Integer.parseInt(new BigInteger(data.substring(22, 24), 16).toString(10)) * 0.1;
+                        AIQuantity = BigDecimalUtils.getInstance().mul(Integer.parseInt(new BigInteger(data.substring(22, 24), 16).toString(10)),0.1,1);
                         tvEquipmentHeight.setText(BigDecimalUtils.getInstance().mul(equipmentHeight, 0.001, 3) + "米");
                         LogUtils.log(gatewayType + "," + gatewayId + "," + equipmentHeight + "," + RFSignal + "," + NBSignal + "," + AIQuantity);
                         if (RFSignal < 50) {
@@ -653,7 +653,8 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
 
                     String equipNo = etEquipmentCode.getText().toString().trim();
                     type = equipNo.substring(0, 4).toUpperCase();
-                    code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14 ? equipNo.substring(4, 14) : equipNo.substring(4)), 8);
+                    code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14
+                            ? equipNo.substring(4, 14) : equipNo.substring(4)), 8);
                     LogUtils.log(type + "," + code);
                 }
                 break;
