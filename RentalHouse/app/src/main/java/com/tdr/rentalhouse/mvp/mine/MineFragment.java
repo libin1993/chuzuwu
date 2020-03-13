@@ -1,9 +1,12 @@
 package com.tdr.rentalhouse.mvp.mine;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.tdr.rentalhouse.R;
+import com.tdr.rentalhouse.base.Api;
+import com.tdr.rentalhouse.base.BaseMvpFragment;
+import com.tdr.rentalhouse.base.BaseView;
 import com.tdr.rentalhouse.inter.PopupOnClickListener;
 import com.tdr.rentalhouse.mvp.feedback.FeedbackActivity;
-import com.tdr.rentalhouse.R;
-import com.tdr.rentalhouse.base.BaseView;
-import com.tdr.rentalhouse.mvp.updatepwd.UpdatePwdActivity;
-import com.tdr.rentalhouse.base.BaseMvpFragment;
 import com.tdr.rentalhouse.mvp.login.LoginActivity;
+import com.tdr.rentalhouse.mvp.updatepwd.UpdatePwdActivity;
 import com.tdr.rentalhouse.utils.FastClickUtils;
 import com.tdr.rentalhouse.utils.PopupWindowUtils;
 import com.tdr.rentalhouse.utils.SPUtils;
@@ -44,6 +48,8 @@ public class MineFragment extends BaseMvpFragment<MineContact.Presenter> impleme
     RelativeLayout rlFeedback;
     @BindView(R.id.rl_log_out)
     RelativeLayout rlLogOut;
+    @BindView(R.id.tv_version)
+    TextView tvVersion;
     private Unbinder unbinder;
 
     @Nullable
@@ -58,6 +64,7 @@ public class MineFragment extends BaseMvpFragment<MineContact.Presenter> impleme
     private void initView() {
         tvUsername.setText(SPUtils.getInstance().getUsername());
         tvManageArea.setText("管辖社区：" + SPUtils.getInstance().getCommunityName());
+        tvVersion.setText(Api.VERSION+"V"+getVersionName());
     }
 
     public static MineFragment newInstance() {
@@ -67,6 +74,25 @@ public class MineFragment extends BaseMvpFragment<MineContact.Presenter> impleme
         MineFragment fragment = new MineFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    /**
+     * 返回当前程序版本名
+     */
+    public  String getVersionName() {
+        String versionName = "";
+        try {
+            // ---get the package info---
+            PackageManager pm = getActivity().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(getActivity().getPackageName(), 0);
+            versionName = pi.versionName;
+            if (versionName == null || versionName.length() <= 0) {
+                return "";
+            }
+        } catch (Exception e) {
+
+        }
+        return versionName;
     }
 
     @Override
@@ -82,7 +108,7 @@ public class MineFragment extends BaseMvpFragment<MineContact.Presenter> impleme
 
     @OnClick({R.id.rl_update_pwd, R.id.rl_feedback, R.id.rl_log_out})
     public void onViewClicked(View view) {
-        if (FastClickUtils.isSingleClick()){
+        if (FastClickUtils.isSingleClick()) {
             switch (view.getId()) {
                 case R.id.rl_update_pwd:
                     startActivity(new Intent(getActivity(), UpdatePwdActivity.class));

@@ -62,6 +62,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -642,30 +643,38 @@ public class BindHouseActivity extends BaseMvpActivity<BindHouseContact.Presente
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void scanResult(ScanResult scanResult) {
         String result = scanResult.getResult();
-        if (result.contains("?AH")) {
+        if (result.contains("?BU")) {
             String[] split = result.split("\\?");
             String type1 = split[1].substring(2);
             LogUtils.log(type1);
             byte[] decode = Base64Utils.decode(type1);
 
+            System.out.println(decode.length);
+            System.out.println(Arrays.toString(decode));
 
-            String str = FormatUtils.getInstance().bytes2Hex(decode);
-
-            LogUtils.log(str);
-            if (str.length() == 22) {
-                areaCode = str.substring(0, 6);
-                code = str.substring(6, 18);
-                qrCode = result;
-                tvHouseCode.setText(code);
-
-                adapter.notifyDataSetChanged();
-            } else {
+            //转ascii编码
+            try {
+                String str = new String(decode,"ascii");
+                LogUtils.log(str);
+                if (!TextUtils.isEmpty(str) && str.length() >=7) {
+                    code= str.substring(6);
+                    LogUtils.log(code);
+                    qrCode = result;
+                    tvHouseCode.setText(code);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    ToastUtils.getInstance().showToast("请扫描有效房屋二维码");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 ToastUtils.getInstance().showToast("请扫描有效房屋二维码");
             }
+
 
         } else {
             ToastUtils.getInstance().showToast("请扫描有效房屋二维码");
         }
+
 
     }
 

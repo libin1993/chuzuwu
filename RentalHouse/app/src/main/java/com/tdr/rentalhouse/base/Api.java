@@ -39,23 +39,28 @@ public interface Api {
     //开发
     String HOST = "http://10.130.0.207:1012/";
     String IMG_HOST = "http://10.130.0.207:1012";
+    String VERSION = "开发版";
 
     //正式
 //    String HOST = "http://bzappapi.iotone.cn/";
 //    String IMG_HOST = "http://bzappapi.iotone.cn";
+//    String VERSION = "";
 
     //出租屋
 //    String HOST = "http://183.129.130.119:17090/";
 //    String IMG_HOST = "http://183.129.130.119:17090";
+//    String VERSION = "";
 
     //演示
 //    String HOST = "http://ys-czwappapi.iotone.cn:22800/";
 //    String IMG_HOST = "http://ys-czwappapi.iotone.cn:22800";
+//    String VERSION = "";
 
 
     //    外网测试（208）
 //    String HOST = "http://183.129.130.119:13127/";
 //    String IMG_HOST = "http://183.129.130.119:13127";
+//    String VERSION = "测试版";
 
 
     //登录
