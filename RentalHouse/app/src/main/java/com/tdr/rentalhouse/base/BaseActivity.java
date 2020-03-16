@@ -23,6 +23,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         StatusBarUtils.getInstance().setNoStatusBar(this);
+        StatusBarUtils.getInstance().setStatusBarFontDark(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN|
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
