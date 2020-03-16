@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/gray_f8"
-              android:orientation="vertical">
+    >
 
     <include
-        layout="@layout/layout_title"/>
+        layout="@layout/layout_title"
+       />
 
     <TextView
         android:id="@+id/tv_unit_name"
@@ -16,14 +17,28 @@
         android:paddingLeft="12dp"
         android:textColor="@color/blue_3e7"
         android:textSize="16sp"
-        android:gravity="center_vertical"/>
+        android:gravity="center_vertical"
+        android:layout_below="@id/ll_title"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_unit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:layout_below="@id/tv_unit_name"
+        android:layout_above="@+id/tv_to_manage_house">
 
     </android.support.v7.widget.RecyclerView>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_to_manage_house"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:text="跳转楼房管理 >>"
+        android:textColor="@color/blue_3e7"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+</RelativeLayout>

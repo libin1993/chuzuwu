@@ -122,20 +122,20 @@ public class RoomInfoActivity extends BaseMvpActivity<RoomInfoContact.Presenter>
                     tvCode.setVisibility(View.GONE);
                 } else {
                     tvNoEquipment.setVisibility(View.GONE);
-                    tvStatus.setVisibility(View.VISIBLE);
                     tvCode.setVisibility(View.VISIBLE);
 
                     tvCode.setText(item.getEquipmentNumber());
                     if (item.getDeviceStatus() == null) {
                         tvStatus.setText("正常");
+                        tvStatus.setVisibility(View.VISIBLE);
                         tvStatus.setBackgroundResource(R.drawable.bound_6e9_2dp);
                     } else {
                         if (item.getDeviceStatus() == 0) {
                             tvStatus.setText("正常");
+                            tvStatus.setVisibility(View.VISIBLE);
                             tvStatus.setBackgroundResource(R.drawable.bound_6e9_2dp);
                         } else {
-                            tvStatus.setText("异常");
-                            tvStatus.setBackgroundResource(R.drawable.bound_eb_2dp);
+                            tvStatus.setVisibility(View.GONE);
                         }
 
                     }

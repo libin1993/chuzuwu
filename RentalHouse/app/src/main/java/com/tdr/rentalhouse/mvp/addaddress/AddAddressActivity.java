@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,34 +32,24 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.PictureFileUtils;
-//import com.smarttop.library.bean.City;
-//import com.smarttop.library.bean.County;
-//import com.smarttop.library.bean.Province;
-//import com.smarttop.library.bean.Street;
-//import com.smarttop.library.utils.LogUtil;
-//import com.smarttop.library.widget.AddressSelector;
-//import com.smarttop.library.widget.BottomDialog;
-//import com.smarttop.library.widget.OnAddressSelectedListener;
-import com.tdr.rentalhouse.bean.HouseBean;
-import com.tdr.rentalhouse.bean.HouseInfoBean;
-import com.tdr.rentalhouse.mvp.bindhouse.BindHouseActivity;
-import com.tdr.rentalhouse.mvp.city.CityActivity;
-import com.tdr.rentalhouse.mvp.houseinfo.HouseInfoActivity;
-import com.tdr.rentalhouse.base.Api;
-import com.tdr.rentalhouse.base.BaseView;
-import com.tdr.rentalhouse.bean.CommunityDetailBean;
-import com.tdr.rentalhouse.bean.PictureBean;
-import com.tdr.rentalhouse.mvp.community.CommunityActivity;
 import com.tdr.rentalhouse.R;
-import com.tdr.rentalhouse.mvp.selectaddress.SelectAddressActivity;
-import com.tdr.rentalhouse.ui.InstallDocActivity;
-import com.tdr.rentalhouse.ui.SearchAddressActivity;
+import com.tdr.rentalhouse.base.Api;
 import com.tdr.rentalhouse.base.BaseBean;
 import com.tdr.rentalhouse.base.BaseMvpActivity;
+import com.tdr.rentalhouse.base.BaseView;
 import com.tdr.rentalhouse.base.RequestCode;
 import com.tdr.rentalhouse.bean.AddAddressBean;
+import com.tdr.rentalhouse.bean.CommunityDetailBean;
+import com.tdr.rentalhouse.bean.HouseBean;
+import com.tdr.rentalhouse.bean.HouseInfoBean;
 import com.tdr.rentalhouse.bean.LocationBean;
+import com.tdr.rentalhouse.bean.PictureBean;
 import com.tdr.rentalhouse.inter.PopupOnClickListener;
+import com.tdr.rentalhouse.mvp.bindhouse.BindHouseActivity;
+import com.tdr.rentalhouse.mvp.city.CityActivity;
+import com.tdr.rentalhouse.mvp.community.CommunityActivity;
+import com.tdr.rentalhouse.mvp.houseinfo.HouseInfoActivity;
+import com.tdr.rentalhouse.ui.SearchAddressActivity;
 import com.tdr.rentalhouse.utils.FastClickUtils;
 import com.tdr.rentalhouse.utils.FormatUtils;
 import com.tdr.rentalhouse.utils.LimitInputTextWatcher;
@@ -66,7 +57,6 @@ import com.tdr.rentalhouse.utils.LoadingUtils;
 import com.tdr.rentalhouse.utils.LogUtils;
 import com.tdr.rentalhouse.utils.ObjectUtils;
 import com.tdr.rentalhouse.utils.PopupWindowUtils;
-import com.tdr.rentalhouse.utils.SPUtils;
 import com.tdr.rentalhouse.utils.StatusBarUtils;
 import com.tdr.rentalhouse.utils.ToastUtils;
 
@@ -85,6 +75,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+
+//import com.smarttop.library.bean.City;
+//import com.smarttop.library.bean.County;
+//import com.smarttop.library.bean.Province;
+//import com.smarttop.library.bean.Street;
+//import com.smarttop.library.utils.LogUtil;
+//import com.smarttop.library.widget.AddressSelector;
+//import com.smarttop.library.widget.BottomDialog;
+//import com.smarttop.library.widget.OnAddressSelectedListener;
 
 /**
  * Author：Libin on 2019/7/4 10:26
@@ -121,6 +120,10 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
     RecyclerView rvAddPicture;
     @BindView(R.id.btn_add_address)
     Button btnAddAddress;
+    @BindView(R.id.tv_company_name)
+    TextView tvCompanyName;
+    @BindView(R.id.tv_title_more)
+    TextView tvTitleMore;
 
 //    private BottomDialog mAddressPicker = null; //地址选择器
 
@@ -184,7 +187,6 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
             locationBean.setName(communityBean.getPositionName());
 
 
-
             if (communityBean.getOutlookOne() != null) {
                 imgList.add(communityBean.getOutlookOne());
             }
@@ -222,23 +224,31 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
             switch (buildingType) {
                 case 1:
                     tvSelectBuildingType.setText("自建房");
+                    tvCompanyName.setText("小区名称");
+                    etAreaName.setHint("请输入小区名称");
                     llAreaName.setVisibility(View.GONE);
                     viewAreaName.setVisibility(View.GONE);
                     break;
                 case 2:
                     tvSelectBuildingType.setText("商品房");
                     etAreaName.setText(communityBean.getCommunityName());
+                    tvCompanyName.setText("小区名称");
+                    etAreaName.setHint("请输入小区名称");
                     llAreaName.setVisibility(View.VISIBLE);
                     viewAreaName.setVisibility(View.VISIBLE);
                     break;
                 case 3:
                     etAreaName.setText(communityBean.getCommunityName());
                     tvSelectBuildingType.setText("企业单位");
+                    tvCompanyName.setText("企业名称");
+                    etAreaName.setHint("请输入企业名称");
                     llAreaName.setVisibility(View.VISIBLE);
                     viewAreaName.setVisibility(View.VISIBLE);
                     break;
                 case 4:
                     tvSelectBuildingType.setText("旅店");
+                    tvCompanyName.setText("小区名称");
+                    etAreaName.setHint("请输入小区名称");
                     llAreaName.setVisibility(View.GONE);
                     viewAreaName.setVisibility(View.GONE);
                     break;
@@ -257,6 +267,14 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
 
         etAreaName.addTextChangedListener(new LimitInputTextWatcher(etAreaName, LimitInputTextWatcher.CHINESE_REGEX));
         etAreaNo.addTextChangedListener(new LimitInputTextWatcher(etAreaNo, LimitInputTextWatcher.CHINESE_NUMBER_REGEX));
+
+        if (type == 1){
+            tvTitleMore.setVisibility(View.VISIBLE);
+            tvTitleMore.setText("上次区域");
+            tvTitleMore.setTextColor(ContextCompat.getColor(this,R.color.orange_fda));
+        }else {
+            tvTitleMore.setVisibility(View.GONE);
+        }
 
 //        //初始化地址选择器
 //        mAddressPicker = new BottomDialog(this);
@@ -287,6 +305,14 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
                 } else {
                     llAreaName.setVisibility(View.GONE);
                     viewAreaName.setVisibility(View.GONE);
+                }
+
+                if (options1 == 2) {
+                    tvCompanyName.setText("企业名称");
+                    etAreaName.setHint("请输入企业名称");
+                } else {
+                    tvCompanyName.setText("小区名称");
+                    etAreaName.setHint("请输入小区名称");
                 }
 
                 tvSelectBuildingType.setText(typeList.get(options1));
@@ -398,7 +424,8 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
 
     }
 
-    @OnClick({R.id.iv_title_back, R.id.ll_select_address, R.id.ll_building_type, R.id.ll_location, R.id.btn_add_address})
+    @OnClick({R.id.iv_title_back, R.id.ll_select_address, R.id.ll_building_type, R.id.ll_location,
+            R.id.btn_add_address,R.id.tv_title_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
@@ -432,6 +459,8 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
                         submitData();
                     }
                 }
+                break;
+            case R.id.tv_title_more:
 
                 break;
         }

@@ -14,20 +14,21 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseSectionQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.guanaj.easyswipemenulibrary.EasySwipeMenuLayout;
-import com.tdr.rentalhouse.bean.HouseBean;
-import com.tdr.rentalhouse.mvp.houseinfo.HouseInfoActivity;
-import com.tdr.rentalhouse.mvp.roomlist.RoomInfoActivity;
-import com.tdr.rentalhouse.mvp.addroom.AddRoomActivity;
 import com.tdr.rentalhouse.R;
 import com.tdr.rentalhouse.base.BaseMvpActivity;
 import com.tdr.rentalhouse.base.BaseView;
 import com.tdr.rentalhouse.base.RequestCode;
 import com.tdr.rentalhouse.bean.FloorBean;
+import com.tdr.rentalhouse.bean.HouseBean;
 import com.tdr.rentalhouse.bean.HouseInfoBean;
 import com.tdr.rentalhouse.bean.SectionBean;
 import com.tdr.rentalhouse.bean.SectionItem;
+import com.tdr.rentalhouse.mvp.addroom.AddRoomActivity;
 import com.tdr.rentalhouse.mvp.bindhouse.BindHouseActivity;
+import com.tdr.rentalhouse.mvp.community.CommunityActivity;
 import com.tdr.rentalhouse.mvp.editroom.EditRoomActivity;
+import com.tdr.rentalhouse.mvp.houseinfo.HouseInfoActivity;
+import com.tdr.rentalhouse.mvp.roomlist.RoomInfoActivity;
 import com.tdr.rentalhouse.utils.FastClickUtils;
 import com.tdr.rentalhouse.utils.LoadingUtils;
 import com.tdr.rentalhouse.utils.ObjectUtils;
@@ -60,6 +61,8 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
     TextView tvUnitName;
     @BindView(R.id.rv_unit)
     RecyclerView rvUnit;
+    @BindView(R.id.tv_to_manage_house)
+    TextView tvToManageHouse;
 
     private HouseInfoBean houseInfoBean;
 
@@ -101,6 +104,9 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
         tvTitleName.setText("楼房管理");
         if (houseInfoBean.getType() != 1) {
             ivTitleMore.setVisibility(View.VISIBLE);
+            tvToManageHouse.setVisibility(View.GONE);
+        }else {
+            tvToManageHouse.setVisibility(View.VISIBLE);
         }
 
 
@@ -156,8 +162,8 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
                                 itemList.add(new SectionItem(sectionItem.id, sectionItem.name, sectionItem.header));
                             }
                             editIntent.putExtra("house", (Serializable) itemList);
-                            editIntent.putExtra("community_id",houseInfoBean.getCommunityId());
-                            editIntent.putExtra("unit_id",houseInfoBean.getUnitId());
+                            editIntent.putExtra("community_id", houseInfoBean.getCommunityId());
+                            editIntent.putExtra("unit_id", houseInfoBean.getUnitId());
                             startActivity(editIntent);
                             break;
                         case R.id.tv_room_no:
@@ -183,7 +189,7 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
 
     }
 
-    @OnClick({R.id.iv_title_back, R.id.iv_title_more})
+    @OnClick({R.id.iv_title_back, R.id.iv_title_more,R.id.tv_to_manage_house})
     public void onViewClicked(View view) {
         if (FastClickUtils.isSingleClick()) {
             switch (view.getId()) {
@@ -195,6 +201,20 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
                     intent.putExtra("house", houseInfoBean);
                     startActivity(intent);
 
+                    break;
+                case R.id.tv_to_manage_house:
+                    Intent intent1 = new Intent(ManageHouseActivity.this, ManageHouseActivity.class);
+                    HouseInfoBean houseInfo = new HouseInfoBean();
+                    houseInfo.setBuildingType(houseInfoBean.getBuildingType());
+                    houseInfo.setCommunityId(houseInfoBean.getCommunityId());
+                    houseInfo.setCommunityName(houseInfoBean.getCommunityName());
+                    houseInfo.setBuildingName(houseInfoBean.getBuildingName());
+                    houseInfo.setUnitId(houseInfoBean.getUnitId());
+                    houseInfo.setUnitName(houseInfoBean.getUnitName());
+                    houseInfo.setImg(houseInfoBean.getImg());
+                    houseInfo.setType(0);
+                    intent1.putExtra("house", houseInfo);
+                    startActivity(intent1);
                     break;
             }
         }

@@ -54,28 +54,6 @@
 
         </RelativeLayout>
 
-
-        <RelativeLayout
-            android:id="@+id/rl_install_equipment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            android:background="@mipmap/bg_card">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableTop="@mipmap/ic_install_equipment"
-                android:drawablePadding="12dp"
-                android:text="设备安装"
-                android:textColor="@color/gray_55"
-                android:textSize="14sp"
-                />
-        </RelativeLayout>
-
-
         <RelativeLayout
             android:id="@+id/rl_install_handbook"
             android:layout_width="0dp"
@@ -93,6 +71,27 @@
                 android:textColor="@color/gray_55"
                 android:textSize="14sp"/>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_install_equipment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@mipmap/bg_card">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@mipmap/ic_install_rental_house"
+                android:drawablePadding="12dp"
+                android:text="出租屋报装"
+                android:textColor="@color/gray_55"
+                android:textSize="14sp"
+                />
+        </RelativeLayout>
+
 
 
     </LinearLayout>
@@ -120,9 +119,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:drawableTop="@mipmap/ic_register_house"
+                android:drawableTop="@mipmap/ic_install_fire_control"
                 android:drawablePadding="12dp"
-                android:text="房屋登记"
+                android:text="消防报装"
                 android:textColor="@color/gray_55"
                 android:textSize="14sp"/>
 
@@ -141,9 +140,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:drawableTop="@mipmap/ic_register_human"
+                android:drawableTop="@mipmap/ic_install_elder"
                 android:drawablePadding="12dp"
-                android:text="人员统计"
+                android:text="老人报装"
                 android:textColor="@color/gray_55"
                 android:textSize="14sp"/>
         </RelativeLayout>
@@ -160,9 +159,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:drawableTop="@mipmap/ic_data_statistics"
+                android:drawableTop="@mipmap/ic_install_hotel"
                 android:drawablePadding="12dp"
-                android:text="数据统计"
+                android:text="旅店报装"
                 android:textColor="@color/gray_55"
                 android:textSize="14sp"/>
         </RelativeLayout>

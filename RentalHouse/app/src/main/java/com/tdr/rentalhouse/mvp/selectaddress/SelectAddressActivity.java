@@ -162,9 +162,6 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
                 case R.id.tv_clear_txt:
                     if (!TextUtils.isEmpty(etAddress.getText().toString().trim())) {
                         etAddress.setText(null);
-                        findAddressList.clear();
-                        findAddressAdapter.notifyDataSetChanged();
-                        addMark();
                     }
 
                     break;
@@ -275,6 +272,8 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
                     tvClearTxt.setVisibility(View.GONE);
                     viewClearLine.setVisibility(View.GONE);
                     etAddress.setCursorVisible(false);
+                    rgsAddress.setVisibility(View.VISIBLE);
+                    getNearbyAddress();
                 }
             }
         });
@@ -285,6 +284,7 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(v.getText().toString().trim())) {
                     ((RadioButton) rgsAddress.getChildAt(0)).setChecked(true);
+                    rgsAddress.setVisibility(View.GONE);
                     LoadingUtils.getInstance().showLoading(SelectAddressActivity.this, "加载中");
                     Map<String, Object> map = new HashMap<>();
                     map.put("SearchTxt", v.getText().toString().trim());
@@ -491,13 +491,23 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
         if (aMapLocation.getLongitude() != 0) {
             if (this.aMapLocation == null) {
                 this.aMapLocation = aMapLocation;
-                Map<String, Object> map = new HashMap<>();
-                map.put("Longitude", aMapLocation.getLongitude());
-                map.put("Latitude", aMapLocation.getLatitude());
-                mPresenter.findAddress(RequestCode.NetCode.FIND_NEARBY_ADDRESS, map);
+               getNearbyAddress();
             }
         }
+    }
 
+    /**
+     * 获取附近地址
+     */
+    private void getNearbyAddress(){
+        if (aMapLocation == null || aMapLocation.getLatitude() ==0 || aMapLocation.getLongitude() ==0){
+            return;
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("Longitude", aMapLocation.getLongitude());
+        map.put("Latitude", aMapLocation.getLatitude());
+        mPresenter.findAddress(RequestCode.NetCode.FIND_NEARBY_ADDRESS, map);
     }
 
     @Override

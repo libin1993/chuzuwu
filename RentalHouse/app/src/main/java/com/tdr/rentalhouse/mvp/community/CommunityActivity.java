@@ -15,18 +15,19 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.guanaj.easyswipemenulibrary.EasySwipeMenuLayout;
-import com.tdr.rentalhouse.base.BaseView;
-import com.tdr.rentalhouse.bean.HouseInfoBean;
-import com.tdr.rentalhouse.inter.PopupOnClickListener;
-import com.tdr.rentalhouse.mvp.addunit.AddUnitActivity;
-import com.tdr.rentalhouse.mvp.communitydetail.CommunityDetailActivity;
-import com.tdr.rentalhouse.mvp.house.ManageHouseActivity;
 import com.tdr.rentalhouse.R;
 import com.tdr.rentalhouse.base.Api;
 import com.tdr.rentalhouse.base.BaseMvpActivity;
+import com.tdr.rentalhouse.base.BaseView;
 import com.tdr.rentalhouse.base.RequestCode;
 import com.tdr.rentalhouse.bean.CommunityBean;
+import com.tdr.rentalhouse.bean.HouseInfoBean;
+import com.tdr.rentalhouse.inter.PopupOnClickListener;
+import com.tdr.rentalhouse.mvp.addaddress.AddAddressActivity;
+import com.tdr.rentalhouse.mvp.addunit.AddUnitActivity;
+import com.tdr.rentalhouse.mvp.communitydetail.CommunityDetailActivity;
 import com.tdr.rentalhouse.mvp.editunit.EditUnitActivity;
+import com.tdr.rentalhouse.mvp.house.ManageHouseActivity;
 import com.tdr.rentalhouse.utils.FastClickUtils;
 import com.tdr.rentalhouse.utils.FormatUtils;
 import com.tdr.rentalhouse.utils.LoadingUtils;
@@ -62,6 +63,8 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
     ImageView ivTitleMore;
     @BindView(R.id.rv_manager_address)
     RecyclerView rvAddress;
+    @BindView(R.id.tv_to_community)
+    TextView tvToCommunity;
     private List<CommunityBean.DataBean.ListBean> dataList = new ArrayList<>();
     private BaseQuickAdapter<CommunityBean.DataBean.ListBean, BaseViewHolder> adapter;
 
@@ -74,11 +77,17 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_info);
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
         getData();
         initView();
         initData();
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initData();
+    }
+
 
     private void getData() {
         Intent intent = getIntent();
@@ -94,7 +103,6 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
     private void initData() {
         LoadingUtils.getInstance().showLoading(this, "加载中");
         mPresenter.getCommunityInfo(RequestCode.NetCode.COMMUNITY_INFO, id);
-
     }
 
     private void initView() {
@@ -102,6 +110,9 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
         tvTitleName.setText("地址管理");
         if (type != 1) {
             ivTitleMore.setVisibility(View.VISIBLE);
+            tvToCommunity.setVisibility(View.GONE);
+        }else {
+            tvToCommunity.setVisibility(View.VISIBLE);
         }
 
         rvAddress.setLayoutManager(new LinearLayoutManager(this));
@@ -191,7 +202,7 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
 
     }
 
-    @OnClick({R.id.iv_title_back, R.id.iv_title_more})
+    @OnClick({R.id.iv_title_back, R.id.iv_title_more,R.id.tv_to_community})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
@@ -205,6 +216,13 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
                 }
 
                 break;
+            case R.id.tv_to_community:
+                if (FastClickUtils.isSingleClick()) {
+                    Intent intent = new Intent(CommunityActivity.this, CommunityActivity.class);
+                    intent.putExtra("id", id);
+                    startActivity(intent);
+                }
+                    break;
         }
     }
 
@@ -267,20 +285,4 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
         LoadingUtils.getInstance().dismiss();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void addUnit(String msg) {
-        if (msg.equals("add_unit")) {
-            initData();
-        }
-
-        if (msg.equals("edit_address")) {
-            mPresenter.getCommunityInfo(RequestCode.NetCode.COMMUNITY_INFO, id);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 }
