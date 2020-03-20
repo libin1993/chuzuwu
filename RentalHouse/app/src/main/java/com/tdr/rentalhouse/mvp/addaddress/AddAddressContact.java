@@ -22,5 +22,7 @@ public class AddAddressContact {
         void editAddress(int what, Map<String, Object> map);
 
         void getHouseInfo(int what, int id);
+
+        void getLastAddress(int what);
     }
 }

@@ -34,10 +34,25 @@ public class RequestCode {
         public static final int INSTALL_EQUIPMENT = 0x1015;   //安装设备
         public static final int DELETE_HOUSE = 0x1016;   //删除楼层房间
         public static final int IS_EQUIPMENT_BIND = 0x1018;   //设备号校验
-        public static final int FIND_NEARBY_ADDRESS = 0x1009;   //查找附近地址
-        public static final int CITY_LIST = 0x100A;   //市列表
-        public static final int AREA_LIST = 0x100B;   //区列表
-        public static final int DEVICE_TYPE= 0x100C;   //设备编号
-        public static final int BUSINESS_TYPE= 0x100D;   //业务类型
+        public static final int FIND_NEARBY_ADDRESS = 0x1019;   //查找附近地址
+        public static final int CITY_LIST = 0x101A;   //市列表
+        public static final int AREA_LIST = 0x101B;   //区列表
+        public static final int DEVICE_TYPE= 0x101C;   //设备编号
+        public static final int BUSINESS_TYPE= 0x101D;   //业务类型
+        public static final int LAST_ADDRESS= 0x101E;   //上次区域
+
+
+        public static final int SEARCH_ADDRESS= 0x101F;   //消防报装查找地址
+        public static final int BUILDING_INFO= 0x1021;   //消防报装楼栋信息
+        public static final int SELF_BUILDING_DEVICE= 0x1022;   //消防报装自建房设备列表
+        public static final int BUILDING_DEVICE= 0x1023;   //消防报装商品房设备列表
+        public static final int ADD_DEVICE= 0x1024;   //消防报装添加/编辑ai烟感设备
+        public static final int ADD_OTHER_DEVICE= 0x1025;   //消防报装添加/编辑其他设备
+        public static final int DEVICE_DETAIL= 0x1026;   //消防报装设备详情
+        public static final int DELETE_DEVICE= 0x1027;   //消防报装设备删除
+        public static final int DEVICE_NAME= 0x1028;   //获得设备类型名称
+        public static final int FIRE_CONTROL_DEVICE_TYPE= 0x1029;   //设备编号识别
+        public static final int SEARCH_NEARBY_ADDRESS= 0x102A;   //消防报装附近地址
+        public static final int EDIT_DEVICE_NAME= 0x102B;   //消防报装修改点位信息
     }
 }

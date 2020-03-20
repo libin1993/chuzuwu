@@ -88,7 +88,7 @@ android {
     //greendao配置
     greendao {
         //数据库版本号，升级时修改
-        schemaVersion 2
+        schemaVersion 3
     }
 }
 

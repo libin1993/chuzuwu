@@ -59,6 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginRight="8dp"
             android:background="@mipmap/bg_card">
 
             <TextView
@@ -73,10 +74,9 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_install_equipment"
+            android:id="@+id/rl_rental_house_install"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
             android:layout_weight="1"
             android:background="@mipmap/bg_card">
 
@@ -108,7 +108,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/rl_register_house"
+            android:id="@+id/rl_fire_control_install"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
@@ -129,7 +129,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/rl_register_human"
+            android:id="@+id/rl_elder_install"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
@@ -149,7 +149,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/rl_data_statistics"
+            android:id="@+id/rl_hotel_install"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

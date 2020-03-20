@@ -183,6 +183,10 @@ public class EditRoomActivity extends BaseMvpActivity<EditRoomContact.Presenter>
                 roomList.remove(index);
                 adapter.notifyItemRemoved(index);
                 adapter.notifyItemRangeChanged(index, roomList.size() - index);
+                ToastUtils.getInstance().showToast("删除成功");
+                if (roomList.size() == 0){
+                    finish();
+                }
                 break;
         }
     }

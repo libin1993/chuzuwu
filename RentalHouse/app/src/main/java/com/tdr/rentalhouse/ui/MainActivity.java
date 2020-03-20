@@ -74,36 +74,6 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == RequestCode.Permission.CAMERA_PERMISSION) {
-            if (!PermissionUtils.getInstance().hasPermission(MainActivity.this, Manifest.permission.CAMERA)) {
-                PermissionUtils.getInstance().showPermissionDialog(MainActivity.this,
-                        Manifest.permission.CAMERA, "拍照", new PermissionUtils.OnPermissionListener() {
-                            @Override
-                            public void onCancel() {
-
-                            }
-
-                            @Override
-                            public void onReQuest() {
-                                if (PermissionUtils.getInstance().hasPermission(MainActivity.this, Manifest.permission.CAMERA)) {
-                                    Intent intent = new Intent(MainActivity.this, ScanQRCodeActivity.class);
-                                    intent.putExtra("type", 1);
-                                    startActivity(intent);
-                                } else {
-                                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, RequestCode.Permission.CAMERA_PERMISSION);
-                                }
-                            }
-                        });
-            } else {
-                Intent intent = new Intent(MainActivity.this, ScanQRCodeActivity.class);
-                intent.putExtra("type", 1);
-                startActivity(intent);
-            }
-        }
-    }
 
     @Override
     protected void onDestroy() {

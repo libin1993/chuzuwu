@@ -5,14 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.tdr.rentalhouse.R;
 import com.tdr.rentalhouse.base.BaseFragment;
 import com.tdr.rentalhouse.base.RequestCode;
@@ -38,17 +37,20 @@ public class HomepageFragment extends BaseFragment {
     ImageView ivHomepage;
     @BindView(R.id.rl_add_address)
     RelativeLayout rlAddAddress;
-    @BindView(R.id.rl_install_equipment)
+    @BindView(R.id.rl_rental_house_install)
     RelativeLayout rlInstallEquipment;
     @BindView(R.id.rl_install_handbook)
     RelativeLayout rlInstallHandbook;
-    @BindView(R.id.rl_register_house)
+    @BindView(R.id.rl_fire_control_install)
     RelativeLayout rlRegisterHouse;
-    @BindView(R.id.rl_register_human)
+    @BindView(R.id.rl_elder_install)
     RelativeLayout rlRegisterHuman;
-    @BindView(R.id.rl_data_statistics)
+    @BindView(R.id.rl_hotel_install)
     RelativeLayout rlDataStatistics;
     private Unbinder unbinder;
+
+    //报装类型  1：出租屋  2：消防
+    private int installType = 0;
 
     @Nullable
     @Override
@@ -73,8 +75,8 @@ public class HomepageFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.iv_homepage, R.id.rl_add_address, R.id.rl_install_equipment, R.id.rl_install_handbook,
-            R.id.rl_register_house, R.id.rl_register_human, R.id.rl_data_statistics})
+    @OnClick({R.id.iv_homepage, R.id.rl_add_address, R.id.rl_rental_house_install, R.id.rl_install_handbook,
+            R.id.rl_fire_control_install, R.id.rl_elder_install, R.id.rl_hotel_install})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_homepage:
@@ -84,8 +86,9 @@ public class HomepageFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), SelectAddressActivity.class));
                 }
                 break;
-            case R.id.rl_install_equipment:
+            case R.id.rl_rental_house_install:
                 if (FastClickUtils.isSingleClick()){
+                    installType = 1;
                     getPermission();
                 }
                 break;
@@ -94,13 +97,19 @@ public class HomepageFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(),InstallDocActivity.class));
                 }
                 break;
-            case R.id.rl_register_house:
+            case R.id.rl_fire_control_install:
+                if (FastClickUtils.isSingleClick()){
+                    installType = 2;
+                    Intent intent = new Intent(getActivity(), SelectAddressActivity.class);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("install_type", installType);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.rl_elder_install:
                 moduleDeveloping();
                 break;
-            case R.id.rl_register_human:
-                moduleDeveloping();
-                break;
-            case R.id.rl_data_statistics:
+            case R.id.rl_hotel_install:
                 moduleDeveloping();
                 break;
         }
@@ -113,12 +122,47 @@ public class HomepageFragment extends BaseFragment {
         if (PermissionUtils.getInstance().hasPermission(getActivity(), Manifest.permission.CAMERA)) {
             Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
             intent.putExtra("type", 1);
+            intent.putExtra("install_type", installType);
             startActivity(intent);
         } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, RequestCode.Permission.CAMERA_PERMISSION);
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, RequestCode.Permission.CAMERA_PERMISSION);
         }
+
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RequestCode.Permission.CAMERA_PERMISSION) {
+            if (!PermissionUtils.getInstance().hasPermission(getActivity(), Manifest.permission.CAMERA)) {
+                PermissionUtils.getInstance().showPermissionDialog(getActivity(),
+                        Manifest.permission.CAMERA, "拍照", new PermissionUtils.OnPermissionListener() {
+                            @Override
+                            public void onCancel() {
+
+                            }
+
+                            @Override
+                            public void onReQuest() {
+                                if (PermissionUtils.getInstance().hasPermission(getActivity(), Manifest.permission.CAMERA)) {
+                                    Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
+                                    intent.putExtra("type", 1);
+                                    intent.putExtra("install_type", installType);
+                                    startActivity(intent);
+                                } else {
+                                    requestPermissions(new String[]{Manifest.permission.CAMERA}, RequestCode.Permission.CAMERA_PERMISSION);
+                                }
+                            }
+                        });
+            } else {
+                Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
+                intent.putExtra("type", 1);
+                intent.putExtra("install_type", installType);
+                startActivity(intent);
+            }
+        }
+    }
 
     /**
      * 模块开发中

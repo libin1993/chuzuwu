@@ -22,11 +22,14 @@ import com.tdr.rentalhouse.base.BaseView;
 import com.tdr.rentalhouse.base.RequestCode;
 import com.tdr.rentalhouse.bean.CommunityBean;
 import com.tdr.rentalhouse.bean.HouseInfoBean;
+import com.tdr.rentalhouse.bean.SelfBuildingDeviceBean;
+import com.tdr.rentalhouse.bean.UnitListBean;
 import com.tdr.rentalhouse.inter.PopupOnClickListener;
 import com.tdr.rentalhouse.mvp.addaddress.AddAddressActivity;
 import com.tdr.rentalhouse.mvp.addunit.AddUnitActivity;
 import com.tdr.rentalhouse.mvp.communitydetail.CommunityDetailActivity;
 import com.tdr.rentalhouse.mvp.editunit.EditUnitActivity;
+import com.tdr.rentalhouse.mvp.firecontrolbuilding.BuildingActivity;
 import com.tdr.rentalhouse.mvp.house.ManageHouseActivity;
 import com.tdr.rentalhouse.utils.FastClickUtils;
 import com.tdr.rentalhouse.utils.FormatUtils;
@@ -65,12 +68,18 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
     RecyclerView rvAddress;
     @BindView(R.id.tv_to_community)
     TextView tvToCommunity;
-    private List<CommunityBean.DataBean.ListBean> dataList = new ArrayList<>();
-    private BaseQuickAdapter<CommunityBean.DataBean.ListBean, BaseViewHolder> adapter;
+    private List<UnitListBean> dataList = new ArrayList<>();
+    private BaseQuickAdapter<UnitListBean, BaseViewHolder> adapter;
 
     private int id;
     private int type;
-    private CommunityBean.DataBean dataBean;
+    //报装类型  1：出租屋  2：消防
+    private int installType = 1;
+
+    private String communityName;
+    private String areaNumber;
+    private String img;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,6 +102,7 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
         Intent intent = getIntent();
         id = intent.getIntExtra("id", 0);
         type = intent.getIntExtra("type", 0);
+        installType = getIntent().getIntExtra("install_type", 1);
     }
 
     @Override
@@ -102,7 +112,12 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
 
     private void initData() {
         LoadingUtils.getInstance().showLoading(this, "加载中");
-        mPresenter.getCommunityInfo(RequestCode.NetCode.COMMUNITY_INFO, id);
+        if (installType == 1){
+            mPresenter.getCommunityInfo(RequestCode.NetCode.COMMUNITY_INFO, id);
+        }else if (installType == 2){
+            mPresenter.getFireControlCommunity(RequestCode.NetCode.SELF_BUILDING_DEVICE, id);
+        }
+
     }
 
     private void initView() {
@@ -112,14 +127,17 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
             ivTitleMore.setVisibility(View.VISIBLE);
             tvToCommunity.setVisibility(View.GONE);
         }else {
-            tvToCommunity.setVisibility(View.VISIBLE);
+            if (installType == 1){
+                tvToCommunity.setVisibility(View.VISIBLE);
+            }
         }
+
 
         rvAddress.setLayoutManager(new LinearLayoutManager(this));
         rvAddress.addItemDecoration(new RVDividerItemDecoration(this, FormatUtils.getInstance().dp2px(12), 1));
-        adapter = new BaseQuickAdapter<CommunityBean.DataBean.ListBean, BaseViewHolder>(R.layout.layout_rv_community_item, dataList) {
+        adapter = new BaseQuickAdapter<UnitListBean, BaseViewHolder>(R.layout.layout_rv_community_item, dataList) {
             @Override
-            protected void convert(BaseViewHolder helper, CommunityBean.DataBean.ListBean item) {
+            protected void convert(BaseViewHolder helper, UnitListBean item) {
                 EasySwipeMenuLayout swipeMenuLayout = helper.getView(R.id.esm_community);
                 if (type == 1) {
                     swipeMenuLayout.setCanLeftSwipe(false);
@@ -154,16 +172,23 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
                 switch (view.getId()) {
                     case R.id.tv_building_unit:
                         if (FastClickUtils.isSingleClick()) {
-                            Intent intent = new Intent(CommunityActivity.this, ManageHouseActivity.class);
+                            Intent intent = new Intent();
+                            if (installType == 1){
+                                intent.setClass(CommunityActivity.this,ManageHouseActivity.class);
+                            }else if (installType == 2){
+                                intent.setClass(CommunityActivity.this, BuildingActivity.class);
+                            }
                             HouseInfoBean houseInfoBean = new HouseInfoBean();
                             houseInfoBean.setBuildingType(2);
                             houseInfoBean.setCommunityId(id);
-                            houseInfoBean.setCommunityName(dataBean.getCommunityName());
+                            houseInfoBean.setCommunityName(communityName);
+                            houseInfoBean.setInstallType(installType);
                             houseInfoBean.setBuildingName(dataList.get(position).getBuildingNumber());
                             houseInfoBean.setUnitId(dataList.get(position).getId());
                             houseInfoBean.setUnitName(dataList.get(position).getUnitNumber());
-                            houseInfoBean.setImg(dataBean.getOutlookOne());
+                            houseInfoBean.setImg(img);
                             houseInfoBean.setType(type);
+                            houseInfoBean.setAreaNumber(areaNumber);
                             intent.putExtra("house", houseInfoBean);
                             startActivity(intent);
                         }
@@ -230,14 +255,19 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
     public void onSuccess(int what, Object object) {
         switch (what) {
             case RequestCode.NetCode.COMMUNITY_INFO:
-                dataBean = (CommunityBean.DataBean) object;
+                CommunityBean.DataBean dataBean = (CommunityBean.DataBean) object;
                 if (dataBean != null) {
-                    addHeader();
+                    img = dataBean.getOutlookOne();
+                    communityName = dataBean.getCommunityName();
+                    addHeader(Api.IMG_HOST+dataBean.getOutlookOne(),dataBean.getCommunityName(),dataBean.getAddress());
 
                     List<CommunityBean.DataBean.ListBean> list = dataBean.getList();
                     dataList.clear();
                     if (ObjectUtils.getInstance().isNotNull(list)) {
-                        dataList.addAll(list);
+                        for (CommunityBean.DataBean.ListBean listBean : list) {
+                            UnitListBean unitListBean = new UnitListBean(listBean.getId(),listBean.getBuildingNumber(),listBean.getUnitNumber());
+                            dataList.add(unitListBean);
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 }
@@ -245,20 +275,40 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
             case RequestCode.NetCode.DELETE_UNIT:
                 initData();
                 break;
+            case RequestCode.NetCode.SELF_BUILDING_DEVICE:
+                SelfBuildingDeviceBean.DataBean communityBean = ( SelfBuildingDeviceBean.DataBean) object;
+                if (communityBean != null) {
+
+                    img = communityBean.getOutlookOne();
+                    communityName = communityBean.getCommunityName();
+                    areaNumber = communityBean.getRDNumber();
+                    addHeader(Api.IMG_HOST+communityBean.getOutlookOne(),communityBean.getCommunityName(),communityBean.getAddress());
+
+                    List< SelfBuildingDeviceBean.DataBean.UnitListBean> list = communityBean.getUnitList();
+                    dataList.clear();
+                    if (ObjectUtils.getInstance().isNotNull(list)) {
+                        for (SelfBuildingDeviceBean.DataBean.UnitListBean listBean : list) {
+                            UnitListBean unitListBean = new UnitListBean(listBean.getId(),listBean.getBuildingNumber(),listBean.getUnitNumber());
+                            dataList.add(unitListBean);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+                break;
         }
 
     }
 
-    private void addHeader() {
+    private void addHeader(String img,String communityName,String address) {
         adapter.removeAllHeaderView();
 
         View view = LayoutInflater.from(this).inflate(R.layout.layout_manager_address_header, null);
         SimpleDraweeView iv = view.findViewById(R.id.iv_estate);
         TextView tvName = view.findViewById(R.id.tv_estate_name);
         TextView tvAddress = view.findViewById(R.id.tv_estate_address);
-        iv.setImageURI(Api.IMG_HOST + dataBean.getOutlookOne());
-        tvName.setText(dataBean.getCommunityName());
-        tvAddress.setText(dataBean.getAddress());
+        iv.setImageURI(img);
+        tvName.setText(communityName);
+        tvAddress.setText(address);
 
         adapter.addHeaderView(view);
         view.setOnClickListener(new View.OnClickListener() {

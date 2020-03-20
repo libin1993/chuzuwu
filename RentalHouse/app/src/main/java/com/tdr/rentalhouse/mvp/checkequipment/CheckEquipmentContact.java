@@ -20,8 +20,9 @@ public class CheckEquipmentContact {
 
         void isEquipmentBind(int what, Long equipmentNumber, Long equipmentType,int businessTye,int floorId, int roomId);
 
-        void deviceType(int what, String code);
+        void deviceType(int what, String equipmentNumber,String equipmentType,int unitId);
 
+        void installDevice(int what, Map<String, Object> map);
 
 
     }

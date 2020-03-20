@@ -91,13 +91,13 @@ public class CheckEquipmentPresenter extends BasePresenterImpl<BaseView> impleme
     }
 
     @Override
-    public void deviceType(final int what, String code) {
+    public void deviceType(final int what, String equipmentNumber, String equipmentType, int unitId) {
         if (!isViewAttached())
             return;
 
         RetrofitUtils.getInstance()
                 .getService()
-                .deviceType(code)
+                .deviceType(equipmentNumber,equipmentType,unitId)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new RxObserver(new Callback<BaseBean>() {
                     @Override
@@ -112,5 +112,29 @@ public class CheckEquipmentPresenter extends BasePresenterImpl<BaseView> impleme
                     }
                 }));
     }
+
+    @Override
+    public void installDevice(final int what, Map<String, Object> map) {
+        if (!isViewAttached())
+            return;
+
+        RetrofitUtils.getInstance()
+                .getService()
+                .installDevice(map)
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new RxObserver(new Callback<BaseBean>() {
+                    @Override
+                    public void onSuccess(BaseBean baseBean) {
+                        getView().onSuccess(what, null);
+                    }
+
+                    @Override
+                    public void onFail(String msg) {
+                        getView().hideLoading();
+                        getView().onFail(what, msg);
+                    }
+                }));
+    }
+
 
 }

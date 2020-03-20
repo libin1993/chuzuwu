@@ -9,11 +9,16 @@
         android:layout_height="53dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/red_e93"/>
 
         <TextView
             android:layout_width="95dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
             android:text="房东姓名"
             android:textColor="@color/gray_55"
             android:textSize="14sp"/>
@@ -44,11 +49,16 @@
         android:layout_height="53dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/red_e93"/>
 
         <TextView
             android:layout_width="95dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
             android:text="身份证号"
             android:textColor="@color/gray_55"
             android:textSize="14sp"/>
@@ -81,11 +91,16 @@
         android:layout_height="53dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/red_e93"/>
 
         <TextView
             android:layout_width="95dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
             android:text="联系方式"
             android:textColor="@color/gray_55"
             android:textSize="14sp"/>
@@ -118,11 +133,16 @@
         android:layout_height="53dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/red_e93"/>
 
         <TextView
             android:layout_width="95dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
             android:text="所属业务类型"
             android:textColor="@color/gray_55"
             android:textSize="14sp"/>
@@ -159,6 +179,8 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
+
+
         <TextView
             android:layout_width="95dp"
             android:layout_height="wrap_content"
@@ -192,11 +214,16 @@
         android:layout_height="53dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/red_e93"/>
 
         <TextView
             android:layout_width="95dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
             android:text="房屋经纬度"
             android:textColor="@color/gray_55"
             android:textSize="14sp"/>

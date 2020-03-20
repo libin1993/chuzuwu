@@ -42,6 +42,7 @@ import com.tdr.rentalhouse.bean.AddAddressBean;
 import com.tdr.rentalhouse.bean.CommunityDetailBean;
 import com.tdr.rentalhouse.bean.HouseBean;
 import com.tdr.rentalhouse.bean.HouseInfoBean;
+import com.tdr.rentalhouse.bean.LastAddressBean;
 import com.tdr.rentalhouse.bean.LocationBean;
 import com.tdr.rentalhouse.bean.PictureBean;
 import com.tdr.rentalhouse.inter.PopupOnClickListener;
@@ -461,7 +462,8 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
                 }
                 break;
             case R.id.tv_title_more:
-
+                LoadingUtils.getInstance().showLoading(AddAddressActivity.this,"加载中");
+                mPresenter.getLastAddress(RequestCode.NetCode.LAST_ADDRESS);
                 break;
         }
     }
@@ -586,6 +588,7 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
                 .circleDimmedLayer(false)// 是否圆形裁剪 true or false
                 .showCropGrid(false)
                 .minimumCompressSize(100)// 小于100kb的图片不压缩
+                .cropCompressQuality(60)
                 .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
                 .isDragFrame(true)// 是否可拖动裁剪框(固定)
                 .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
@@ -779,6 +782,28 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
                     intent.putExtra("house", houseInfoBean);
                     startActivity(intent);
                     finish();
+                }
+                break;
+            case RequestCode.NetCode.LAST_ADDRESS:
+                LastAddressBean.DataBean dataBean1 = (LastAddressBean.DataBean) object;
+                if (dataBean1 !=null){
+                    cityCode = dataBean1.getCityCode();
+                    areaCode = dataBean1.getCountyCode();
+                    streetCode = dataBean1.getStreetcodeCode();
+                    communityCode = dataBean1.getCommunityCode();
+                    tvSelectAddress.setText(dataBean1.getCityName()+dataBean1.getCountyName()
+                            +dataBean1.getStreetcodeName()+dataBean1.getCommunityName());
+                    tvSelectBuildingType.setText(null);
+                    etAreaName.setText(null);
+                    etAreaNo.setText(null);
+                    tvLocation.setText(null);
+                    locationBean = null;
+                    llAreaName.setVisibility(View.GONE);
+                    viewAreaName.setVisibility(View.GONE);
+                    pictureList.clear();
+                    pictureBeanList.clear();
+                    adapter.notifyDataSetChanged();
+
                 }
                 break;
         }

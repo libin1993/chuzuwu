@@ -20,5 +20,9 @@ public class SelectAddressContact {
         void getHouseInfo(int what, int id);
 
         void getCommunityInfo(int what, int id);
+
+        void getCommunityDetail(int what, int id);
+
+        void searchAddress(int what, Map<String, Object> map);
     }
 }

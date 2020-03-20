@@ -35,6 +35,35 @@ public class HouseInfoBean implements Serializable {
 
     private String addressCode;
     private int businessType;
+    private int installPosition;
+
+    public int getInstallPosition() {
+        return installPosition;
+    }
+
+    public void setInstallPosition(int installPosition) {
+        this.installPosition = installPosition;
+    }
+
+    private List<String>  devicePicture;
+
+    public List<String> getDevicePicture() {
+        return devicePicture;
+    }
+
+    public void setDevicePicture(List<String> devicePicture) {
+        this.devicePicture = devicePicture;
+    }
+
+    public int getInstallType() {
+        return installType;
+    }
+
+    public void setInstallType(int installType) {
+        this.installType = installType;
+    }
+
+    private int installType;
 
     public int getBusinessType() {
         return businessType;

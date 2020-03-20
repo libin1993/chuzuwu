@@ -35,7 +35,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.tdr.rentalhouse.R;
 import com.tdr.rentalhouse.bean.BusinessTypeBean;
-import com.tdr.rentalhouse.mvp.addaddress.AddAddressActivity;
 import com.tdr.rentalhouse.mvp.communitydetail.CommunityDetailActivity;
 import com.tdr.rentalhouse.mvp.scancode.ScanQRCodeActivity;
 import com.tdr.rentalhouse.base.Api;
@@ -463,7 +462,7 @@ public class BindHouseActivity extends BaseMvpActivity<BindHouseContact.Presente
      */
     private void updateRoomName(final int position) {
         final PopupWindow mPopupWindow = new PopupWindow();
-        View mPopBackView = LayoutInflater.from(this).inflate(R.layout.ppw_update_room, null);
+        View mPopBackView = LayoutInflater.from(this).inflate(R.layout.popup_update_room, null);
 
         //设置Popup具体控件
         TextView tvCancel = mPopBackView.findViewById(R.id.tv_cancel_update);

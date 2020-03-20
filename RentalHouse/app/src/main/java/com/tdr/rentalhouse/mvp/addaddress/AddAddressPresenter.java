@@ -7,6 +7,7 @@ import com.tdr.rentalhouse.base.RxObserver;
 import com.tdr.rentalhouse.base.Transformer;
 import com.tdr.rentalhouse.bean.AddAddressBean;
 import com.tdr.rentalhouse.bean.HouseBean;
+import com.tdr.rentalhouse.bean.LastAddressBean;
 import com.tdr.rentalhouse.inter.Callback;
 import com.tdr.rentalhouse.utils.RetrofitUtils;
 
@@ -106,6 +107,31 @@ public class AddAddressPresenter extends BasePresenterImpl<BaseView> implements 
                     public void onSuccess(HouseBean houseBean) {
                         getView().hideLoading();
                         getView().onSuccess(what, houseBean.getData());
+                    }
+
+                    @Override
+                    public void onFail(String msg) {
+                        getView().hideLoading();
+                        getView().onFail(what, msg);
+                    }
+                }));
+    }
+
+    @Override
+    public void getLastAddress(final int what) {
+        if (!isViewAttached())
+            return;
+
+        RetrofitUtils.getInstance()
+                .getService()
+                .getLastAddress()
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new RxObserver(new Callback<LastAddressBean>() {
+
+                    @Override
+                    public void onSuccess(LastAddressBean lastAddressBean) {
+                        getView().hideLoading();
+                        getView().onSuccess(what, lastAddressBean.getData());
                     }
 
                     @Override

@@ -87,6 +87,8 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
 
     private MyHandler myHandler = new MyHandler(this);
     private int type;
+    //报装类型  1：出租屋  2：消防
+    private int installType = 0;
 
     @Override
     protected ScanCodePresenter initPresenter() {
@@ -106,7 +108,7 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
 
     private void getData() {
         type = getIntent().getIntExtra("type", 0);
-
+        installType = getIntent().getIntExtra("install_type", 0);
     }
 
 
@@ -341,6 +343,7 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
                                 PopupWindowUtils.getInstance().dismiss();
                                 Intent intent = new Intent(ScanQRCodeActivity.this, AddAddressActivity.class);
                                 intent.putExtra("type", 1);
+                                intent.putExtra("install_type", installType);
                                 startActivity(intent);
                                 finish();
                             }
@@ -402,6 +405,7 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
                 case R.id.tv_select:
                     Intent intent = new Intent(ScanQRCodeActivity.this, SelectAddressActivity.class);
                     intent.putExtra("type", 1);
+                    intent.putExtra("install_type", installType);
                     startActivity(intent);
                     finish();
 

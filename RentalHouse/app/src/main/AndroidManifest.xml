@@ -104,6 +104,10 @@
         <activity android:name=".mvp.editroom.EditRoomActivity"/>
         <activity android:name=".ui.InstallDocActivity"/>
         <activity android:name=".mvp.city.CityActivity"/>
+        <activity android:name=".mvp.firecontrolbuilding.BuildingActivity" />
+        <activity android:name=".mvp.devicelist.DeviceListActivity" />
+        <activity android:name=".mvp.devicedetail.DeviceDetailActivity" />
+        <activity android:name=".mvp.installotherdevice.OtherDeviceActivity" />
 
         <service
             android:name="com.inuker.bluetooth.library.BluetoothService" />

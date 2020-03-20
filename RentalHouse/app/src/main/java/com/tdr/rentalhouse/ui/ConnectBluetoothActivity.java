@@ -106,16 +106,30 @@ public class ConnectBluetoothActivity extends BaseActivity {
     private void initView() {
         StatusBarUtils.getInstance().setStatusBarHeight(viewStatusBar);
         tvTitleName.setText("设备安装");
-        if (houseInfoBean.getBuildingType() == 1 || houseInfoBean.getBuildingType() == 4) {
-            tvNameRoom.setText(houseInfoBean.getRoomName());
-        } else {
-            String address = houseInfoBean.getCommunityName() + "/" + houseInfoBean.getBuildingName() + "幢/";
-            if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
-                address += houseInfoBean.getUnitName() + "单元/";
+        if (houseInfoBean.getInstallType() == 1){
+            if (houseInfoBean.getBuildingType() == 1 || houseInfoBean.getBuildingType() == 4) {
+                tvNameRoom.setText(houseInfoBean.getRoomName());
+            } else {
+                String address = houseInfoBean.getCommunityName() + "/" + houseInfoBean.getBuildingName() + "幢/";
+                if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
+                    address += houseInfoBean.getUnitName() + "单元/";
+                }
+                address += houseInfoBean.getFloorName() + "层/" + houseInfoBean.getHouseName() + "室/" + houseInfoBean.getRoomName();
+                tvNameRoom.setText(address);
             }
-            address += houseInfoBean.getFloorName() + "层/" + houseInfoBean.getHouseName() + "室/" + houseInfoBean.getRoomName();
-            tvNameRoom.setText(address);
+        }else if (houseInfoBean.getInstallType() == 2){
+            if (houseInfoBean.getBuildingType() == 1 || houseInfoBean.getBuildingType() == 4) {
+                tvNameRoom.setText(houseInfoBean.getHouseName());
+            } else {
+                String address = houseInfoBean.getCommunityName() + "/" + houseInfoBean.getBuildingName() + "幢/";
+                if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
+                    address += houseInfoBean.getUnitName() + "单元/";
+                }
+                address += houseInfoBean.getHouseName();
+                tvNameRoom.setText(address);
+            }
         }
+
         etBluetoothName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -449,9 +463,4 @@ public class ConnectBluetoothActivity extends BaseActivity {
         }
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        unNotifyBluetooth();
-//        super.onDestroy();
-//    }
 }

@@ -30,15 +30,19 @@ public class HistoryAddress {
     @Property(nameInDb = "user_id")
     private int user_id;
 
-    @Generated(hash = 589206698)
+    @Property(nameInDb = "install_type")
+    private int install_type;
+
+    @Generated(hash = 1889585393)
     public HistoryAddress(Long id, int community_id, String address,
-            int building_type, int floor_id, int user_id) {
+            int building_type, int floor_id, int user_id, int install_type) {
         this.id = id;
         this.community_id = community_id;
         this.address = address;
         this.building_type = building_type;
         this.floor_id = floor_id;
         this.user_id = user_id;
+        this.install_type = install_type;
     }
 
     @Generated(hash = 401529754)
@@ -92,6 +96,15 @@ public class HistoryAddress {
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
+
+    public int getInstall_type() {
+        return this.install_type;
+    }
+
+    public void setInstall_type(int install_type) {
+        this.install_type = install_type;
+    }
+
 
 
 

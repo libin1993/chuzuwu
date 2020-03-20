@@ -38,8 +38,10 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.tdr.rentalhouse.bean.HouseBean;
 import com.tdr.rentalhouse.bean.HouseInfoBean;
 import com.tdr.rentalhouse.bean.RoomListBean;
+import com.tdr.rentalhouse.bean.SelfBuildingDeviceBean;
 import com.tdr.rentalhouse.inter.PopupOnClickListener;
 import com.tdr.rentalhouse.mvp.bindhouse.BindHouseActivity;
+import com.tdr.rentalhouse.mvp.devicelist.DeviceListActivity;
 import com.tdr.rentalhouse.mvp.houseinfo.HouseInfoActivity;
 import com.tdr.rentalhouse.base.BaseView;
 import com.tdr.rentalhouse.mvp.community.CommunityActivity;
@@ -119,8 +121,12 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
 
     //0:采集  1：安装
     private int type;
+    //报装类型  1：出租屋  2：消防
+    private int installType = 1;
 
     private int communityId;
+
+    private int buildingType;
 
 
     @Override
@@ -139,6 +145,7 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
 
     private void getData() {
         type = getIntent().getIntExtra("type", 0);
+        installType = getIntent().getIntExtra("install_type", 1);
     }
 
 
@@ -189,7 +196,7 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
      */
     private void initHistory() {
         historyAddressList.clear();
-        List<HistoryAddress> query = SQLiteUtils.getInstance().query();
+        List<HistoryAddress> query = SQLiteUtils.getInstance().query(installType);
         if (ObjectUtils.getInstance().isNotNull(query)) {
             historyAddressList.addAll(query);
         }
@@ -220,6 +227,7 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
                     saveHistoryAddress(dataBean);
                     initHistory();
                     communityId = dataBean.getId();
+                    buildingType = dataBean.getArchitecturalTypes();
                     toHouse(dataBean.getArchitecturalTypes(), dataBean.getFloorId());
                 }
 
@@ -244,6 +252,7 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
                 if (FastClickUtils.isSingleClick()) {
                     HistoryAddress historyAddress = historyAddressList.get(position);
                     communityId = historyAddress.getCommunity_id();
+                    buildingType = historyAddress.getBuilding_type();
                     toHouse(historyAddress.getBuilding_type(), historyAddress.getFloor_id());
                 }
             }
@@ -288,7 +297,12 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
                     LoadingUtils.getInstance().showLoading(SelectAddressActivity.this, "加载中");
                     Map<String, Object> map = new HashMap<>();
                     map.put("SearchTxt", v.getText().toString().trim());
-                    mPresenter.findAddress(RequestCode.NetCode.FIND_ADDRESS, map);
+                    if (installType ==1){
+                        mPresenter.findAddress(RequestCode.NetCode.FIND_ADDRESS, map);
+                    }else if (installType == 2){
+                        mPresenter.searchAddress(RequestCode.NetCode.SEARCH_ADDRESS, map);
+                    }
+
                     return true;
                 }
                 return false;
@@ -330,6 +344,7 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
         historyAddress.setBuilding_type(dataBean.getArchitecturalTypes());
         historyAddress.setFloor_id(dataBean.getFloorId() != null && (dataBean.getArchitecturalTypes() == 1
                 || dataBean.getArchitecturalTypes() == 4) ? dataBean.getFloorId() : 0);
+        historyAddress.setInstall_type(installType);
         SQLiteUtils.getInstance().insert(historyAddress);
     }
 
@@ -340,11 +355,14 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
      */
     private void toHouse(int buildingType, Integer floorId) {
         LoadingUtils.getInstance().showLoading(this, "加载中");
-        if (buildingType == 1 || buildingType == 4) {
-            mPresenter.getHouseInfo(RequestCode.NetCode.HOUSE_INFO, floorId != null ? floorId : 0);
-
-        } else {
-            mPresenter.getCommunityInfo(RequestCode.NetCode.COMMUNITY_INFO, communityId);
+        if (installType ==1){
+            if (buildingType == 1 || buildingType == 4) {
+                mPresenter.getHouseInfo(RequestCode.NetCode.HOUSE_INFO, floorId != null ? floorId : 0);
+            } else {
+                mPresenter.getCommunityInfo(RequestCode.NetCode.COMMUNITY_INFO, communityId);
+            }
+        }else if (installType == 2){
+            mPresenter.getCommunityDetail(RequestCode.NetCode.SELF_BUILDING_DEVICE, communityId);
         }
 
     }
@@ -507,7 +525,12 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
         Map<String, Object> map = new HashMap<>();
         map.put("Longitude", aMapLocation.getLongitude());
         map.put("Latitude", aMapLocation.getLatitude());
-        mPresenter.findAddress(RequestCode.NetCode.FIND_NEARBY_ADDRESS, map);
+        if (installType == 1){
+            mPresenter.findAddress(RequestCode.NetCode.FIND_NEARBY_ADDRESS, map);
+        }else if (installType == 2){
+            mPresenter.searchAddress(RequestCode.NetCode.SEARCH_NEARBY_ADDRESS, map);
+        }
+
     }
 
     @Override
@@ -515,6 +538,7 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
         switch (what) {
 
             case RequestCode.NetCode.FIND_ADDRESS:
+            case RequestCode.NetCode.SEARCH_ADDRESS:
                 List<FindAddressBean.DataBean> dataBeanList = (List<FindAddressBean.DataBean>) object;
 
                 findAddressList.clear();
@@ -542,6 +566,7 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
                 findAddressAdapter.notifyDataSetChanged();
                 break;
             case RequestCode.NetCode.FIND_NEARBY_ADDRESS:
+            case RequestCode.NetCode.SEARCH_NEARBY_ADDRESS:
                 List<FindAddressBean.DataBean> addressList = (List<FindAddressBean.DataBean>) object;
 
                 findAddressList.clear();
@@ -554,14 +579,19 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
             case RequestCode.NetCode.HOUSE_INFO:
                 HouseBean.DataBean dataBean = (HouseBean.DataBean) object;
                 if (dataBean != null) {
-                    Intent intent;
+                    Intent intent = new Intent();
                     if (type == 1) {
-                        intent = new Intent(SelectAddressActivity.this, RoomInfoActivity.class);
+                        if (installType == 1){
+                            intent.setClass(SelectAddressActivity.this,RoomInfoActivity.class);
+                        }else if (installType == 2){
+                            intent.setClass(SelectAddressActivity.this, DeviceListActivity.class);
+                        }
+
                     } else {
                         if (TextUtils.isEmpty(dataBean.getLandlordName())) {
-                            intent = new Intent(SelectAddressActivity.this, BindHouseActivity.class);
+                            intent.setClass(SelectAddressActivity.this, BindHouseActivity.class);
                         } else {
-                            intent = new Intent(SelectAddressActivity.this, HouseInfoActivity.class);
+                            intent.setClass(SelectAddressActivity.this, HouseInfoActivity.class);
                         }
                     }
 
@@ -570,6 +600,8 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
                     houseInfoBean.setAreaNumber(dataBean.getRDNumber());
                     houseInfoBean.setBuildingType(dataBean.getArchitecturalTypes());
                     houseInfoBean.setCommunityId(communityId);
+                    houseInfoBean.setInstallType(installType);
+
                     houseInfoBean.setImg(dataBean.getOutlookOne());
                     houseInfoBean.setCityName(dataBean.getCityName());
                     houseInfoBean.setAreaName(dataBean.getAreaName());
@@ -584,9 +616,36 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
             case RequestCode.NetCode.COMMUNITY_INFO:
                 Intent intent = new Intent(SelectAddressActivity.this, CommunityActivity.class);
                 intent.putExtra("type", type);
+                intent.putExtra("install_type", installType);
                 intent.putExtra("id", communityId);
                 startActivity(intent);
                 break;
+            case RequestCode.NetCode.SELF_BUILDING_DEVICE:
+                if (buildingType == 2 || buildingType ==3){
+                    Intent intent1 = new Intent(SelectAddressActivity.this, CommunityActivity.class);
+                    intent1.putExtra("type", type);
+                    intent1.putExtra("install_type", installType);
+                    intent1.putExtra("id", communityId);
+                    startActivity(intent1);
+                }else {
+                    Intent intent1 = new Intent(SelectAddressActivity.this, DeviceListActivity.class);
+                    SelfBuildingDeviceBean.DataBean buildingBean  = (SelfBuildingDeviceBean.DataBean) object;
+                    HouseInfoBean houseInfoBean = new HouseInfoBean();
+                    houseInfoBean.setCommunityName(buildingBean.getCommunityName());
+                    houseInfoBean.setAreaNumber(buildingBean.getRDNumber());
+                    houseInfoBean.setLandlordName(buildingBean.getLandlordName());
+                    houseInfoBean.setPhone(buildingBean.getPhone());
+                    houseInfoBean.setType(type);
+                    houseInfoBean.setCommunityId(communityId);
+                    houseInfoBean.setInstallType(installType);
+                    houseInfoBean.setBuildingType(buildingType);
+
+                    intent1.putExtra("house", houseInfoBean);
+                    startActivity(intent1);
+                }
+
+                break;
+
         }
 
     }
@@ -597,7 +656,7 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
             case RequestCode.NetCode.FIND_ADDRESS:
             case RequestCode.NetCode.HOUSE_INFO:
             case RequestCode.NetCode.COMMUNITY_INFO:
-
+            case RequestCode.NetCode.SELF_BUILDING_DEVICE:
                 PopupWindowUtils.getInstance().showPopWindow(SelectAddressActivity.this,
                         "房屋未采集，是否进行地址采集？", "确定", new PopupOnClickListener() {
                             @Override

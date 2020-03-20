@@ -14,6 +14,8 @@ public class CommunityContact {
     interface Presenter extends BasePresenter<BaseView> {
         void getCommunityInfo(int what, int id);
 
+        void getFireControlCommunity(int what, int id);
+
         void deleteUnit(int what, int id);
     }
 }

@@ -3,6 +3,7 @@ package com.tdr.rentalhouse.utils;
 
 import com.tdr.rentalhouse.application.MyApplication;
 import com.tdr.rentalhouse.base.Api;
+import com.tdr.rentalhouse.base.BaseUrlInterceptor;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class RetrofitUtils {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cache(cache)
                 .addInterceptor(getInterceptor())
+                .addInterceptor(new BaseUrlInterceptor())  //切换baseurl
                 .connectTimeout(90, TimeUnit.SECONDS)
                 .readTimeout(90, TimeUnit.SECONDS)
                 .writeTimeout(90, TimeUnit.SECONDS)

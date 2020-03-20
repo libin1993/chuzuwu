@@ -53,9 +53,10 @@ public class SQLiteUtils {
      *
      * @return
      */
-    public List<HistoryAddress> query() {
+    public List<HistoryAddress> query(int installType) {
         return historyAddressDao.queryBuilder().where(HistoryAddressDao.Properties.User_id.eq(
-                SPUtils.getInstance().getAccountId())).orderDesc(HistoryAddressDao.Properties.Id).limit(5).list();
+                SPUtils.getInstance().getAccountId()),HistoryAddressDao.Properties.Install_type
+                .eq(installType)).orderDesc(HistoryAddressDao.Properties.Id).limit(5).list();
     }
 
     public HistoryAddress queryAddress(int communityId) {
