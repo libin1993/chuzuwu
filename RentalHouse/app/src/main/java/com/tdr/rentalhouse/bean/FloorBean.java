@@ -28,6 +28,15 @@ public class FloorBean extends BaseBean<FloorBean.DataBean> {
         private String FloorNumber;
         private String HouseNumber;
         private List<FloorListBean> floorList;
+        private int UnitId;
+
+        public int getUnitId() {
+            return UnitId;
+        }
+
+        public void setUnitId(int unitId) {
+            UnitId = unitId;
+        }
 
         public String getAreaName() {
             return AreaName;

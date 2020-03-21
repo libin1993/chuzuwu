@@ -359,7 +359,7 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
             if (buildingType == 1 || buildingType == 4) {
                 mPresenter.getHouseInfo(RequestCode.NetCode.HOUSE_INFO, floorId != null ? floorId : 0);
             } else {
-                mPresenter.getCommunityInfo(RequestCode.NetCode.COMMUNITY_INFO, communityId);
+                mPresenter.getCommunityInfo(RequestCode.NetCode.COMMUNITY_INFO, communityId,null);
             }
         }else if (installType == 2){
             mPresenter.getCommunityDetail(RequestCode.NetCode.SELF_BUILDING_DEVICE, communityId);
@@ -417,11 +417,13 @@ public class SelectAddressActivity extends BaseMvpActivity<SelectAddressContact.
 
 
         for (FindAddressBean.DataBean dataBean : findAddressList) {
-            MarkerOptions markerOption = new MarkerOptions().anchor(0.5f, 1.0f)
-                    .position(new LatLng(Double.parseDouble(dataBean.getLatitude()), Double.parseDouble(dataBean.getLongitude())))
-                    .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_map_mark)))
-                    .setFlat(true);//设置marker平贴地图效果
-            markerOptionList.add(markerOption);
+            if (dataBean !=null && !TextUtils.isEmpty(dataBean.getLatitude())){
+                MarkerOptions markerOption = new MarkerOptions().anchor(0.5f, 1.0f)
+                        .position(new LatLng(Double.parseDouble(dataBean.getLatitude()), Double.parseDouble(dataBean.getLongitude())))
+                        .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_map_mark)))
+                        .setFlat(true);//设置marker平贴地图效果
+                markerOptionList.add(markerOption);
+            }
         }
 
 

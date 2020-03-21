@@ -31,6 +31,7 @@ import com.tdr.rentalhouse.mvp.houseinfo.HouseInfoActivity;
 import com.tdr.rentalhouse.mvp.roomlist.RoomInfoActivity;
 import com.tdr.rentalhouse.utils.FastClickUtils;
 import com.tdr.rentalhouse.utils.LoadingUtils;
+import com.tdr.rentalhouse.utils.LogUtils;
 import com.tdr.rentalhouse.utils.ObjectUtils;
 import com.tdr.rentalhouse.utils.StatusBarUtils;
 import com.tdr.rentalhouse.utils.ToastUtils;
@@ -69,6 +70,7 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
     private BaseSectionQuickAdapter<SectionBean, BaseViewHolder> adapter;
     private List<SectionBean> dataList = new ArrayList<>();
 
+
     @Override
     protected ManageHouseContact.Presenter initPresenter() {
         return new ManageHousePresenter();
@@ -82,6 +84,7 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
         getData();
         initView();
         initData();
+
     }
 
     @Override
@@ -96,7 +99,7 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
 
     private void initData() {
         LoadingUtils.getInstance().showLoading(this, "加载中");
-        mPresenter.getFloor(RequestCode.NetCode.GET_FLOOR, houseInfoBean.getUnitId());
+        mPresenter.getFloor(RequestCode.NetCode.GET_FLOOR, houseInfoBean.getUnitId(),houseInfoBean.getGuid());
     }
 
     private void initView() {
@@ -204,16 +207,8 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
                     break;
                 case R.id.tv_to_manage_house:
                     Intent intent1 = new Intent(ManageHouseActivity.this, ManageHouseActivity.class);
-                    HouseInfoBean houseInfo = new HouseInfoBean();
-                    houseInfo.setBuildingType(houseInfoBean.getBuildingType());
-                    houseInfo.setCommunityId(houseInfoBean.getCommunityId());
-                    houseInfo.setCommunityName(houseInfoBean.getCommunityName());
-                    houseInfo.setBuildingName(houseInfoBean.getBuildingName());
-                    houseInfo.setUnitId(houseInfoBean.getUnitId());
-                    houseInfo.setUnitName(houseInfoBean.getUnitName());
-                    houseInfo.setImg(houseInfoBean.getImg());
-                    houseInfo.setType(0);
-                    intent1.putExtra("house", houseInfo);
+                    houseInfoBean.setType(0);
+                    intent1.putExtra("house", houseInfoBean);
                     startActivity(intent1);
                     break;
             }
@@ -225,10 +220,12 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
     public void onSuccess(int what, Object object) {
         switch (what) {
             case RequestCode.NetCode.GET_FLOOR:
+
                 dataList.clear();
-                List<FloorBean.DataBean.FloorListBean> floorList = (List<FloorBean.DataBean.FloorListBean>) object;
-                if (ObjectUtils.getInstance().isNotNull(floorList)) {
-                    for (FloorBean.DataBean.FloorListBean floorListBean : floorList) {
+               FloorBean.DataBean floorBean = (FloorBean.DataBean) object;
+               houseInfoBean.setUnitId(floorBean.getUnitId());
+                if (ObjectUtils.getInstance().isNotNull(floorBean.getFloorList())) {
+                    for (FloorBean.DataBean.FloorListBean floorListBean : floorBean.getFloorList()) {
                         dataList.add(new SectionBean(true, floorListBean.getFloorName()));
                         if (ObjectUtils.getInstance().isNotNull(floorListBean.getHouseList())) {
                             for (FloorBean.DataBean.FloorListBean.HouseListBean houseListBean : floorListBean.getHouseList()) {

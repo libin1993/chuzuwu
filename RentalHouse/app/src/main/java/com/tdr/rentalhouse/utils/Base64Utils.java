@@ -38,6 +38,37 @@ public class Base64Utils {
         return Base64.decode(data.getBytes(), Base64.DEFAULT);
     }
 
+
+    /**
+     * @param data
+     * @return 解码
+     */
+    public static String encodeToString(String data) {
+        try {
+            return Base64.encodeToString(data.getBytes("UTF-8"), Base64.DEFAULT);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+
+    }
+    /**
+     * @param data
+     * @return 解码
+     */
+    public static String decodeToString(String data) {
+        try {
+
+            return new String(Base64.decode(data.getBytes("UTF-8"), Base64.DEFAULT));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+
+    }
+
     /**
      * @param
      * @return

@@ -79,6 +79,7 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
     private String communityName;
     private String areaNumber;
     private String img;
+    private String guid;
 
 
     @Override
@@ -101,6 +102,7 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
     private void getData() {
         Intent intent = getIntent();
         id = intent.getIntExtra("id", 0);
+        guid= intent.getStringExtra("guid");
         type = intent.getIntExtra("type", 0);
         installType = getIntent().getIntExtra("install_type", 1);
     }
@@ -113,7 +115,7 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
     private void initData() {
         LoadingUtils.getInstance().showLoading(this, "加载中");
         if (installType == 1){
-            mPresenter.getCommunityInfo(RequestCode.NetCode.COMMUNITY_INFO, id);
+            mPresenter.getCommunityInfo(RequestCode.NetCode.COMMUNITY_INFO, id,guid);
         }else if (installType == 2){
             mPresenter.getFireControlCommunity(RequestCode.NetCode.SELF_BUILDING_DEVICE, id);
         }
@@ -122,14 +124,17 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
 
     private void initView() {
         StatusBarUtils.getInstance().setStatusBarHeight(viewStatusBar);
-        tvTitleName.setText("地址管理");
+        if (installType == 1){
+            tvTitleName.setText("地址管理");
+        }else if (installType == 2){
+            tvTitleName.setText("单元信息");
+        }
+
         if (type != 1) {
             ivTitleMore.setVisibility(View.VISIBLE);
             tvToCommunity.setVisibility(View.GONE);
         }else {
-            if (installType == 1){
-                tvToCommunity.setVisibility(View.VISIBLE);
-            }
+            tvToCommunity.setVisibility(View.VISIBLE);
         }
 
 
@@ -243,9 +248,19 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
                 break;
             case R.id.tv_to_community:
                 if (FastClickUtils.isSingleClick()) {
-                    Intent intent = new Intent(CommunityActivity.this, CommunityActivity.class);
-                    intent.putExtra("id", id);
-                    startActivity(intent);
+
+                    if (installType == 1){
+                        Intent intent = new Intent(CommunityActivity.this, CommunityActivity.class);
+                        intent.putExtra("id", id);
+                        startActivity(intent);
+                    }else if (installType == 2){
+                        if (!TextUtils.isEmpty(guid)){
+                            Intent intent = new Intent(CommunityActivity.this, CommunityActivity.class);
+                            intent.putExtra("id", id);
+                            intent.putExtra("guid", guid);
+                            startActivity(intent);
+                        }
+                    }
                 }
                     break;
         }
@@ -257,6 +272,7 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
             case RequestCode.NetCode.COMMUNITY_INFO:
                 CommunityBean.DataBean dataBean = (CommunityBean.DataBean) object;
                 if (dataBean != null) {
+                    id = dataBean.getId();
                     img = dataBean.getOutlookOne();
                     communityName = dataBean.getCommunityName();
                     addHeader(Api.IMG_HOST+dataBean.getOutlookOne(),dataBean.getCommunityName(),dataBean.getAddress());
@@ -282,6 +298,7 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
                     img = communityBean.getOutlookOne();
                     communityName = communityBean.getCommunityName();
                     areaNumber = communityBean.getRDNumber();
+                    guid = communityBean.getGuid();
                     addHeader(Api.IMG_HOST+communityBean.getOutlookOne(),communityBean.getCommunityName(),communityBean.getAddress());
 
                     List< SelfBuildingDeviceBean.DataBean.UnitListBean> list = communityBean.getUnitList();

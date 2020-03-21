@@ -10,7 +10,7 @@ import com.tdr.rentalhouse.base.BaseView;
 public class ManageHouseContact {
 
     interface Presenter extends BasePresenter<BaseView> {
-        void getFloor(int what, int id);
+        void getFloor(int what, int id,String guid);
         void getHouseInfo(int what, int id);
     }
 }

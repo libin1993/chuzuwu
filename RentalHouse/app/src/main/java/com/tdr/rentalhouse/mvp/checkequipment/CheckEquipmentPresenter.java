@@ -99,10 +99,10 @@ public class CheckEquipmentPresenter extends BasePresenterImpl<BaseView> impleme
                 .getService()
                 .deviceType(equipmentNumber,equipmentType,unitId)
                 .compose(Transformer.switchSchedulers())
-                .subscribe(new RxObserver(new Callback<BaseBean>() {
+                .subscribe(new RxObserver(new Callback<EquipmentBean>() {
                     @Override
-                    public void onSuccess(BaseBean baseBean) {
-                        getView().onSuccess(what, null);
+                    public void onSuccess(EquipmentBean equipmentBean) {
+                        getView().onSuccess(what, equipmentBean.getData());
                     }
 
                     @Override
@@ -125,6 +125,7 @@ public class CheckEquipmentPresenter extends BasePresenterImpl<BaseView> impleme
                 .subscribe(new RxObserver(new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        getView().hideLoading();
                         getView().onSuccess(what, null);
                     }
 

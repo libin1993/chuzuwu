@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.tdr.rentalhouse.application.MyApplication;
 
+import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -266,6 +267,39 @@ public class FormatUtils {
     }
 
 
+
+
+    /**
+     * 字节转十六进制
+     * @param b 需要进行转换的byte字节
+     * @return  转换后的Hex字符串
+     */
+    public String byteToHex(byte b){
+        String hex = Integer.toHexString(b & 0xFF);
+        if(hex.length() < 2){
+            hex = "0" + hex;
+        }
+        return hex;
+    }
+
+    /**
+     * 字节数组转16进制
+     * @param bytes 需要转换的byte数组
+     * @return  转换后的Hex字符串
+     */
+    public  String bytesToHex(byte[] bytes) {
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i < bytes.length; i++) {
+            String hex = Integer.toHexString(bytes[i] & 0xFF);
+            if(hex.length() < 2){
+                sb.append(0);
+            }
+            sb.append(hex);
+        }
+        return sb.toString().toUpperCase();
+    }
+
+
     /**
      * 验证是否是手机号
      *
@@ -297,6 +331,22 @@ public class FormatUtils {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(str);
         return matcher.matches();
+    }
+
+    public  byte[] subBytes(byte[] src, int begin, int count) {
+        byte[] bs = new byte[count];
+        System.arraycopy(src, begin, bs, 0, count);
+        return bs;
+    }
+
+
+    /**
+     * @param bytes 将byte[]转为各种进制的字符串
+     * @param radix
+     * @return
+     */
+    public  String binary(byte[] bytes, int radix){
+        return new BigInteger(1, bytes).toString(radix);// 这里的1代表正数
     }
 
 

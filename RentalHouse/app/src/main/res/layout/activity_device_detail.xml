@@ -40,10 +40,11 @@
             android:layout_height="140dp"
             android:scaleType="fitCenter"/>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="53dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,6 +54,17 @@
                 android:text="点位信息"
                 android:textColor="@color/gray_33"
                 android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_device_position_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_centerVertical="true"
+                android:textColor="@color/gray_66"
+                android:layout_marginRight="12dp"
+                android:textSize="14sp" />
             <ImageView
                 android:id="@+id/iv_edit_device"
                 android:layout_width="wrap_content"
@@ -60,18 +72,9 @@
                 android:scaleType="fitCenter"
                 android:src="@mipmap/ic_edit_device"
                 android:layout_alignParentRight="true"
-                android:paddingLeft="10dp"
                 android:paddingRight="12dp"/>
 
-            <TextView
-                android:id="@+id/tv_device_position_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:textColor="@color/gray_66"
-                android:textSize="14sp"
-                android:layout_toLeftOf="@id/iv_edit_device" />
-        </RelativeLayout>
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"

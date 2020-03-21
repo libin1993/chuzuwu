@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -46,6 +47,7 @@ import com.tdr.rentalhouse.utils.PermissionUtils;
 import com.tdr.rentalhouse.utils.StatusBarUtils;
 import com.tdr.rentalhouse.utils.ToastUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -101,6 +103,7 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_device);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         getData();
         initView();
     }
@@ -118,7 +121,7 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
         tvTitleMore.setTextColor(ContextCompat.getColor(this,R.color.blue_3e7));
 
 
-        if (houseInfoBean.getBuildingType() == 2 || houseInfoBean.getBuildingType() == 3) {
+        if (houseInfoBean.getHouseId() == -1 ||houseInfoBean.getHouseId() == -2) {
             tvFireControlAddress.setText(houseInfoBean.getCommunityName());
             String address = "楼幢：" + houseInfoBean.getBuildingName() + "幢          ";
             if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
@@ -127,7 +130,11 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
             address += houseInfoBean.getHouseName();
             tvFireControlBuilding.setText(address);
         } else {
-            tvFireControlAddress.setText(houseInfoBean.getAreaNumber());
+            if (houseInfoBean.getBuildingType() ==2 || houseInfoBean.getBuildingType() ==3){
+                tvFireControlAddress.setText(houseInfoBean.getCommunityName());
+            }else {
+                tvFireControlAddress.setText(houseInfoBean.getAreaNumber());
+            }
             tvFireControlBuilding.setText("房东：" + houseInfoBean.getLandlordName() + "          联系电话：" + houseInfoBean.getPhone());
         }
 
@@ -237,6 +244,7 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
         //清除裁剪和压缩后的缓存
         PictureFileUtils.deleteCacheDirFile(this);
@@ -305,12 +313,10 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
         if (result.contains("?X")) {
             String[] split = result.split("\\?");
             String type1 = split[1].substring(2);
-            LogUtils.log(type1);
-            byte[] decode = Base64Utils.decode(type1);
+            String decode = Base64Utils.decodeToString(type1);
 
-            String str = FormatUtils.getInstance().bytes2Hex(decode);
-            if (str.length() == 14) {
-                etDeviceCode.setText(str.substring(0, 4) + Long.parseLong(str.substring(4),16));
+            if (decode.length() == 14) {
+                etDeviceCode.setText(decode);
                 etDeviceCode.setSelection(etDeviceCode.getText().toString().length());
             } else {
                 ToastUtils.getInstance().showToast("当前设备不是消防设施");
@@ -364,7 +370,7 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
 
     @Override
     public void onFail(int what, String msg) {
-        ToastUtils.getInstance().showToast(msg);
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -410,4 +416,5 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
             }
         }
     }
+
 }

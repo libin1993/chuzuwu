@@ -12,7 +12,7 @@ import okhttp3.RequestBody;
 public class CommunityContact {
 
     interface Presenter extends BasePresenter<BaseView> {
-        void getCommunityInfo(int what, int id);
+        void getCommunityInfo(int what, int id,String guid);
 
         void getFireControlCommunity(int what, int id);
 

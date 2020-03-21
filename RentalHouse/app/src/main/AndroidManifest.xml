@@ -98,7 +98,9 @@
         <activity android:name=".mvp.feedback.FeedbackActivity"/>
         <activity android:name=".mvp.roomlist.RoomInfoActivity"/>
         <activity android:name=".ui.ConnectBluetoothActivity"/>
-        <activity android:name=".mvp.checkequipment.CheckEquipmentActivity"/>
+        <activity android:name=".mvp.checkequipment.CheckEquipmentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"/>
         <activity android:name=".mvp.login.LoginActivity"/>
         <activity android:name=".mvp.editunit.EditUnitActivity"/>
         <activity android:name=".mvp.editroom.EditRoomActivity"/>

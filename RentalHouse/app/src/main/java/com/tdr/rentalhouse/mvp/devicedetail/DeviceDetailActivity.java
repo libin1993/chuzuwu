@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.luck.picture.lib.entity.EventEntity;
 import com.tdr.rentalhouse.R;
 import com.tdr.rentalhouse.base.Api;
 import com.tdr.rentalhouse.base.BaseMvpActivity;
@@ -27,6 +28,8 @@ import com.tdr.rentalhouse.utils.LimitInputTextWatcher;
 import com.tdr.rentalhouse.utils.LoadingUtils;
 import com.tdr.rentalhouse.utils.StatusBarUtils;
 import com.tdr.rentalhouse.utils.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -94,7 +97,7 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
         StatusBarUtils.getInstance().setStatusBarHeight(viewStatusBar);
         tvTitleName.setText("设施详情");
 
-        if (houseInfoBean.getBuildingType() == 2 || houseInfoBean.getBuildingType() == 3) {
+        if (houseInfoBean.getHouseId() == -1 ||houseInfoBean.getHouseId() == -2) {
             tvDeviceAddress.setText(houseInfoBean.getCommunityName());
             String address = "楼幢：" + houseInfoBean.getBuildingName() + "幢          ";
             if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
@@ -102,9 +105,16 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
             }
             address += houseInfoBean.getHouseName();
             tvDeviceBuilding.setText(address);
+            ivEditDevice.setVisibility(View.VISIBLE);
         } else {
-            tvDeviceAddress.setText(houseInfoBean.getAreaNumber());
+            if (houseInfoBean.getBuildingType() ==2 || houseInfoBean.getBuildingType() ==3){
+                tvDeviceAddress.setText(houseInfoBean.getCommunityName());
+            }else {
+                tvDeviceAddress.setText(houseInfoBean.getAreaNumber());
+            }
+
             tvDeviceBuilding.setText("房东：" + houseInfoBean.getLandlordName() + "          联系电话：" + houseInfoBean.getPhone());
+            ivEditDevice.setVisibility(View.GONE);
         }
     }
 
@@ -201,4 +211,6 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
 
         mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
     }
+
+
 }

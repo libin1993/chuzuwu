@@ -16,25 +16,28 @@ import com.tdr.rentalhouse.utils.RetrofitUtils;
  */
 public class ManageHousePresenter extends BasePresenterImpl<BaseView> implements ManageHouseContact.Presenter {
     @Override
-    public void getFloor(final int what, int id) {
+    public void getFloor(final int what, int id,String guid) {
         if (!isViewAttached())
             return;
 
         RetrofitUtils.getInstance()
                 .getService()
-                .getFloor(id)
+                .getFloor(id,guid)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new RxObserver(new Callback<FloorBean>() {
 
                     @Override
                     public void onSuccess(FloorBean floorBean) {
                         getView().hideLoading();
-                        getView().onSuccess(what, floorBean.getData().getFloorList());
+                        getView().onSuccess(what, floorBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
-                        getView().hideLoading();
+                        if (isViewAttached()){
+                            getView().hideLoading();
+                        }
+
                         getView().onFail(what, msg);
                     }
                 }));
@@ -59,7 +62,10 @@ public class ManageHousePresenter extends BasePresenterImpl<BaseView> implements
 
                     @Override
                     public void onFail(String msg) {
-                        getView().hideLoading();
+                        if (isViewAttached()){
+                            getView().hideLoading();
+                        }
+
                         getView().onFail(what, msg);
                     }
                 }));

@@ -38,27 +38,12 @@
 
 
     <TextView
-        android:id="@+id/tv_room_status"
-        android:layout_width="37dp"
-        android:layout_height="16dp"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="11dp"
-        android:layout_toLeftOf="@id/iv_next"
-        android:background="@drawable/bound_6e9_2dp"
-        android:gravity="center"
-        android:text="正常"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        android:visibility="gone"/>
-
-
-    <TextView
         android:id="@+id/tv_code_room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@id/tv_room_status"
+        android:layout_marginRight="11dp"
+        android:layout_toLeftOf="@id/iv_next"
         android:textColor="@color/gray_22"
         android:textSize="14sp"
         android:visibility="gone"/>

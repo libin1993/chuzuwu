@@ -26,6 +26,15 @@ public class BuildingBean extends BaseBean<BuildingBean.DataBean> {
         private String BuildingNumber;
         private String UnitNumber;
         private List<FloorListBean> FloorList;
+        private String guid;
+
+        public String getGuid() {
+            return guid;
+        }
+
+        public void setGuid(String guid) {
+            this.guid = guid;
+        }
 
         public Object getOutLookOne() {
             return OutLookOne;

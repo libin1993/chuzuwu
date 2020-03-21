@@ -113,32 +113,17 @@ public class RoomInfoActivity extends BaseMvpActivity<RoomInfoContact.Presenter>
             protected void convert(BaseViewHolder helper, RoomListBean.DataBean.RoomEntityBean item) {
                 helper.setText(R.id.tv_no_room, item.getRoomNumber());
                 TextView tvNoEquipment = helper.getView(R.id.tv_no_equipment);
-                TextView tvStatus = helper.getView(R.id.tv_room_status);
+
                 TextView tvCode = helper.getView(R.id.tv_code_room);
 
                 if (item.getEquipmentNumber() == null) {
                     tvNoEquipment.setVisibility(View.VISIBLE);
-                    tvStatus.setVisibility(View.GONE);
                     tvCode.setVisibility(View.GONE);
                 } else {
                     tvNoEquipment.setVisibility(View.GONE);
                     tvCode.setVisibility(View.VISIBLE);
-
                     tvCode.setText(item.getEquipmentNumber());
-                    if (item.getDeviceStatus() == null) {
-                        tvStatus.setText("正常");
-                        tvStatus.setVisibility(View.VISIBLE);
-                        tvStatus.setBackgroundResource(R.drawable.bound_6e9_2dp);
-                    } else {
-                        if (item.getDeviceStatus() == 0) {
-                            tvStatus.setText("正常");
-                            tvStatus.setVisibility(View.VISIBLE);
-                            tvStatus.setBackgroundResource(R.drawable.bound_6e9_2dp);
-                        } else {
-                            tvStatus.setVisibility(View.GONE);
-                        }
 
-                    }
                 }
             }
         };
@@ -187,18 +172,19 @@ public class RoomInfoActivity extends BaseMvpActivity<RoomInfoContact.Presenter>
         roomList.clear();
         if (ObjectUtils.getInstance().isNotNull(dataBean.getRoomEntity())) {
             roomList.addAll(dataBean.getRoomEntity());
-        } else {
-            RoomListBean.DataBean.RoomEntityBean roomEntityBean = new RoomListBean.DataBean.RoomEntityBean();
-            roomEntityBean.setRoomNumber("房间");
-            roomEntityBean.setManageId(dataBean.getFloorInfos().getManageId());
-            roomEntityBean.setEquipmentNumber(dataBean.getFloorInfos().getEquipmentNumber());
-            roomEntityBean.setEquipRoomBindId(dataBean.getFloorInfos().getEquipRoomBindId());
-            roomEntityBean.setDeviceStatus(dataBean.getFloorInfos().getDeviceStatus());
-            roomEntityBean.setRoomId(dataBean.getFloorInfos().getRoomId());
-
-            roomList.add(roomEntityBean);
-
         }
+//        else {
+//            RoomListBean.DataBean.RoomEntityBean roomEntityBean = new RoomListBean.DataBean.RoomEntityBean();
+//            roomEntityBean.setRoomNumber("房间");
+//            roomEntityBean.setManageId(dataBean.getFloorInfos().getManageId());
+//            roomEntityBean.setEquipmentNumber(dataBean.getFloorInfos().getEquipmentNumber());
+//            roomEntityBean.setEquipRoomBindId(dataBean.getFloorInfos().getEquipRoomBindId());
+//            roomEntityBean.setDeviceStatus(dataBean.getFloorInfos().getDeviceStatus());
+//            roomEntityBean.setRoomId(dataBean.getFloorInfos().getRoomId());
+//
+//            roomList.add(roomEntityBean);
+//
+//        }
 
         adapter.notifyDataSetChanged();
     }

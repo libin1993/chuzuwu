@@ -1,6 +1,7 @@
 package com.tdr.rentalhouse.mvp.checkequipment;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.inuker.bluetooth.library.Constants;
 import com.inuker.bluetooth.library.connect.listener.BleConnectStatusListener;
 import com.inuker.bluetooth.library.connect.response.BleNotifyResponse;
@@ -130,6 +133,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
     private int NBSignal;
     //AI烟感电量
     private double AIQuantity;
+    private boolean isSkip;
 
     @Override
     protected CheckEquipmentContact.Presenter initPresenter() {
@@ -246,6 +250,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 startActivity(new Intent(CheckEquipmentActivity.this, ScanQRCodeActivity.class));
                 break;
             case R.id.btn_check_equipment:
+                isSkip = false;
                 writeToBluetooth("02", type + code);
                 llInstall.setVisibility(View.VISIBLE);
                 llTest.setVisibility(View.GONE);
@@ -254,6 +259,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 uploadFile();
                 break;
             case R.id.btn_next:
+                isSkip = true;
                 llInstall.setVisibility(View.VISIBLE);
                 llTest.setVisibility(View.GONE);
                 tvTitleMore.setVisibility(View.VISIBLE);
@@ -355,7 +361,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
             map.put("Voltage", AIQuantity);
             map.put("InstallPosition", houseInfoBean.getInstallPosition());
 
-            mPresenter.installEquipment(RequestCode.NetCode.ADD_DEVICE, map);
+            mPresenter.installDevice(RequestCode.NetCode.ADD_DEVICE, map);
         }
 
 
@@ -394,11 +400,10 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 String[] split = result.split("\\?");
                 String type1 = split[1].substring(2);
                 LogUtils.log(type1);
-                byte[] decode = Base64Utils.decode(type1);
+                String decode = Base64Utils.decodeToString(type1);
 
-                String str = FormatUtils.getInstance().bytes2Hex(decode);
-                if (str.length() == 14) {
-                    etEquipmentCode.setText(str.substring(0, 4) + Long.parseLong(str.substring(4), 16));
+                if (decode.length() == 14) {
+                    etEquipmentCode.setText(decode);
                     etEquipmentCode.setSelection(etEquipmentCode.getText().toString().length());
                 } else {
                     ToastUtils.getInstance().showToast("当前设备不是AI烟感");
@@ -434,7 +439,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 BluetoothUtils.getInstance().getBluetoothBean().getServiceUUID(),
                 BluetoothUtils.getInstance().getBluetoothBean().getWriteCUUID(),
                 FormatUtils.getInstance().hexStringToBytes(data), bleWriteResponse);
-        ToastUtils.getInstance().showToast("write:" + data);
+//        ToastUtils.getInstance().showToast("write:" + data);
     }
 
     private BleWriteResponse bleWriteResponse = new BleWriteResponse() {
@@ -466,7 +471,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
             String data = FormatUtils.getInstance().byteToString(value);
             LogUtils.log("notify:" + data);
 
-            ToastUtils.getInstance().showToast("notify:" + data);
+//            ToastUtils.getInstance().showToast("notify:" + data);
             if (!TextUtils.isEmpty(data) && data.length() == 40) {
                 switch (data.substring(0, 4)) {
                     //报装工具电量
@@ -580,9 +585,9 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
 
                         break;
                     case "AA0B":
-                        hideLoading();
-                        ToastUtils.getInstance().showToast("绑定成功");
-                        finish();
+//                        hideLoading();
+//
+//                        finish();
                         break;
                 }
             }
@@ -622,7 +627,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
             }
 
             if (ObjectUtils.getInstance().isNotNull(pictureList)) {
-                ivAddPicture.setImageURI(Uri.fromFile(new File(pictureList.get(0).getPath())));
+                Glide.with(this).load(Uri.fromFile(new File(pictureList.get(0).getCompressPath()))).into(ivAddPicture);
             } else {
                 ivAddPicture.setImageResource(0);
             }
@@ -650,8 +655,14 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 break;
             case RequestCode.NetCode.INSTALL_EQUIPMENT:
             case RequestCode.NetCode.ADD_DEVICE:
-                writeToBluetooth("0A", "0");
+                if (!isSkip){
+                    writeToBluetooth("0A", "0");
+                }
+
+                ToastUtils.getInstance().showToast("绑定成功");
                 EventBus.getDefault().post("bind_success");
+
+                finish();
                 break;
             case RequestCode.NetCode.IS_EQUIPMENT_BIND:
             case RequestCode.NetCode.FIRE_CONTROL_DEVICE_TYPE:
@@ -676,12 +687,20 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
 
     @Override
     public void onFail(int what, String msg) {
-        ToastUtils.getInstance().showToast(msg);
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//        ToastUtils.getInstance().showToast(msg);
     }
 
     @Override
     public void hideLoading() {
         LoadingUtils.getInstance().dismiss();
+    }
+
+
+    //调用系统相机activity被销毁
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
 }

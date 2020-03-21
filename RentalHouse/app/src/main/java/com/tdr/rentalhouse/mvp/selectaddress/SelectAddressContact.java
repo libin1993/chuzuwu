@@ -19,7 +19,7 @@ public class SelectAddressContact {
 
         void getHouseInfo(int what, int id);
 
-        void getCommunityInfo(int what, int id);
+        void getCommunityInfo(int what, int id,String guid);
 
         void getCommunityDetail(int what, int id);
 

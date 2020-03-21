@@ -36,6 +36,15 @@ public class HouseInfoBean implements Serializable {
     private String addressCode;
     private int businessType;
     private int installPosition;
+    private String guid;
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 
     public int getInstallPosition() {
         return installPosition;
@@ -379,5 +388,48 @@ public class HouseInfoBean implements Serializable {
 
     public void setHouseName(String houseName) {
         this.houseName = houseName;
+    }
+
+    @Override
+    public String toString() {
+        return "HouseInfoBean{" +
+                "cityName='" + cityName + '\'' +
+                ", cityCode='" + cityCode + '\'' +
+                ", areaName='" + areaName + '\'' +
+                ", areaCode='" + areaCode + '\'' +
+                ", streetName='" + streetName + '\'' +
+                ", streetCode='" + streetCode + '\'' +
+                ", residentialName='" + residentialName + '\'' +
+                ", residentialCode='" + residentialCode + '\'' +
+                ", communityId=" + communityId +
+                ", communityName='" + communityName + '\'' +
+                ", buildingName='" + buildingName + '\'' +
+                ", unitId=" + unitId +
+                ", unitName='" + unitName + '\'' +
+                ", FloorName='" + FloorName + '\'' +
+                ", houseId=" + houseId +
+                ", houseName='" + houseName + '\'' +
+                ", buildingType=" + buildingType +
+                ", img='" + img + '\'' +
+                ", roomId=" + roomId +
+                ", roomName='" + roomName + '\'' +
+                ", landlordName='" + landlordName + '\'' +
+                ", idNo='" + idNo + '\'' +
+                ", phone='" + phone + '\'' +
+                ", qrCode='" + qrCode + '\'' +
+                ", addressCode='" + addressCode + '\'' +
+                ", businessType=" + businessType +
+                ", installPosition=" + installPosition +
+                ", guid='" + guid + '\'' +
+                ", devicePicture=" + devicePicture +
+                ", installType=" + installType +
+                ", lng='" + lng + '\'' +
+                ", ManageId=" + ManageId +
+                ", EquipRoomBindId=" + EquipRoomBindId +
+                ", areaNumber='" + areaNumber + '\'' +
+                ", roomList=" + roomList +
+                ", lat='" + lat + '\'' +
+                ", type=" + type +
+                '}';
     }
 }

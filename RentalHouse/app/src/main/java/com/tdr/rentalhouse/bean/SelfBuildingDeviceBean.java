@@ -31,8 +31,17 @@ public class SelfBuildingDeviceBean extends BaseBean<SelfBuildingDeviceBean.Data
         private String LandlordName;
         private String Phone;
         private String RDNumber;
+        private String guid;
         private List<UnitListBean> UnitList;
         private List<DeviceListBean> List;
+
+        public String getGuid() {
+            return guid;
+        }
+
+        public void setGuid(String guid) {
+            this.guid = guid;
+        }
 
         public String getRDNumber() {
             return RDNumber;

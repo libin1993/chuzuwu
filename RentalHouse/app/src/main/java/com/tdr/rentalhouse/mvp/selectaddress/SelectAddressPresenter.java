@@ -72,13 +72,13 @@ public class SelectAddressPresenter extends BasePresenterImpl<BaseView> implemen
 
 
     @Override
-    public void getCommunityInfo(final int what, int id) {
+    public void getCommunityInfo(final int what, int id,String guid) {
         if (!isViewAttached())
             return;
 
         RetrofitUtils.getInstance()
                 .getService()
-                .getCommunityInfo(id)
+                .getCommunityInfo(id,guid)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new RxObserver(new Callback<CommunityBean>() {
 

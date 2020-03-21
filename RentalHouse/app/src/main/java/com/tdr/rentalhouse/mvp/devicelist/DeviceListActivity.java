@@ -105,7 +105,6 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
         ButterKnife.bind(this);
 
         getData();
-        initView();
         LoadingUtils.getInstance().showLoading(this, "加载中");
         initData();
     }
@@ -117,17 +116,9 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
         LoadingUtils.getInstance().showLoading(this, "加载中");
         initData();
     }
+    private void getData() {
+        houseInfoBean = (HouseInfoBean) getIntent().getSerializableExtra("house");
 
-    private void initData() {
-        if (houseInfoBean.getBuildingType() == 1 || houseInfoBean.getBuildingType() == 4) {
-            mPresenter.getSelfBuildingDevice(RequestCode.NetCode.SELF_BUILDING_DEVICE, houseInfoBean.getCommunityId(), page);
-        } else {
-            mPresenter.getBuildingDevice(RequestCode.NetCode.BUILDING_DEVICE, houseInfoBean.getHouseId(), houseInfoBean.getUnitId(), page);
-        }
-
-    }
-
-    private void initView() {
         StatusBarUtils.getInstance().setStatusBarHeight(viewStatusBar);
         srlDevice.setRefreshHeader(new ClassicsHeader(this));
         srlDevice.setRefreshFooter(new ClassicsFooter(this));
@@ -137,20 +128,6 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
             tvTitleMore.setText("添加设施");
             tvTitleMore.setTextColor(ContextCompat.getColor(this, R.color.orange_fda));
         }
-
-        if (houseInfoBean.getBuildingType() == 2 || houseInfoBean.getBuildingType() == 3) {
-            tvDeviceArea.setText(houseInfoBean.getCommunityName());
-            String address = "楼幢：" + houseInfoBean.getBuildingName() + "幢          ";
-            if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
-                address += "单元：" + houseInfoBean.getUnitName() + "单元          ";
-            }
-            address += houseInfoBean.getHouseName();
-            tvDeviceLocation.setText(address);
-        } else {
-            tvDeviceArea.setText(houseInfoBean.getAreaNumber());
-            tvDeviceLocation.setText("房东：" + houseInfoBean.getLandlordName() + "          联系电话：" + houseInfoBean.getPhone());
-        }
-
 
         rvDevice.setLayoutManager(new LinearLayoutManager(this));
         rvDevice.addItemDecoration(new RVDividerItemDecoration(this, FormatUtils.getInstance().dp2px(12)));
@@ -203,7 +180,9 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
                         break;
                     case R.id.tv_delete_device:
                         index = position;
-                        deleteDevice(deviceList.get(position).getDeviceBindId());
+                        deleteDevice(deviceList.get(position).getDeviceBindId()
+                                ,deviceList.get(position).getDeviceName(),
+                                deviceList.get(position).getDeviceNumber());
                         break;
                 }
             }
@@ -224,9 +203,43 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
                 initData();
             }
         });
+
     }
 
-    private void deleteDevice(final int deviceBindId) {
+    private void initData() {
+        if (houseInfoBean.getBuildingType() == 1 || houseInfoBean.getBuildingType() == 4) {
+            mPresenter.getSelfBuildingDevice(RequestCode.NetCode.SELF_BUILDING_DEVICE, houseInfoBean.getCommunityId(), page);
+        } else {
+            mPresenter.getBuildingDevice(RequestCode.NetCode.BUILDING_DEVICE, houseInfoBean.getHouseId(), houseInfoBean.getUnitId(), page);
+        }
+
+    }
+
+    private void initView() {
+
+        if (houseInfoBean.getHouseId() == -1 ||houseInfoBean.getHouseId() == -2) {
+            tvDeviceArea.setText(houseInfoBean.getCommunityName());
+            String address = "楼幢：" + houseInfoBean.getBuildingName() + "幢          ";
+            if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
+                address += "单元：" + houseInfoBean.getUnitName() + "单元          ";
+            }
+            address += houseInfoBean.getHouseName();
+            tvDeviceLocation.setText(address);
+        } else {
+            if (houseInfoBean.getBuildingType() ==2 || houseInfoBean.getBuildingType() ==3){
+                tvDeviceArea.setText(houseInfoBean.getCommunityName());
+            }else {
+                tvDeviceArea.setText(houseInfoBean.getAreaNumber());
+            }
+
+            tvDeviceLocation.setText("房东：" + houseInfoBean.getLandlordName() + "          联系电话：" + houseInfoBean.getPhone());
+        }
+
+
+
+    }
+
+    private void deleteDevice(final int deviceBindId,String deviceName,String deviceNumber) {
         final PopupWindow mPopupWindow = new PopupWindow();
         final View mPopBackView = LayoutInflater.from(this).inflate(R.layout.popup_delete_device, null);
 
@@ -235,6 +248,9 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
         TextView tvConfirm = mPopBackView.findViewById(R.id.tv_popup_confirm);
         TextView tvTitle = mPopBackView.findViewById(R.id.tv_popup_title);
         TextView tvMsg = mPopBackView.findViewById(R.id.tv_popup_content);
+
+        tvTitle.setText(deviceName);
+        tvMsg.setText("是否确认拆除设施"+deviceNumber+"？");
 
 
         //设置Popup具体参数
@@ -266,9 +282,7 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
         mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
     }
 
-    private void getData() {
-        houseInfoBean = (HouseInfoBean) getIntent().getSerializableExtra("house");
-    }
+
 
     @Override
     protected DeviceListContact.Presenter initPresenter() {
@@ -289,7 +303,10 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
                 } else {
                     int managerId = dataBean.getManageId();
                     houseInfoBean.setManageId(managerId);
+                    houseInfoBean.setLandlordName(dataBean.getLandlordName());
+                    houseInfoBean.setPhone(dataBean.getPhone());
                     deviceList.clear();
+                    initView();
                 }
 
 
@@ -422,7 +439,6 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
                 } else {
                     intent.setClass(DeviceListActivity.this, ConnectBluetoothActivity.class);
                 }
-
                 intent.putExtra("house", houseInfoBean);
                 startActivity(intent);
 

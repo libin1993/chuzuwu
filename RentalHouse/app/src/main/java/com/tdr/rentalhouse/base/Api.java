@@ -139,7 +139,7 @@ public interface Api {
     //小区信息
     @Headers(URL_RENTAL_HOUSE)
     @GET("api/Residential")
-    Observable<CommunityBean> getCommunityInfo(@Query("id") int id);
+    Observable<CommunityBean> getCommunityInfo(@Query("id") int id,@Query("guid") String guid);
 
     //添加单元
     @FormUrlEncoded
@@ -172,7 +172,7 @@ public interface Api {
     //楼层房间
     @Headers(URL_RENTAL_HOUSE)
     @GET("api/UnitEdit")
-    Observable<FloorBean> getFloor(@Query("id") int id);
+    Observable<FloorBean> getFloor(@Query("id") int id,@Query("guid") String guid);
 
     //增加楼层房间
     @Headers(URL_RENTAL_HOUSE)
@@ -310,7 +310,7 @@ public interface Api {
     //消防报装设备编号识别
     @Headers(URL_FIRE_CONTROL)
     @GET("api/AddressDev/ScanDeviceQR")
-    Observable<BaseBean> deviceType(@Query("EquipNo") String equipmentNumber, @Query("EquipType") String equipmentType,
+    Observable<EquipmentBean> deviceType(@Query("EquipNo") String equipmentNumber, @Query("EquipType") String equipmentType,
                                     @Query("UnitId") int unitId);
 
     //消防报装修改点位信息

@@ -30,6 +30,16 @@ public class DeviceListBean extends BaseBean<DeviceListBean.DataBean> {
         private String LandlordName;
         private String Phone;
         private int ManageId;
+        private int guid;
+
+        public int getGuid() {
+            return guid;
+        }
+
+        public void setGuid(int guid) {
+            this.guid = guid;
+        }
+
         private java.util.List<ListBean> List;
 
         public String getCommunityName() {
