@@ -49,10 +49,10 @@ public interface Api {
 //    String HOST = "http://10.130.0.207:1012/";
 //    String IMG_HOST = "http://10.130.0.207:1012";
 
-    String HOST ="http://yf-androidapi.ioegrid.com:22800/";   //出租屋报装外网地址
-    String FIRE_HOST ="http://yf-androidapi0.ioegrid.com:22800/";   //消防报装外网地址
-    String IMG_HOST ="http://yf-androidapi.ioegrid.com:22800";
-    String VERSION = "开发版";
+//    String HOST ="http://yf-androidapi.ioegrid.com:22800/";   //出租屋报装外网地址
+//    String FIRE_HOST ="http://yf-androidapi0.ioegrid.com:22800/";   //消防报装外网地址
+//    String IMG_HOST ="http://yf-androidapi.ioegrid.com:22800";
+//    String VERSION = "开发版";
 
 
 
@@ -76,6 +76,13 @@ public interface Api {
 //    String HOST = "http://183.129.130.119:13127/";
 //    String IMG_HOST = "http://183.129.130.119:13127";
 //    String VERSION = "测试版";
+
+
+    //测试
+    String HOST ="http://10.130.0.208:13127/";   //出租屋报装外网地址
+    String FIRE_HOST ="http://10.130.0.208:13162/";   //消防报装外网地址
+    String IMG_HOST ="http://10.130.0.208:13127";
+    String VERSION = "测试版";
 
 
     String URL_RENTAL_HOUSE = "url_name:rental_house";    //出租屋

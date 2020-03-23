@@ -50,7 +50,7 @@ public class RxObserver<T extends BaseBean> implements Observer<T> {
     public void onError(@NonNull Throwable e) {
         e.printStackTrace();
         LogUtils.log(e.toString());
-        mCallback.onFail(e.toString());
+        mCallback.onFail("网络异常,请联系客服");
     }
 
     @Override

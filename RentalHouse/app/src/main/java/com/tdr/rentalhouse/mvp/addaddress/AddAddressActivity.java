@@ -256,7 +256,7 @@ public class AddAddressActivity extends BaseMvpActivity<AddAddressContact.Presen
             }
 
             etAreaNo.setText(communityBean.getRDNumber());
-            tvLocation.setText(communityBean.getPositionName());
+            tvLocation.setText(communityBean.getLongitude()+","+communityBean.getLatitude());
 
         }
     }

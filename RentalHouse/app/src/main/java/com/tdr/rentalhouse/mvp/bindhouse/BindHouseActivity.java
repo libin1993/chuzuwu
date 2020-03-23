@@ -605,7 +605,7 @@ public class BindHouseActivity extends BaseMvpActivity<BindHouseContact.Presente
                     ToastUtils.getInstance().showToast("编辑成功");
                     EventBus.getDefault().post("edit_room");
                 } else {
-                    ToastUtils.getInstance().showToast("绑定成功");
+                    ToastUtils.getInstance().showToast("添加成功");
                 }
 
                 finish();
