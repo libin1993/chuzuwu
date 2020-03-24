@@ -133,17 +133,14 @@ public class SelectAddressPresenter extends BasePresenterImpl<BaseView> implemen
                 .subscribe(new RxObserver(new Callback<FindAddressBean>() {
                     @Override
                     public void onSuccess(FindAddressBean findAddressBean) {
-                        if (!isViewAttached()){
-                            getView().hideLoading();
-                            getView().onSuccess(what, findAddressBean.getData());
-                        }
-
+                        getView().hideLoading();
+                        getView().onSuccess(what, findAddressBean.getData());
 
                     }
 
                     @Override
                     public void onFail(String msg) {
-                        if (!isViewAttached()){
+                        if (isViewAttached()){
                             getView().hideLoading();
                             getView().onFail(what, msg);
                         }

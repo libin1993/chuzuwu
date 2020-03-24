@@ -32,12 +32,10 @@ public class CityPresenter extends BasePresenterImpl<BaseView> implements CityCo
 
                     @Override
                     public void onFail(String msg) {
-                        if (!isViewAttached()){
+                        if (isViewAttached()){
                             getView().hideLoading();
+                            getView().onFail(what, msg);
                         }
-
-
-                        getView().onFail(what, msg);
                     }
                 }));
     }

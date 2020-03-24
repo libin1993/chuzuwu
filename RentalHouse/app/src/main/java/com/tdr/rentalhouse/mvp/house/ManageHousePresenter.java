@@ -36,9 +36,10 @@ public class ManageHousePresenter extends BasePresenterImpl<BaseView> implements
                     public void onFail(String msg) {
                         if (isViewAttached()){
                             getView().hideLoading();
+                            getView().onFail(what, msg);
                         }
 
-                        getView().onFail(what, msg);
+
                     }
                 }));
     }
@@ -64,9 +65,10 @@ public class ManageHousePresenter extends BasePresenterImpl<BaseView> implements
                     public void onFail(String msg) {
                         if (isViewAttached()){
                             getView().hideLoading();
+                            getView().onFail(what, msg);
                         }
 
-                        getView().onFail(what, msg);
+
                     }
                 }));
     }
