@@ -73,8 +73,8 @@ public interface Api {
 
 
     //    外网测试（208）
-//    String HOST = "http://183.129.130.119:13127/";
-//    String FIRE_HOST ="http://183.129.130.119:13162/";   //消防报装外网地址
+//    String HOST = "http://183.129.130.119:13127/";     //出租屋报装地址
+//    String FIRE_HOST ="http://183.129.130.119:13162/";   //消防报装地址
 //    String IMG_HOST = "http://183.129.130.119:13127";
 //    String VERSION = "测试版";
 

@@ -40,6 +40,7 @@ import com.tdr.rentalhouse.bean.ScanResult;
 import com.tdr.rentalhouse.mvp.scancode.ScanQRCodeActivity;
 import com.tdr.rentalhouse.utils.Base64Utils;
 import com.tdr.rentalhouse.utils.FormatUtils;
+import com.tdr.rentalhouse.utils.LimitInputTextWatcher;
 import com.tdr.rentalhouse.utils.LoadingUtils;
 import com.tdr.rentalhouse.utils.LogUtils;
 import com.tdr.rentalhouse.utils.ObjectUtils;
@@ -137,6 +138,8 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
             }
             tvFireControlBuilding.setText("房东：" + houseInfoBean.getLandlordName() + "          联系电话：" + houseInfoBean.getPhone());
         }
+
+        etDeviceName.addTextChangedListener(new LimitInputTextWatcher(etDeviceName, LimitInputTextWatcher.CHINESE_REGEX));
 
         etDeviceCode.addTextChangedListener(new TextWatcher() {
             @Override

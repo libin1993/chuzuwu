@@ -22,6 +22,7 @@ import com.tdr.rentalhouse.base.RequestCode;
 import com.tdr.rentalhouse.bean.HouseBean;
 import com.tdr.rentalhouse.bean.HouseInfoBean;
 import com.tdr.rentalhouse.mvp.bindhouse.BindHouseActivity;
+import com.tdr.rentalhouse.mvp.communitydetail.CommunityDetailActivity;
 import com.tdr.rentalhouse.utils.FastClickUtils;
 import com.tdr.rentalhouse.utils.LoadingUtils;
 import com.tdr.rentalhouse.utils.ObjectUtils;
@@ -62,6 +63,10 @@ public class HouseInfoActivity extends BaseMvpActivity<HouseInfoContact.Presente
 
     private HouseInfoBean houseInfoBean;
     private HouseBean.DataBean dataBean;
+
+    private SimpleDraweeView ivCommunity;
+    private TextView tvName;
+    private TextView tvAddress;
 
     @Override
     protected HouseInfoContact.Presenter initPresenter() {
@@ -214,10 +219,10 @@ public class HouseInfoActivity extends BaseMvpActivity<HouseInfoContact.Presente
 
     private void addHeader1() {
         View view = LayoutInflater.from(this).inflate(R.layout.layout_manager_address_header, null);
-        SimpleDraweeView iv = view.findViewById(R.id.iv_estate);
-        TextView tvName = view.findViewById(R.id.tv_estate_name);
-        TextView tvAddress = view.findViewById(R.id.tv_estate_address);
-        iv.setImageURI(Api.IMG_HOST + dataBean.getOutlookOne());
+        ivCommunity = view.findViewById(R.id.iv_estate);
+        tvName = view.findViewById(R.id.tv_estate_name);
+        tvAddress = view.findViewById(R.id.tv_estate_address);
+        ivCommunity.setImageURI(Api.IMG_HOST + dataBean.getOutlookOne());
         tvName.setText(dataBean.getRDNumber());
 
 
@@ -244,6 +249,15 @@ public class HouseInfoActivity extends BaseMvpActivity<HouseInfoContact.Presente
 
         adapter.addHeaderView(view);
         adapter.notifyDataSetChanged();
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HouseInfoActivity.this, CommunityDetailActivity.class);
+                intent.putExtra("id", houseInfoBean.getCommunityId());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -261,6 +275,37 @@ public class HouseInfoActivity extends BaseMvpActivity<HouseInfoContact.Presente
         if ("edit_room".equals(msg)) {
             initData();
         }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void editAddress(HouseInfoBean house) {
+
+        ivCommunity.setImageURI(Api.IMG_HOST + house.getImg());
+        tvName.setText(house.getAreaNumber());
+
+
+        String address = house.getCityName();
+        if (!TextUtils.isEmpty(house.getAreaName())) {
+            address += house.getAreaName();
+        }
+
+        if (!TextUtils.isEmpty(house.getStreetName())) {
+            address += house.getStreetName();
+        }
+
+        if (!TextUtils.isEmpty(house.getResidentialName())) {
+            address += house.getResidentialName();
+        }
+
+        if (!TextUtils.isEmpty(house.getAreaNumber())) {
+            address += house.getAreaNumber();
+        }
+
+
+        tvAddress.setText(address);
+
+        adapter.notifyDataSetChanged();
     }
 
 

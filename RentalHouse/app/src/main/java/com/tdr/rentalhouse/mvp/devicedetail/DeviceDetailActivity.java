@@ -173,7 +173,8 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
         final EditText etName = mPopBackView.findViewById(R.id.tv_update_name);
 
         etName.setText(tvDevicePositionInfo.getText());
-
+        etName.addTextChangedListener(new LimitInputTextWatcher(etName, LimitInputTextWatcher.CHINESE_REGEX));
+        etName.setMaxEms(8);
 
 
         //设置Popup具体参数
@@ -203,9 +204,11 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
                 }
 
                 mPopupWindow.dismiss();
-                LoadingUtils.getInstance().showLoading(DeviceDetailActivity.this, "加载中");
-                deviceName = etName.getText().toString().trim();
-                mPresenter.editDeviceName(RequestCode.NetCode.EDIT_DEVICE_NAME, houseInfoBean.getEquipRoomBindId(),deviceName);
+                if (!etName.getText().toString().trim().equals(tvDevicePositionInfo.getText().toString().trim())){
+                    LoadingUtils.getInstance().showLoading(DeviceDetailActivity.this, "加载中");
+                    deviceName = etName.getText().toString().trim();
+                    mPresenter.editDeviceName(RequestCode.NetCode.EDIT_DEVICE_NAME, houseInfoBean.getEquipRoomBindId(),deviceName);
+                }
             }
         });
 
