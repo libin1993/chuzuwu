@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -108,7 +109,13 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
             ivEditDevice.setVisibility(View.VISIBLE);
         } else {
             if (houseInfoBean.getBuildingType() ==2 || houseInfoBean.getBuildingType() ==3){
-                tvDeviceAddress.setText(houseInfoBean.getCommunityName());
+                String address = houseInfoBean.getCommunityName() + "/" + houseInfoBean.getBuildingName() + "幢/";
+                if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
+                    address += houseInfoBean.getUnitName() + "单元/";
+                }
+                address += houseInfoBean.getHouseName() + "室";
+
+                tvDeviceAddress.setText(address);
             }else {
                 tvDeviceAddress.setText(houseInfoBean.getAreaNumber());
             }
@@ -174,8 +181,7 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
 
         etName.setText(tvDevicePositionInfo.getText());
         etName.addTextChangedListener(new LimitInputTextWatcher(etName, LimitInputTextWatcher.CHINESE_REGEX));
-        etName.setMaxEms(8);
-
+        etName.setFilters(new InputFilter[] { new InputFilter.LengthFilter(8) });
 
         //设置Popup具体参数
         mPopupWindow.setContentView(mPopBackView);
@@ -204,11 +210,15 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
                 }
 
                 mPopupWindow.dismiss();
-                if (!etName.getText().toString().trim().equals(tvDevicePositionInfo.getText().toString().trim())){
-                    LoadingUtils.getInstance().showLoading(DeviceDetailActivity.this, "加载中");
-                    deviceName = etName.getText().toString().trim();
-                    mPresenter.editDeviceName(RequestCode.NetCode.EDIT_DEVICE_NAME, houseInfoBean.getEquipRoomBindId(),deviceName);
-                }
+                LoadingUtils.getInstance().showLoading(DeviceDetailActivity.this, "加载中");
+                deviceName = etName.getText().toString().trim();
+                mPresenter.editDeviceName(RequestCode.NetCode.EDIT_DEVICE_NAME, houseInfoBean.getEquipRoomBindId(),deviceName);
+
+//                if (!etName.getText().toString().trim().equals(tvDevicePositionInfo.getText().toString().trim())){
+//                    LoadingUtils.getInstance().showLoading(DeviceDetailActivity.this, "加载中");
+//                    deviceName = etName.getText().toString().trim();
+//                    mPresenter.editDeviceName(RequestCode.NetCode.EDIT_DEVICE_NAME, houseInfoBean.getEquipRoomBindId(),deviceName);
+//                }
             }
         });
 

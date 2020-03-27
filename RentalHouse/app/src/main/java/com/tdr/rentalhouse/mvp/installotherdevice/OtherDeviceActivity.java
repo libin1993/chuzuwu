@@ -132,7 +132,13 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
             tvFireControlBuilding.setText(address);
         } else {
             if (houseInfoBean.getBuildingType() ==2 || houseInfoBean.getBuildingType() ==3){
-                tvFireControlAddress.setText(houseInfoBean.getCommunityName());
+                String address = houseInfoBean.getCommunityName() + "/" + houseInfoBean.getBuildingName() + "幢/";
+                if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
+                    address += houseInfoBean.getUnitName() + "单元/";
+                }
+                address += houseInfoBean.getHouseName() + "室";
+
+                tvFireControlAddress.setText(address);
             }else {
                 tvFireControlAddress.setText(houseInfoBean.getAreaNumber());
             }

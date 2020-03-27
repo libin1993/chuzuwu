@@ -227,15 +227,19 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
             tvDeviceLocation.setText(address);
         } else {
             if (houseInfoBean.getBuildingType() ==2 || houseInfoBean.getBuildingType() ==3){
-                tvDeviceArea.setText(houseInfoBean.getCommunityName());
+                String address = houseInfoBean.getCommunityName() + "/" + houseInfoBean.getBuildingName() + "幢/";
+                if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
+                    address += houseInfoBean.getUnitName() + "单元/";
+                }
+                address += houseInfoBean.getHouseName() + "室";
+
+                tvDeviceArea.setText(address);
             }else {
                 tvDeviceArea.setText(houseInfoBean.getAreaNumber());
             }
 
             tvDeviceLocation.setText("房东：" + houseInfoBean.getLandlordName() + "          联系电话：" + houseInfoBean.getPhone());
         }
-
-
 
     }
 
@@ -340,6 +344,7 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
                     srlDevice.finishLoadMore();
                 } else {
                     deviceList.clear();
+                    initView();
                 }
 
                 SelfBuildingDeviceBean.DataBean dataBean1 = (SelfBuildingDeviceBean.DataBean) object;

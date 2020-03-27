@@ -1,6 +1,5 @@
 package com.tdr.rentalhouse.mvp.scancode;
 
-import com.tdr.rentalhouse.base.BaseMvpActivity;
 import com.tdr.rentalhouse.base.BasePresenterImpl;
 import com.tdr.rentalhouse.base.BaseView;
 import com.tdr.rentalhouse.base.RxObserver;

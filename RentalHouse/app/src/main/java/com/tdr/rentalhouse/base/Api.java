@@ -29,14 +29,12 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.HEAD;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
-import retrofit2.http.Url;
 
 
 /**
@@ -49,10 +47,10 @@ public interface Api {
 //    String HOST = "http://10.130.0.207:1012/";
 //    String IMG_HOST = "http://10.130.0.207:1012";
 
-    String HOST ="http://yf-androidapi.ioegrid.com:22800/";   //出租屋报装外网地址
-    String FIRE_HOST ="http://yf-androidapi0.ioegrid.com:22800/";   //消防报装外网地址
-    String IMG_HOST ="http://yf-androidapi.ioegrid.com:22800";
-    String VERSION = "开发版";
+//    String HOST ="http://yf-androidapi.ioegrid.com:22800/";   //出租屋报装外网地址
+//    String FIRE_HOST ="http://yf-androidapi0.ioegrid.com:22800/";   //消防报装外网地址
+//    String IMG_HOST ="http://yf-androidapi.ioegrid.com:22800";
+//    String VERSION = "开发版";
 
 
 
@@ -72,11 +70,11 @@ public interface Api {
 //    String VERSION = "";
 
 
-    //    外网测试（208）
-//    String HOST = "http://183.129.130.119:13127/";     //出租屋报装地址
-//    String FIRE_HOST ="http://183.129.130.119:13162/";   //消防报装地址
-//    String IMG_HOST = "http://183.129.130.119:13127";
-//    String VERSION = "测试版";
+    //外网测试（208）
+    String HOST = "http://183.129.130.119:13127/";     //出租屋报装地址
+    String FIRE_HOST ="http://183.129.130.119:13162/";   //消防报装地址
+    String IMG_HOST = "http://183.129.130.119:13127";
+    String VERSION = "测试版";
 
 
     //测试
