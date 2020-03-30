@@ -151,6 +151,6 @@ dependencies {
     //zbar扫描
 //    implementation 'cn.bertsir.zbarLibary:zbarlibary:1.4.1'
     implementation project(path: ':zbar')
-    compile project(path: ':picture_library')
+    implementation project(path: ':picture_library')
 
 }

@@ -43,44 +43,47 @@ import retrofit2.http.QueryMap;
  * Describe：接口
  */
 public interface Api {
-    //开发
-//    String HOST = "http://10.130.0.207:1012/";
-//    String IMG_HOST = "http://10.130.0.207:1012";
+    //内网开发
+    String HOST = "http://10.130.0.207:1012/";         //出租屋报装地址
+    String FIRE_HOST = "http://10.130.0.207:8810/";    //消防报装地址
+    String IMG_HOST = "http://10.130.0.207:1012";      //图片地址
+    String VERSION = "开发版";
 
-//    String HOST ="http://yf-androidapi.ioegrid.com:22800/";   //出租屋报装外网地址
-//    String FIRE_HOST ="http://yf-androidapi0.ioegrid.com:22800/";   //消防报装外网地址
-//    String IMG_HOST ="http://yf-androidapi.ioegrid.com:22800";
+
+    //外网开发
+//    String HOST = "http://yf-androidapi.ioegrid.com:22800/";         //出租屋报装地址
+//    String FIRE_HOST = "http://yf-androidapi0.ioegrid.com:22800/";   //消防报装地址
+//    String IMG_HOST = "http://yf-androidapi.ioegrid.com:22800";      //图片地址
 //    String VERSION = "开发版";
 
 
-
-    //正式
-//    String HOST = "http://bzappapi.iotone.cn/";
-//    String IMG_HOST = "http://bzappapi.iotone.cn";
+    //报装系统正式
+//    String HOST = "http://bzappapi.iotone.cn/";        //出租屋报装地址
+//    String IMG_HOST = "http://bzappapi.iotone.cn";     //图片地址
 //    String VERSION = "";
 
     //出租屋
-//    String HOST = "http://183.129.130.119:17090/";
-//    String IMG_HOST = "http://183.129.130.119:17090";
+//    String HOST = "http://183.129.130.119:17090/";       //出租屋报装地址
+//    String IMG_HOST = "http://183.129.130.119:17090";    //图片地址
 //    String VERSION = "";
 
     //演示
-//    String HOST = "http://ys-czwappapi.iotone.cn:22800/";
-//    String IMG_HOST = "http://ys-czwappapi.iotone.cn:22800";
+//    String HOST = "http://ys-czwappapi.iotone.cn:22800/";       //出租屋报装地址
+//    String IMG_HOST = "http://ys-czwappapi.iotone.cn:22800";    //图片地址
 //    String VERSION = "";
 
 
-    //外网测试（208）
-    String HOST = "http://183.129.130.119:13127/";     //出租屋报装地址
-    String FIRE_HOST ="http://183.129.130.119:13162/";   //消防报装地址
-    String IMG_HOST = "http://183.129.130.119:13127";
-    String VERSION = "测试版";
+    //外网测试
+//    String HOST = "http://183.129.130.119:13127/";        //出租屋报装地址
+//    String FIRE_HOST = "http://183.129.130.119:13162/";   //消防报装地址
+//    String IMG_HOST = "http://183.129.130.119:13127";     //图片地址
+//    String VERSION = "测试版";
 
 
-    //测试
-//    String HOST ="http://10.130.0.208:13127/";   //出租屋报装外网地址
-//    String FIRE_HOST ="http://10.130.0.208:13162/";   //消防报装外网地址
-//    String IMG_HOST ="http://10.130.0.208:13127";
+    //内网测试
+//    String HOST = "http://10.130.0.208:13127/";        //出租屋报装地址
+//    String FIRE_HOST = "http://10.130.0.208:13162/";   //消防报装地址
+//    String IMG_HOST = "http://10.130.0.208:13127";     //图片地址
 //    String VERSION = "测试版";
 
 
@@ -145,7 +148,7 @@ public interface Api {
     //小区信息
     @Headers(URL_RENTAL_HOUSE)
     @GET("api/Residential")
-    Observable<CommunityBean> getCommunityInfo(@Query("id") int id,@Query("guid") String guid);
+    Observable<CommunityBean> getCommunityInfo(@Query("id") int id, @Query("guid") String guid);
 
     //添加单元
     @FormUrlEncoded
@@ -178,7 +181,7 @@ public interface Api {
     //楼层房间
     @Headers(URL_RENTAL_HOUSE)
     @GET("api/UnitEdit")
-    Observable<FloorBean> getFloor(@Query("id") int id,@Query("guid") String guid);
+    Observable<FloorBean> getFloor(@Query("id") int id, @Query("guid") String guid);
 
     //增加楼层房间
     @Headers(URL_RENTAL_HOUSE)
@@ -260,7 +263,6 @@ public interface Api {
     Observable<BusinessTypeBean> getBusinessType();
 
 
-
     //消防报装查找地址
     @GET("api/AddressDev/GetSearchList")
     @Headers(URL_FIRE_CONTROL)
@@ -270,19 +272,19 @@ public interface Api {
     //消防报装楼栋信息
     @Headers(URL_FIRE_CONTROL)
     @GET("api/AddressDev/GetUnitInfo")
-    Observable<BuildingBean> getBuildingInfo(@Query("Id")int id);
+    Observable<BuildingBean> getBuildingInfo(@Query("Id") int id);
 
 
     //消防报装自建房设施列表
     @Headers(URL_FIRE_CONTROL)
     @GET("api/AddressDev/GetResidentalInfo")
-    Observable<SelfBuildingDeviceBean> getSelfBuildingDevice(@Query("Id")int id,@Query("CurrentPage")int currentPage);
+    Observable<SelfBuildingDeviceBean> getSelfBuildingDevice(@Query("Id") int id, @Query("CurrentPage") int currentPage);
 
 
     //消防报装商品房设施列表
     @Headers(URL_FIRE_CONTROL)
     @GET("api/AddressDev/GetDeviceList")
-    Observable<DeviceListBean> getBuildingDevice(@Query("BigRoomId")int id, @Query("UnitId")int unitId,@Query("CurrentPage")int currentPage);
+    Observable<DeviceListBean> getBuildingDevice(@Query("BigRoomId") int id, @Query("UnitId") int unitId, @Query("CurrentPage") int currentPage);
 
 
     //消防报装添加/编辑ai烟感设备
@@ -295,13 +297,13 @@ public interface Api {
     @FormUrlEncoded
     @Headers(URL_FIRE_CONTROL)
     @POST("api/AddressDev/InstallOrReplaceOther")
-    Observable<BaseBean> installOtherDevice(@FieldMap Map<String, Object> map,@Field("DevicePicture") ArrayList<String> list);
+    Observable<BaseBean> installOtherDevice(@FieldMap Map<String, Object> map, @Field("DevicePicture") ArrayList<String> list);
 
 
     //消防报装设备详情
     @Headers(URL_FIRE_CONTROL)
     @GET("api/AddressDev/DeviceDetail")
-    Observable<DeviceDetailBean> deviceDetail(@Query("BindId")int bindId);
+    Observable<DeviceDetailBean> deviceDetail(@Query("BindId") int bindId);
 
     //消防报装删除设备
     @Headers(URL_FIRE_CONTROL)
@@ -311,13 +313,13 @@ public interface Api {
     //消防报装获得设备类型名称
     @Headers(URL_FIRE_CONTROL)
     @GET("api/AddressDev/GetDeviceTypeName")
-    Observable<BaseBean<String>> deviceName(@Query("Code")String code);
+    Observable<BaseBean<String>> deviceName(@Query("Code") String code);
 
     //消防报装设备编号识别
     @Headers(URL_FIRE_CONTROL)
     @GET("api/AddressDev/ScanDeviceQR")
     Observable<EquipmentBean> deviceType(@Query("EquipNo") String equipmentNumber, @Query("EquipType") String equipmentType,
-                                    @Query("UnitId") int unitId);
+                                         @Query("UnitId") int unitId);
 
     //消防报装修改点位信息
     @Headers(URL_FIRE_CONTROL)

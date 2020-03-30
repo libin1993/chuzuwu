@@ -99,6 +99,7 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
 
     private void initData() {
         LoadingUtils.getInstance().showLoading(this, "加载中");
+        LogUtils.log(houseInfoBean.getUnitId()+","+houseInfoBean.getGuid());
         mPresenter.getFloor(RequestCode.NetCode.GET_FLOOR, houseInfoBean.getUnitId(),houseInfoBean.getGuid());
     }
 
@@ -224,6 +225,7 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
                 dataList.clear();
                FloorBean.DataBean floorBean = (FloorBean.DataBean) object;
                houseInfoBean.setUnitId(floorBean.getUnitId());
+               houseInfoBean.setCommunityId(floorBean.getResidentialId());
                 if (ObjectUtils.getInstance().isNotNull(floorBean.getFloorList())) {
                     for (FloorBean.DataBean.FloorListBean floorListBean : floorBean.getFloorList()) {
                         dataList.add(new SectionBean(true, floorListBean.getFloorName()));
@@ -237,8 +239,8 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
 
                     }
 
-                    adapter.notifyDataSetChanged();
                 }
+                adapter.notifyDataSetChanged();
                 break;
             case RequestCode.NetCode.HOUSE_INFO:
                 HouseBean.DataBean houseBean = (HouseBean.DataBean) object;

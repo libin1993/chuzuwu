@@ -177,7 +177,7 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
             @Override
             protected void convert(BaseViewHolder helper, LocalMedia item) {
                 SimpleDraweeView ivPicture = helper.getView(R.id.iv_picture_checked);
-                ivPicture.setImageURI(Uri.fromFile(new File(item.getPath())));
+                ivPicture.setImageURI(Uri.fromFile(new File(item.getCompressPath())));
 
                 helper.addOnClickListener(R.id.iv_picture_cancel);
             }
@@ -340,7 +340,7 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
      * 相机权限
      */
     private void getPermission() {
-        if (!PermissionUtils.getInstance().hasPermission(this, Manifest.permission.CAMERA)) {
+        if (PermissionUtils.getInstance().hasPermission(this, Manifest.permission.CAMERA)) {
             startActivity(new Intent(OtherDeviceActivity.this, ScanQRCodeActivity.class));
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, RequestCode.Permission.CAMERA_PERMISSION);

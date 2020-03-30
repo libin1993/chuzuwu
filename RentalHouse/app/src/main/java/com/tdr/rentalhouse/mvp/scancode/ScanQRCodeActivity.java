@@ -65,7 +65,7 @@ import cn.bertsir.zbar.view.ScanView;
 
 /**
  * Author：Libin on 2019/7/6 13:36
- * Description：
+ * Description：扫码
  */
 public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> implements ScanCallback, BaseView {
     @BindView(R.id.cp_scan)
@@ -139,19 +139,24 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
             cpScan.setScanCallback(this);
             cpScan.start();
 
-            //CameraPreview设置宽高
-            CameraManager cameraManager = cpScan.getmCameraManager();
-            Camera camera = cameraManager.getmCamera();
-            Camera.Parameters parameters = camera.getParameters();
-            Point screenResolutionForCamera = new Point();
-            screenResolutionForCamera.x =  StatusBarUtils.getInstance().getScreenHeight(this);
-            screenResolutionForCamera.y =  StatusBarUtils.getInstance().getScreenWidth(this);
-            Point bestPreviewSizeValue = CameraConfiguration.findBestPreviewSizeValue(parameters, screenResolutionForCamera);
-            ViewGroup.LayoutParams layoutParams = cpScan.getLayoutParams();
-            layoutParams.width = StatusBarUtils.getInstance().getScreenWidth(this);
-            layoutParams.height =StatusBarUtils.getInstance().getScreenWidth(this) * bestPreviewSizeValue.x / bestPreviewSizeValue.y;
-            LogUtils.log("sss"+layoutParams.width+","+layoutParams.height);
-            cpScan.setLayoutParams(layoutParams);
+            try {
+                //CameraPreview设置宽高
+                CameraManager cameraManager = cpScan.getmCameraManager();
+                Camera camera = cameraManager.getmCamera();
+                Camera.Parameters parameters = camera.getParameters();
+                Point screenResolutionForCamera = new Point();
+                screenResolutionForCamera.x =  StatusBarUtils.getInstance().getScreenHeight(this);
+                screenResolutionForCamera.y =  StatusBarUtils.getInstance().getScreenWidth(this);
+                Point bestPreviewSizeValue = CameraConfiguration.findBestPreviewSizeValue(parameters, screenResolutionForCamera);
+                ViewGroup.LayoutParams layoutParams = cpScan.getLayoutParams();
+                layoutParams.width = StatusBarUtils.getInstance().getScreenWidth(this);
+                layoutParams.height =StatusBarUtils.getInstance().getScreenWidth(this) * bestPreviewSizeValue.x / bestPreviewSizeValue.y;
+                LogUtils.log("sss"+layoutParams.width+","+layoutParams.height);
+                cpScan.setLayoutParams(layoutParams);
+            }catch (Exception ignored){
+                LogUtils.log(ignored.getMessage());
+            }
+
         }
     }
 
