@@ -16,7 +16,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.luck.picture.lib.entity.EventEntity;
 import com.tdr.rentalhouse.R;
 import com.tdr.rentalhouse.base.Api;
 import com.tdr.rentalhouse.base.BaseMvpActivity;
@@ -29,8 +28,12 @@ import com.tdr.rentalhouse.utils.LimitInputTextWatcher;
 import com.tdr.rentalhouse.utils.LoadingUtils;
 import com.tdr.rentalhouse.utils.StatusBarUtils;
 import com.tdr.rentalhouse.utils.ToastUtils;
+import com.tdr.rentalhouse.widget.GlideImageLoader;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 
-import org.greenrobot.eventbus.EventBus;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,8 +55,6 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
     TextView tvDeviceAddress;
     @BindView(R.id.tv_device_building)
     TextView tvDeviceBuilding;
-    @BindView(R.id.iv_device_picture)
-    ImageView ivDevicePicture;
     @BindView(R.id.iv_edit_device)
     ImageView ivEditDevice;
     @BindView(R.id.tv_device_position_info)
@@ -64,6 +65,8 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
     TextView tvTypeDevice;
     @BindView(R.id.tv_device_install_time)
     TextView tvDeviceInstallTime;
+    @BindView(R.id.banner_device)
+    Banner bannerDevice;
 
     private HouseInfoBean houseInfoBean;
     private DeviceDetailBean.DataBean deviceDetailBean;
@@ -84,7 +87,16 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
     }
 
     private void initView() {
-        Glide.with(this).load(Api.IMG_HOST + deviceDetailBean.getDeviceIcon()).into(ivDevicePicture);
+        List<String>  imgList = new ArrayList<>();
+        for (String s : deviceDetailBean.getDeviceIcon()) {
+            imgList.add(Api.IMG_HOST+s);
+        }
+        bannerDevice.setImages(imgList)
+                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                .setImageLoader(new GlideImageLoader())
+                .isAutoPlay(false)
+                .start();
+
         tvDevicePositionInfo.setText(deviceDetailBean.getDeviceName());
         tvCodeDevice.setText(deviceDetailBean.getDeviceCode());
         tvTypeDevice.setText(deviceDetailBean.getDeviceType());
@@ -98,7 +110,7 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
         StatusBarUtils.getInstance().setStatusBarHeight(viewStatusBar);
         tvTitleName.setText("设施详情");
 
-        if (houseInfoBean.getHouseId() == -1 ||houseInfoBean.getHouseId() == -2) {
+        if (houseInfoBean.getHouseId() == -1 || houseInfoBean.getHouseId() == -2) {
             tvDeviceAddress.setText(houseInfoBean.getCommunityName());
             String address = "楼幢：" + houseInfoBean.getBuildingName() + "幢          ";
             if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
@@ -108,7 +120,7 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
             tvDeviceBuilding.setText(address);
             ivEditDevice.setVisibility(View.VISIBLE);
         } else {
-            if (houseInfoBean.getBuildingType() ==2 || houseInfoBean.getBuildingType() ==3){
+            if (houseInfoBean.getBuildingType() == 2 || houseInfoBean.getBuildingType() == 3) {
                 String address = houseInfoBean.getCommunityName() + "/" + houseInfoBean.getBuildingName() + "幢/";
                 if (!TextUtils.isEmpty(houseInfoBean.getUnitName())) {
                     address += houseInfoBean.getUnitName() + "单元/";
@@ -116,7 +128,7 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
                 address += houseInfoBean.getHouseName() + "室";
 
                 tvDeviceAddress.setText(address);
-            }else {
+            } else {
                 tvDeviceAddress.setText(houseInfoBean.getAreaNumber());
             }
 
@@ -133,7 +145,7 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
 
     @Override
     public void onSuccess(int what, Object object) {
-        switch (what){
+        switch (what) {
             case RequestCode.NetCode.DEVICE_DETAIL:
                 deviceDetailBean = (DeviceDetailBean.DataBean) object;
                 if (deviceDetailBean != null) {
@@ -181,7 +193,7 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
 
         etName.setText(tvDevicePositionInfo.getText());
         etName.addTextChangedListener(new LimitInputTextWatcher(etName, LimitInputTextWatcher.CHINESE_REGEX));
-        etName.setFilters(new InputFilter[] { new InputFilter.LengthFilter(8) });
+        etName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
 
         //设置Popup具体参数
         mPopupWindow.setContentView(mPopBackView);
@@ -212,7 +224,7 @@ public class DeviceDetailActivity extends BaseMvpActivity<DeviceDetailPresenter>
                 mPopupWindow.dismiss();
                 LoadingUtils.getInstance().showLoading(DeviceDetailActivity.this, "加载中");
                 deviceName = etName.getText().toString().trim();
-                mPresenter.editDeviceName(RequestCode.NetCode.EDIT_DEVICE_NAME, houseInfoBean.getEquipRoomBindId(),deviceName);
+                mPresenter.editDeviceName(RequestCode.NetCode.EDIT_DEVICE_NAME, houseInfoBean.getEquipRoomBindId(), deviceName);
 
 //                if (!etName.getText().toString().trim().equals(tvDevicePositionInfo.getText().toString().trim())){
 //                    LoadingUtils.getInstance().showLoading(DeviceDetailActivity.this, "加载中");

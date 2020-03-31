@@ -348,7 +348,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
             mPresenter.installEquipment(RequestCode.NetCode.INSTALL_EQUIPMENT, map);
         } else   if (houseInfoBean.getInstallType() == 2){
             if (houseInfoBean.getType() == 1) {
-                map.put("DeviceBindId", houseInfoBean.getEquipRoomBindId());
+                map.put("EquipRoomBindId", houseInfoBean.getEquipRoomBindId());
             }
 
             map.put("EquipmentNumber", Long.parseLong(code, 16));

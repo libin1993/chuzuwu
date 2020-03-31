@@ -305,7 +305,7 @@ public class OtherDeviceActivity extends BaseMvpActivity<OtherDevicePresenter> i
     private void submitData(){
         Map<String, Object> map = new HashMap<>();
         if (houseInfoBean.getType() ==1) {
-            map.put("DeviceBindId", houseInfoBean.getEquipRoomBindId());
+            map.put("EquipRoomBindId", houseInfoBean.getEquipRoomBindId());
         }
         map.put("DeviceCode", etDeviceCode.getText().toString().trim().toUpperCase());
         map.put("ManageId", houseInfoBean.getManageId());
