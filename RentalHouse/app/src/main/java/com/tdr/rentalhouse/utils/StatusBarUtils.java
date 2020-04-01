@@ -187,6 +187,4 @@ public class StatusBarUtils {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -665,7 +665,6 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 finish();
                 break;
             case RequestCode.NetCode.IS_EQUIPMENT_BIND:
-            case RequestCode.NetCode.FIRE_CONTROL_DEVICE_TYPE:
                 EquipmentBean.DataBean dataBean = ((EquipmentBean.DataBean) object);
                 if (dataBean != null) {
                     buildingUniqueCode = dataBean.getBuildingUnique();
@@ -682,13 +681,26 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                     LogUtils.log(type + "," + code);
                 }
                 break;
+            case RequestCode.NetCode.FIRE_CONTROL_DEVICE_TYPE:
+                buildingUniqueCode = "1";
+                roomUniqueCode = "1";
+
+                tvEquipmentType.setText("AI烟感");
+                btnCheckEquipment.setEnabled(true);
+                btnNext.setEnabled(true);
+
+                String equipNo = etEquipmentCode.getText().toString().trim();
+                type = equipNo.substring(0, 4).toUpperCase();
+                code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14
+                        ? equipNo.substring(4, 14) : equipNo.substring(4)), 8);
+                LogUtils.log(type + "," + code);
+                break;
         }
     }
 
     @Override
     public void onFail(int what, String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-//        ToastUtils.getInstance().showToast(msg);
     }
 
     @Override

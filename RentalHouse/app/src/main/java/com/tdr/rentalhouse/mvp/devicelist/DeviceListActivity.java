@@ -444,6 +444,7 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
                 } else {
                     intent.setClass(DeviceListActivity.this, ConnectBluetoothActivity.class);
                 }
+
                 intent.putExtra("house", houseInfoBean);
                 startActivity(intent);
 

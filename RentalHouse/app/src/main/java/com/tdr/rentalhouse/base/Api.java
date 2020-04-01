@@ -318,7 +318,7 @@ public interface Api {
     //消防报装设备编号识别
     @Headers(URL_FIRE_CONTROL)
     @GET("api/AddressDev/ScanDeviceQR")
-    Observable<EquipmentBean> deviceType(@Query("EquipNo") String equipmentNumber, @Query("EquipType") String equipmentType,
+    Observable<BaseBean> deviceType(@Query("EquipNo") String equipmentNumber, @Query("EquipType") String equipmentType,
                                          @Query("UnitId") int unitId);
 
     //消防报装修改点位信息

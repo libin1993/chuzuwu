@@ -26,8 +26,8 @@ android {
         applicationId "com.tdr.rentalhouse"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 4
-        versionName "3.0.0"
+        versionCode 5
+        versionName "2.6.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         flavorDimensions "default"
