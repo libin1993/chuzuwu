@@ -398,6 +398,7 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
                 break;
             case R.id.tv_title_more:
                 houseInfoBean.setType(0);
+                houseInfoBean.setEquipRoomBindId(0);
                 addOrExchangeDevice();
                 break;
         }

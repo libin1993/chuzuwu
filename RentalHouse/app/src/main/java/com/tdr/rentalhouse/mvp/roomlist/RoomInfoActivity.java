@@ -153,6 +153,8 @@ public class RoomInfoActivity extends BaseMvpActivity<RoomInfoContact.Presenter>
                     }
                     if (roomBean.getEquipRoomBindId() != null) {
                         houseInfoBean.setEquipRoomBindId(roomBean.getEquipRoomBindId());
+                    }else {
+                        houseInfoBean.setEquipRoomBindId(0);
                     }
                     intent.putExtra("house", houseInfoBean);
                     startActivity(intent);
