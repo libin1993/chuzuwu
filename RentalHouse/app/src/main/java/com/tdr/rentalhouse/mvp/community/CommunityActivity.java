@@ -323,6 +323,10 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
         SimpleDraweeView iv = view.findViewById(R.id.iv_estate);
         TextView tvName = view.findViewById(R.id.tv_estate_name);
         TextView tvAddress = view.findViewById(R.id.tv_estate_address);
+        ImageView ivNext = view.findViewById(R.id.iv_next_step);
+        if (type == 1){
+            ivNext.setVisibility(View.GONE);
+        }
         iv.setImageURI(img);
         tvName.setText(communityName);
         tvAddress.setText(address);

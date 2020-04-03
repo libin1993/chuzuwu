@@ -29,12 +29,16 @@ public class BindHousePresenter extends BasePresenterImpl<BaseView> implements B
                 .subscribe(new RxObserver(new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, null);
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -54,11 +58,15 @@ public class BindHousePresenter extends BasePresenterImpl<BaseView> implements B
                 .subscribe(new RxObserver(new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().onSuccess(what, baseBean);
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

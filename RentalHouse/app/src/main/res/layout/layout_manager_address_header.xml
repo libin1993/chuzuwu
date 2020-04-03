@@ -32,7 +32,8 @@
             android:layout_marginLeft="13dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginRight="12dp">
 
             <TextView
                 android:id="@+id/tv_estate_name"
@@ -52,9 +53,10 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/iv_next_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="37dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginRight="12dp"
             android:src="@mipmap/ic_next"/>
 

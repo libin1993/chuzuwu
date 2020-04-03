@@ -28,17 +28,18 @@ public class ManageHousePresenter extends BasePresenterImpl<BaseView> implements
 
                     @Override
                     public void onSuccess(FloorBean floorBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, floorBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
-                        if (isViewAttached()){
-                            getView().hideLoading();
-                            getView().onFail(what, msg);
-                        }
-
+                        if (!isViewAttached())
+                            return;
+                        getView().hideLoading();
+                        getView().onFail(what, msg);
 
                     }
                 }));
@@ -57,16 +58,18 @@ public class ManageHousePresenter extends BasePresenterImpl<BaseView> implements
 
                     @Override
                     public void onSuccess(HouseBean houseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, houseBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
-                        if (isViewAttached()){
-                            getView().hideLoading();
-                            getView().onFail(what, msg);
-                        }
+                        if (!isViewAttached())
+                            return;
+                        getView().hideLoading();
+                        getView().onFail(what, msg);
 
 
                     }

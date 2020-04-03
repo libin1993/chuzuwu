@@ -26,12 +26,16 @@ public class CityPresenter extends BasePresenterImpl<BaseView> implements CityCo
                 .subscribe(new RxObserver(new Callback<CityBean>() {
                     @Override
                     public void onSuccess(CityBean cityBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, cityBean.getData().getList());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         if (isViewAttached()){
                             getView().hideLoading();
                             getView().onFail(what, msg);

@@ -55,12 +55,16 @@ public class AddAddressPresenter extends BasePresenterImpl<BaseView> implements 
                 .subscribe(new RxObserver(new Callback<AddAddressBean>() {
                     @Override
                     public void onSuccess(AddAddressBean addAddressBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, addAddressBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -80,6 +84,8 @@ public class AddAddressPresenter extends BasePresenterImpl<BaseView> implements 
                 .subscribe(new RxObserver(new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, null);
                     }
@@ -105,12 +111,16 @@ public class AddAddressPresenter extends BasePresenterImpl<BaseView> implements 
 
                     @Override
                     public void onSuccess(HouseBean houseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, houseBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -130,12 +140,16 @@ public class AddAddressPresenter extends BasePresenterImpl<BaseView> implements 
 
                     @Override
                     public void onSuccess(LastAddressBean lastAddressBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, lastAddressBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

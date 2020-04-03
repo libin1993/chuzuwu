@@ -31,12 +31,16 @@ public class DeviceListPresenter extends BasePresenterImpl<BaseView> implements 
 
                     @Override
                     public void onSuccess(SelfBuildingDeviceBean selfBuildingDeviceBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, selfBuildingDeviceBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -55,12 +59,16 @@ public class DeviceListPresenter extends BasePresenterImpl<BaseView> implements 
                 .subscribe(new RxObserver(new Callback<DeviceListBean>() {
                     @Override
                     public void onSuccess(DeviceListBean deviceListBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, deviceListBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -81,12 +89,16 @@ public class DeviceListPresenter extends BasePresenterImpl<BaseView> implements 
 
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, null);
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

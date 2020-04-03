@@ -30,12 +30,16 @@ public class EditUnitPresenter extends BasePresenterImpl<BaseView> implements Ed
 
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, null);
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

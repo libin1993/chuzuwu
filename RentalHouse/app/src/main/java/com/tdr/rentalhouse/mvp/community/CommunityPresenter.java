@@ -29,12 +29,16 @@ public class CommunityPresenter extends BasePresenterImpl<BaseView> implements C
 
                     @Override
                     public void onSuccess(CommunityBean communityBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, communityBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -55,12 +59,16 @@ public class CommunityPresenter extends BasePresenterImpl<BaseView> implements C
 
                     @Override
                     public void onSuccess(SelfBuildingDeviceBean selfBuildingDeviceBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, selfBuildingDeviceBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -80,12 +88,16 @@ public class CommunityPresenter extends BasePresenterImpl<BaseView> implements C
 
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, null);
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

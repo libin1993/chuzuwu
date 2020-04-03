@@ -28,6 +28,8 @@ public class CommunityDetailPresenter extends BasePresenterImpl<BaseView> implem
 
                     @Override
                     public void onSuccess(CommunityDetailBean communityDetailBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, communityDetailBean.getData());
                     }
@@ -35,6 +37,8 @@ public class CommunityDetailPresenter extends BasePresenterImpl<BaseView> implem
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

@@ -29,11 +29,15 @@ public class MinePresenter extends BasePresenterImpl<BaseView> implements MineCo
                 .subscribe(new RxObserver(new Callback<AddressBean>() {
                     @Override
                     public void onSuccess(AddressBean addressBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().onSuccess(what, addressBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().onFail(what, msg);
                     }
                 }));
@@ -50,11 +54,15 @@ public class MinePresenter extends BasePresenterImpl<BaseView> implements MineCo
                 .subscribe(new RxObserver(new Callback<UserBean>() {
                     @Override
                     public void onSuccess(UserBean userBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().onSuccess(what, userBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().onFail(what, msg);
                     }
                 }));

@@ -28,11 +28,15 @@ public class LoginPresenter extends BasePresenterImpl<BaseView> implements Login
                 .subscribe(new RxObserver(new Callback<UserBean>() {
                     @Override
                     public void onSuccess(UserBean userBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().onSuccess(what, userBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

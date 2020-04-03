@@ -31,11 +31,15 @@ public class CheckEquipmentPresenter extends BasePresenterImpl<BaseView> impleme
                 .subscribe(new RxObserver(new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().onSuccess(what, baseBean);
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -54,12 +58,16 @@ public class CheckEquipmentPresenter extends BasePresenterImpl<BaseView> impleme
                 .subscribe(new RxObserver(new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, null);
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -79,11 +87,15 @@ public class CheckEquipmentPresenter extends BasePresenterImpl<BaseView> impleme
 
                     @Override
                     public void onSuccess(EquipmentBean equipmentBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().onSuccess(what, equipmentBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -99,14 +111,18 @@ public class CheckEquipmentPresenter extends BasePresenterImpl<BaseView> impleme
                 .getService()
                 .deviceType(equipmentNumber,equipmentType,unitId)
                 .compose(Transformer.switchSchedulers())
-                .subscribe(new RxObserver(new Callback<BaseBean>() {
+                .subscribe(new RxObserver(new Callback<EquipmentBean>() {
                     @Override
-                    public void onSuccess(BaseBean baseBean) {
-                        getView().onSuccess(what, null);
+                    public void onSuccess(EquipmentBean equipmentBean) {
+                        if (!isViewAttached())
+                            return;
+                        getView().onSuccess(what, equipmentBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -125,12 +141,16 @@ public class CheckEquipmentPresenter extends BasePresenterImpl<BaseView> impleme
                 .subscribe(new RxObserver(new Callback<BaseBean>() {
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, null);
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

@@ -38,7 +38,6 @@ public class FragmentTabUtils implements RadioGroup.OnCheckedChangeListener {
 
     }
 
-
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
         for (int i = 0; i < rgs.getChildCount(); i++) {

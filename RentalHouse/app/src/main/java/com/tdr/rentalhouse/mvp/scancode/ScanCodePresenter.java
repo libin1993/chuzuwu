@@ -27,12 +27,16 @@ public class ScanCodePresenter extends BasePresenterImpl<BaseView> implements Sc
 
                     @Override
                     public void onSuccess(HouseBean houseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, houseBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -50,12 +54,16 @@ public class ScanCodePresenter extends BasePresenterImpl<BaseView> implements Sc
                 .subscribe(new RxObserver(new Callback<ScanCodeBean>() {
                     @Override
                     public void onSuccess(ScanCodeBean scanCodeBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, scanCodeBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

@@ -26,12 +26,16 @@ public class HouseInfoPresenter extends BasePresenterImpl<BaseView> implements H
 
                     @Override
                     public void onSuccess(HouseBean houseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, houseBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

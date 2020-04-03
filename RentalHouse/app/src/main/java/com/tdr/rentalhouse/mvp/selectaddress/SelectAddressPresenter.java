@@ -32,12 +32,16 @@ public class SelectAddressPresenter extends BasePresenterImpl<BaseView> implemen
                 .subscribe(new RxObserver(new Callback<FindAddressBean>() {
                     @Override
                     public void onSuccess(FindAddressBean findAddressBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, findAddressBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -58,12 +62,16 @@ public class SelectAddressPresenter extends BasePresenterImpl<BaseView> implemen
 
                     @Override
                     public void onSuccess(HouseBean houseBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, houseBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -72,24 +80,28 @@ public class SelectAddressPresenter extends BasePresenterImpl<BaseView> implemen
 
 
     @Override
-    public void getCommunityInfo(final int what, int id,String guid) {
+    public void getCommunityInfo(final int what, int id, String guid) {
         if (!isViewAttached())
             return;
 
         RetrofitUtils.getInstance()
                 .getService()
-                .getCommunityInfo(id,guid)
+                .getCommunityInfo(id, guid)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new RxObserver(new Callback<CommunityBean>() {
 
                     @Override
                     public void onSuccess(CommunityBean communityBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, communityBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -103,17 +115,21 @@ public class SelectAddressPresenter extends BasePresenterImpl<BaseView> implemen
 
         RetrofitUtils.getInstance()
                 .getService()
-                .getSelfBuildingDevice(id,1)
+                .getSelfBuildingDevice(id, 1)
                 .compose(Transformer.switchSchedulers())
                 .subscribe(new RxObserver(new Callback<SelfBuildingDeviceBean>() {
                     @Override
                     public void onSuccess(SelfBuildingDeviceBean selfBuildingDeviceBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, selfBuildingDeviceBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }
@@ -133,6 +149,8 @@ public class SelectAddressPresenter extends BasePresenterImpl<BaseView> implemen
                 .subscribe(new RxObserver(new Callback<FindAddressBean>() {
                     @Override
                     public void onSuccess(FindAddressBean findAddressBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, findAddressBean.getData());
 
@@ -140,10 +158,12 @@ public class SelectAddressPresenter extends BasePresenterImpl<BaseView> implemen
 
                     @Override
                     public void onFail(String msg) {
-                        if (isViewAttached()){
-                            getView().hideLoading();
-                            getView().onFail(what, msg);
-                        }
+                        if (!isViewAttached())
+                            return;
+
+                        getView().hideLoading();
+                        getView().onFail(what, msg);
+
                     }
                 }));
     }

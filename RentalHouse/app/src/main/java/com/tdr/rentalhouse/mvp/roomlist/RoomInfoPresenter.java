@@ -27,12 +27,16 @@ public class RoomInfoPresenter extends BasePresenterImpl<BaseView> implements Ro
                 .subscribe(new RxObserver(new Callback<RoomListBean>() {
                     @Override
                     public void onSuccess(RoomListBean roomListBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, roomListBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

@@ -30,12 +30,16 @@ public class BuildingPresenter extends BasePresenterImpl<BaseView> implements Bu
 
                     @Override
                     public void onSuccess(BuildingBean buildingBean) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onSuccess(what, buildingBean.getData());
                     }
 
                     @Override
                     public void onFail(String msg) {
+                        if (!isViewAttached())
+                            return;
                         getView().hideLoading();
                         getView().onFail(what, msg);
                     }

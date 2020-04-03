@@ -203,11 +203,8 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 String deviceNo = s.toString().trim();
 
 
-                LogUtils.log(houseInfoBean.getInstallType()+"aaaa");
 
                 if (houseInfoBean.getInstallType() == 1) {
-
-                    LogUtils.log(FormatUtils.getInstance().isEquipNo(deviceNo)+"bbbb");
                     if (FormatUtils.getInstance().isEquipNo(deviceNo)) {
 
                         mPresenter.isEquipmentBind(RequestCode.NetCode.IS_EQUIPMENT_BIND,
@@ -665,6 +662,7 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 finish();
                 break;
             case RequestCode.NetCode.IS_EQUIPMENT_BIND:
+            case RequestCode.NetCode.FIRE_CONTROL_DEVICE_TYPE:
                 EquipmentBean.DataBean dataBean = ((EquipmentBean.DataBean) object);
                 if (dataBean != null) {
                     buildingUniqueCode = dataBean.getBuildingUnique();
@@ -678,22 +676,8 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                     type = equipNo.substring(0, 4).toUpperCase();
                     code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14
                             ? equipNo.substring(4, 14) : equipNo.substring(4)), 8);
-                    LogUtils.log(type + "," + code);
+                    LogUtils.log(type + "," + code+","+buildingUniqueCode+","+roomUniqueCode);
                 }
-                break;
-            case RequestCode.NetCode.FIRE_CONTROL_DEVICE_TYPE:
-                buildingUniqueCode = "1";
-                roomUniqueCode = "1";
-
-                tvEquipmentType.setText("AI烟感");
-                btnCheckEquipment.setEnabled(true);
-                btnNext.setEnabled(true);
-
-                String equipNo = etEquipmentCode.getText().toString().trim();
-                type = equipNo.substring(0, 4).toUpperCase();
-                code = FormatUtils.getInstance().longToHex(Long.parseLong(equipNo.length() >= 14
-                        ? equipNo.substring(4, 14) : equipNo.substring(4)), 8);
-                LogUtils.log(type + "," + code);
                 break;
         }
     }
