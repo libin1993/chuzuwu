@@ -176,24 +176,30 @@ public class ScanQRCodeActivity extends BaseMvpActivity<ScanCodePresenter> imple
 
         vibrate();
         if (type == 1) {
-            if (result.contains("?AH")) {
+            if (result.contains("?BU")) {
+
                 String[] split = result.split("\\?");
                 String type1 = split[1].substring(2);
 
                 byte[] decode = Base64Utils.decode(type1);
 
-                String str = FormatUtils.getInstance().bytes2Hex(decode);
-                LogUtils.log(str);
-                if (str.length() == 22) {
-                    String code = str.substring(6, 18);
-                    String areaCode = str.substring(0, 6);
-                    LoadingUtils.getInstance().showLoading(ScanQRCodeActivity.this, "加载中");
-                    mPresenter.scanCode(RequestCode.NetCode.SCAN_CODE, code,areaCode);
-                } else {
+                //转ascii编码
+                try {
+                    String str = new String(decode,"ascii");
+                    LogUtils.log(str);
+                    if (!TextUtils.isEmpty(str) && str.length() >=7) {
+                        String code= str.substring(6);
+                        LoadingUtils.getInstance().showLoading(ScanQRCodeActivity.this, "加载中");
+                        mPresenter.scanCode(RequestCode.NetCode.SCAN_CODE, code,null);
+                    } else {
+                        ToastUtils.getInstance().showToast("请扫描有效房屋二维码");
+                        finish();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                     ToastUtils.getInstance().showToast("请扫描有效房屋二维码");
                     finish();
                 }
-
 
             } else {
                 ToastUtils.getInstance().showToast("请扫描有效房屋二维码");

@@ -203,7 +203,6 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
                 String deviceNo = s.toString().trim();
 
 
-
                 if (houseInfoBean.getInstallType() == 1) {
                     if (FormatUtils.getInstance().isEquipNo(deviceNo)) {
 
@@ -370,44 +369,61 @@ public class CheckEquipmentActivity extends BaseMvpActivity<CheckEquipmentContac
 
         String result = scanResult.getResult();
         LogUtils.log(result);
-        if (houseInfoBean.getInstallType() == 1) {
-            if (result.contains("?AI")) {
-                String[] split = result.split("\\?");
-                String type1 = split[1].substring(2);
-                LogUtils.log(type1);
-                byte[] decode = Base64Utils.decode(type1);
+//        if (houseInfoBean.getInstallType() == 1) {
+//            if (result.contains("?X2")) {
+//                String[] split = result.split("\\?");
+//                String type1 = split[1].substring(2);
+//                LogUtils.log(type1);
+//                byte[] decode = Base64Utils.decode(type1);
+//
+//                String str = FormatUtils.getInstance().bytes2Hex(decode);
+//                if (str.length() == 16) {
+//                    etEquipmentCode.setText(str.substring(0, 4) + FormatUtils.getInstance().hexToLong(str.substring(4, 12), 8));
+//                    etEquipmentCode.setSelection(etEquipmentCode.getText().toString().length());
+//                } else {
+//                    ToastUtils.getInstance().showToast("当前设备不是AI烟感");
+//                }
+//            } else {
+//                if (FormatUtils.getInstance().isEquipNo(result)) {
+//                    etEquipmentCode.setText(result.length() < 14 ? result : result.substring(0, 14));
+//                    etEquipmentCode.setSelection(etEquipmentCode.getText().toString().length());
+//                } else {
+//                    ToastUtils.getInstance().showToast("当前设备不是AI烟感");
+//                }
+//            }
+//        } else if (houseInfoBean.getInstallType() == 2) {
+//            if (result.contains("?X2")) {
+//                String[] split = result.split("\\?");
+//                String type1 = split[1].substring(2);
+//                LogUtils.log(type1);
+//                String decode = Base64Utils.decodeToString(type1);
+//
+//                if (decode.length() == 14) {
+//                    etEquipmentCode.setText(decode);
+//                    etEquipmentCode.setSelection(etEquipmentCode.getText().toString().length());
+//                } else {
+//                    ToastUtils.getInstance().showToast("当前设备不是AI烟感");
+//                }
+//            } else {
+//                ToastUtils.getInstance().showToast("当前设备不是AI烟感");
+//            }
+//        }
 
-                String str = FormatUtils.getInstance().bytes2Hex(decode);
-                if (str.length() == 16) {
-                    etEquipmentCode.setText(str.substring(0, 4) + FormatUtils.getInstance().hexToLong(str.substring(4, 12), 8));
-                    etEquipmentCode.setSelection(etEquipmentCode.getText().toString().length());
-                } else {
-                    ToastUtils.getInstance().showToast("当前设备不是AI烟感");
-                }
-            } else {
-                if (FormatUtils.getInstance().isEquipNo(result)) {
-                    etEquipmentCode.setText(result.length() < 14 ? result : result.substring(0, 14));
-                    etEquipmentCode.setSelection(etEquipmentCode.getText().toString().length());
-                } else {
-                    ToastUtils.getInstance().showToast("当前设备不是AI烟感");
-                }
-            }
-        } else if (houseInfoBean.getInstallType() == 2) {
-            if (result.contains("?X1")) {
-                String[] split = result.split("\\?");
-                String type1 = split[1].substring(2);
-                LogUtils.log(type1);
-                String decode = Base64Utils.decodeToString(type1);
 
-                if (decode.length() == 14) {
-                    etEquipmentCode.setText(decode);
-                    etEquipmentCode.setSelection(etEquipmentCode.getText().toString().length());
-                } else {
-                    ToastUtils.getInstance().showToast("当前设备不是AI烟感");
-                }
+        if (result.contains("?X2")) {
+            String[] split = result.split("\\?");
+            String type1 = split[1].substring(2);
+            LogUtils.log(type1);
+            String decode = Base64Utils.decodeToString(type1);
+
+            if (decode.length() == 14) {
+                etEquipmentCode.setText(decode);
+                etEquipmentCode.setSelection(etEquipmentCode.getText().toString().length());
             } else {
                 ToastUtils.getInstance().showToast("当前设备不是AI烟感");
             }
+        } else {
+            ToastUtils.getInstance().showToast("当前设备不是AI烟感");
         }
 
     }

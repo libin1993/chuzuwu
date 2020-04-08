@@ -75,6 +75,12 @@ public class BuildingActivity extends BaseMvpActivity<BuildingContact.Presenter>
         initData();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initData();
+    }
+
     private void initData() {
         LoadingUtils.getInstance().showLoading(this, "加载中");
         mPresenter.getBuildingInfo(RequestCode.NetCode.BUILDING_INFO, houseInfoBean.getUnitId());

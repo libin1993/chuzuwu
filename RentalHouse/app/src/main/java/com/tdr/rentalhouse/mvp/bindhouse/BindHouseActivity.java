@@ -648,9 +648,6 @@ public class BindHouseActivity extends BaseMvpActivity<BindHouseContact.Presente
             LogUtils.log(type1);
             byte[] decode = Base64Utils.decode(type1);
 
-            System.out.println(decode.length);
-            System.out.println(Arrays.toString(decode));
-
             //转ascii编码
             try {
                 String str = new String(decode,"ascii");

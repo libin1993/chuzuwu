@@ -124,17 +124,15 @@ public class CommunityActivity extends BaseMvpActivity<CommunityContact.Presente
 
     private void initView() {
         StatusBarUtils.getInstance().setStatusBarHeight(viewStatusBar);
-        if (installType == 1){
-            tvTitleName.setText("地址管理");
-        }else if (installType == 2){
-            tvTitleName.setText("单元信息");
-        }
+
 
         if (type != 1) {
             ivTitleMore.setVisibility(View.VISIBLE);
             tvToCommunity.setVisibility(View.GONE);
+            tvTitleName.setText("地址管理");
         }else {
             tvToCommunity.setVisibility(View.VISIBLE);
+            tvTitleName.setText("单元信息");
         }
 
 

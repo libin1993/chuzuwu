@@ -44,10 +44,10 @@ import retrofit2.http.QueryMap;
  */
 public interface Api {
     //内网开发
-    String HOST = "http://10.130.0.207:1012/";         //出租屋报装地址
-    String FIRE_HOST = "http://10.130.0.207:8810/";    //消防报装地址
-    String IMG_HOST = "http://10.130.0.207:1012";      //图片地址
-    String VERSION = "开发版";
+//    String HOST = "http://10.130.0.207:1012/";         //出租屋报装地址
+//    String FIRE_HOST = "http://10.130.0.207:8810/";    //消防报装地址
+//    String IMG_HOST = "http://10.130.0.207:1012";      //图片地址
+//    String VERSION = "开发版";
 
 
     //外网开发
@@ -74,10 +74,10 @@ public interface Api {
 
 
     //外网测试
-//    String HOST = "http://183.129.130.119:13127/";        //出租屋报装地址
-//    String FIRE_HOST = "http://183.129.130.119:13162/";   //消防报装地址
-//    String IMG_HOST = "http://183.129.130.119:13127";     //图片地址
-//    String VERSION = "测试版";
+    String HOST = "http://183.129.130.119:13127/";        //出租屋报装地址
+    String FIRE_HOST = "http://183.129.130.119:13162/";   //消防报装地址
+    String IMG_HOST = "http://183.129.130.119:13127";     //图片地址
+    String VERSION = "测试版";
 
 
     //内网测试

@@ -47,7 +47,7 @@ import butterknife.OnClick;
 
 /**
  * Author：Li Bin on 2019/7/12 17:55
- * Description：
+ * Description：楼栋信息
  */
 public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Presenter> implements BaseView {
     @BindView(R.id.view_status_bar)
@@ -105,12 +105,14 @@ public class ManageHouseActivity extends BaseMvpActivity<ManageHouseContact.Pres
 
     private void initView() {
         StatusBarUtils.getInstance().setStatusBarHeight(viewStatusBar);
-        tvTitleName.setText("楼房管理");
+
         if (houseInfoBean.getType() != 1) {
             ivTitleMore.setVisibility(View.VISIBLE);
             tvToManageHouse.setVisibility(View.GONE);
+            tvTitleName.setText("楼房管理");
         }else {
             tvToManageHouse.setVisibility(View.VISIBLE);
+            tvTitleName.setText("楼栋信息");
         }
 
 
