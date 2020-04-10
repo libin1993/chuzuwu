@@ -296,21 +296,33 @@ public class SearchAddressActivity extends BaseActivity implements AMapLocationL
     public void onGetInputtips(List<Tip> list, int i) {
         addressList.clear();
         if (list != null && list.size() > 0 && !TextUtils.isEmpty(etSearchAddress.getText().toString().trim())) {
-            addressList.addAll(list);
-            rvAddress.setVisibility(View.VISIBLE);
 
-            tvClearText.setVisibility(View.VISIBLE);
-            viewClearSearch.setVisibility(View.VISIBLE);
+            for (Tip tip : list) {
+                if (tip.getPoint() !=null){
+                    addressList.add(tip);
+                }
+            }
+
+            if (addressList.size() > 0){
+                rvAddress.setVisibility(View.VISIBLE);
+
+                tvClearText.setVisibility(View.VISIBLE);
+                viewClearSearch.setVisibility(View.VISIBLE);
 
 
-            index = 0;
+                index = 0;
 
-            LatLonPoint point = addressList.get(0).getPoint();
-            locationBean = new LocationBean();
-            locationBean.setLat(String.valueOf(point.getLatitude()));
-            locationBean.setLng(String.valueOf(point.getLongitude()));
-            locationBean.setName(addressList.get(0).getName());
-            adapter.notifyDataSetChanged();
+                LatLonPoint point = addressList.get(0).getPoint();
+                locationBean = new LocationBean();
+                locationBean.setLat(String.valueOf(point.getLatitude()));
+                locationBean.setLng(String.valueOf(point.getLongitude()));
+                locationBean.setName(addressList.get(0).getName());
+                adapter.notifyDataSetChanged();
+            }else {
+                rvAddress.setVisibility(View.GONE);
+                tvClearText.setVisibility(View.GONE);
+                viewClearSearch.setVisibility(View.GONE);
+            }
 
         } else {
             rvAddress.setVisibility(View.GONE);
