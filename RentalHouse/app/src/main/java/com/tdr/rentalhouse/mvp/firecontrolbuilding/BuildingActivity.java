@@ -142,6 +142,10 @@ public class BuildingActivity extends BaseMvpActivity<BuildingContact.Presenter>
         SimpleDraweeView iv = view.findViewById(R.id.iv_estate);
         TextView tvName = view.findViewById(R.id.tv_estate_name);
         TextView tvAddress = view.findViewById(R.id.tv_estate_address);
+        ImageView ivNext = view.findViewById(R.id.iv_next_step);
+        if (houseInfoBean.getType() == 1){
+            ivNext.setVisibility(View.GONE);
+        }
         tvAddress.setVisibility(View.GONE);
         iv.setImageURI(Api.IMG_HOST + dataBean.getOutLookOne());
         tvName.setText(dataBean.getAreaName());

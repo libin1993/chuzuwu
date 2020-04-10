@@ -47,6 +47,7 @@ import com.tdr.rentalhouse.ui.ConnectBluetoothActivity;
 import com.tdr.rentalhouse.utils.BluetoothUtils;
 import com.tdr.rentalhouse.utils.FormatUtils;
 import com.tdr.rentalhouse.utils.LoadingUtils;
+import com.tdr.rentalhouse.utils.LogUtils;
 import com.tdr.rentalhouse.utils.ObjectUtils;
 import com.tdr.rentalhouse.utils.StatusBarUtils;
 import com.tdr.rentalhouse.utils.ToastUtils;
@@ -147,6 +148,8 @@ public class DeviceListActivity extends BaseMvpActivity<DeviceListContact.Presen
                 Glide.with(DeviceListActivity.this)
                         .load(Api.IMG_HOST + item.getDevIcon())
                         .into(img);
+
+                LogUtils.log(Api.IMG_HOST + item.getDevIcon());
 
                 TextView tvPosition = helper.getView(R.id.tv_device_info);
 
